@@ -1,0 +1,24 @@
+Package: patentsview
+Type: Package
+Title: An R client to the PatentsView API
+Version: 0.1.0.9000
+Authors@R: person("Chris", "Baker", email = "chriscrewbaker@gmail.com",
+    role = c("aut", "cre"))
+Encoding: UTF-8
+Description: Provides functions to simplify the API's query lanaguage,
+    send GET and POST requests to the seven endpoints, and parse the data
+    that comes back.
+License: MIT + file LICENSE
+LazyData: TRUE
+Depends:
+    R (>= 3.1)
+Imports:
+    httr,
+    jsonlite
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    covr
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
