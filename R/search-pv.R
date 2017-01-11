@@ -10,9 +10,9 @@ tojson_arglist <- function(fields, subent_cnts, mtchd_subent_only,
     per_page = per_page
   ) -> opts
   list(
-    fields = jsonlite::toJSON(fields),
-    sort = jsonlite::toJSON(sort, auto_unbox = TRUE),
-    opts = jsonlite::toJSON(opts, auto_unbox = TRUE)
+    fields = toJSON2(fields),
+    sort = toJSON2(list(as.list(sort)), auto_unbox = TRUE),
+    opts = toJSON2(opts, auto_unbox = TRUE)
   ) -> arg_list
   arg_list
 }
@@ -41,14 +41,14 @@ get_post_body <- function(query, arg_list) {
 }
 
 search_pv <- function(query,
-                      fields = "patent_number",
+                      fields = NULL, # "patent_number",
                       endpoint = "patents",
-                      method = "GET",
                       subent_cnts = FALSE,
                       mtchd_subent_only = FALSE,
                       page = 1,
-                      per_page = 50,
-                      sort = list(list("patent_number" = "asc")),
+                      per_page = 25,
+                      sort = NULL, # c("patent_number" = "asc")
+                      method = "GET",
                       ...) {
 
   validate_args(query = query, fields = fields, endpoint = endpoint,
@@ -66,7 +66,8 @@ search_pv <- function(query,
     httr::GET(url = url_to_get, ...) -> out
   } else {
     get_post_body(query = query, arg_list = arg_list) -> body_to_post
-    httr::POST(url = base_url, body = body_to_post, ...) -> out
+    gsub('(,"[fs]":)([,}])', paste0('\\1', "{}", '\\2'),
+         body_to_post) -> body_trans
   }
 
   httr::content(out, "text") -> j
