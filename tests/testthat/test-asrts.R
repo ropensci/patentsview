@@ -1,0 +1,21 @@
+context("test_assertions")
+
+test_that("validate_args throws errors for all bad args", {
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         endpoint = "patent"), "endpoint")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         method = "Post"), "method")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         subent_cnts = NULL), "subent_cnts")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         mtchd_subent_only = NULL), "mtchd_subent_only")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         per_page = "50"), "per_page")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         page = NA), "page")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
+                         fields = "patent_date",
+                         sort = c("patent_number" = "asc")), "sort")
+  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}}'),
+               "query")
+})

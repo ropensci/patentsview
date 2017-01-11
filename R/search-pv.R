@@ -51,6 +51,11 @@ search_pv <- function(query,
                       sort = list(list("patent_number" = "asc")),
                       ...) {
 
+  validate_args(query = query, fields = fields, endpoint = endpoint,
+                method = method, subent_cnts = subent_cnts,
+                mtchd_subent_only = mtchd_subent_only, page = page,
+                per_page = per_page, sort = sort)
+
   get_base(endpoint = endpoint) -> base_url
   tojson_arglist(fields = fields, subent_cnts = subent_cnts,
                  mtchd_subent_only = mtchd_subent_only,
