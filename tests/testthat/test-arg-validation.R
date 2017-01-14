@@ -1,4 +1,4 @@
-context("test_assertions")
+context("validate_args")
 
 test_that("validate_args throws errors for all bad args", {
   expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
