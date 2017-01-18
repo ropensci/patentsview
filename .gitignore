@@ -3,3 +3,7 @@
 .RData
 .Ruserdata
 inst/doc
+R/dev.R
+.Rprofile
+R/sysdata.rda
+data-raw/*.csv
