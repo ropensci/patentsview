@@ -38,8 +38,6 @@ pv_funs <- c(
          create_array_fun, USE.NAMES = TRUE)
 )
 
-with_pv <- function(code) {
-  eval(substitute(code), pv_funs)
-}
+with_pv <- function(code) eval(substitute(code), pv_funs)
 
 print.pv_query <- function(x) cat(jsonlite::toJSON(x, auto_unbox = TRUE))

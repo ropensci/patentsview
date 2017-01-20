@@ -15,8 +15,7 @@ view_er_html <- function(er_html) {
 
 parse_er_msg <- function(er_html) {
   gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html) -> er_prsd
-  strsplit(er_prsd, "</[[:alpha:]]")[[1]][1] -> er_prsd_fin
-  er_prsd_fin
+  strsplit(er_prsd, "</[[:alpha:]]")[[1]][1]
 }
 
 custom_er <- function(resp) {
@@ -43,5 +42,5 @@ custom_er <- function(resp) {
 throw_er <- function(resp) {
   httr::http_type(resp) -> typ
   grepl("text|html|xml", typ, ignore.case = TRUE) -> is_txt_html
-  if (is_txt_html) custom_er(resp) else httr::stop_for_status(resp)
+  ifelse(is_txt_html, custom_er(resp), httr::stop_for_status(resp))
 }

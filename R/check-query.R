@@ -25,7 +25,6 @@ one_check <- function(operator, field, value, f1) {
     (f1$data_type %in% c("string", "fulltext") && operator %in% c("_gt", "_gte", "_lt", "_lte"))
   )
     paste0_msg("You cannot use the operator ", operator, " with field ", field)
-
 }
 
 check_query <- function(query, endpoint) {
@@ -53,7 +52,6 @@ check_query <- function(query, endpoint) {
 
   apply_checks(x = query, endpoint = endpoint)
   invisible()
-
 }
 
 check_query.list <- function(query, endpoint)

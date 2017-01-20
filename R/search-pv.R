@@ -3,8 +3,7 @@ get_base <- function(endpoint)
 
 tojson_2 <- function(x, ...) {
   jsonlite::toJSON(x, ...) -> json
-  if (!grepl("[:alnum:]", json, ignore.case = TRUE))
-    "" -> json
+  if (!grepl("[:alnum:]", json, ignore.case = TRUE)) "" -> json
   json
 }
 
@@ -16,12 +15,12 @@ tojson_arglist <- function(fields, subent_cnts, mtchd_subent_only,
     page = page,
     per_page = per_page
   ) -> opts
+
   list(
     fields = tojson_2(fields),
     sort = tojson_2(list(as.list(sort)), auto_unbox = TRUE),
     opts = tojson_2(opts, auto_unbox = TRUE)
-  ) -> arg_list
-  arg_list
+  )
 }
 
 get_get_url <- function(query, base_url, arg_list) {
@@ -31,8 +30,7 @@ get_get_url <- function(query, base_url, arg_list) {
     "&f=", arg_list$fields,
     "&o=", arg_list$opts,
     "&s=", arg_list$sort
-  ) -> url
-  url
+  )
 }
 
 get_post_body <- function(query, arg_list) {
@@ -44,7 +42,7 @@ get_post_body <- function(query, arg_list) {
     '"s":', arg_list$sort,
     '}'
   ) -> body
-  body
+  gsub('(,"[fs]":)([,}])', paste0('\\1', "{}", '\\2'), body)
 }
 
 search_pv <- function(query,
