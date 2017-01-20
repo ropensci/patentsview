@@ -1,12 +1,15 @@
-paste0Stop <- function(...) stop(paste0(...), call. = FALSE)
+paste0_stop <- function(...) stop(paste0(...), call. = FALSE)
 
-paste0Mess <- function(...) message(paste0(...))
+paste0_msg <- function(...) message(paste0(...))
 
-asrt <- function (expr, ...) if (!expr) paste0Stop(...)
+asrt <- function (expr, ...) if (!expr) paste0_stop(...)
 
-toJSON2 <- function(x, ...) {
-  jsonlite::toJSON(x, ...) -> json
-  if (!grepl("[:alnum:]", json, ignore.case = TRUE))
-    "" -> json
-  json
+parse_resp <- function(resp) {
+  httr::content(resp, as = "text", encoding = "UTF-8") -> j
+  jsonlite::fromJSON(j, simplifyVector = TRUE, simplifyDataFrame = TRUE,
+                     simplifyMatrix = TRUE) -> j
+  j
 }
+
+format_num <- function(x) format(x, big.mark = ",", scientific = FALSE,
+                                 trim = TRUE)

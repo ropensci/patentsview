@@ -1,47 +1,47 @@
-haveViewer <- function() {
+have_viewer <- function() {
   tryCatch(
     rstudioapi::hasFun("viewer"),
     error = function(m) FALSE
   )
 }
 
-view_pv_error <- function(full_er) {
+view_er_html <- function(er_html) {
   tempDir <- tempfile()
   dir.create(tempDir)
   fi <- file.path(tempDir, "pv_error.html")
-  writeLines(full_er, fi)
+  writeLines(er_html, fi)
   rstudioapi::viewer(fi)
 }
 
-parse_er <- function(full_er) {
-  gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", full_er) -> er_prsd
+parse_er_msg <- function(er_html) {
+  gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html) -> er_prsd
   strsplit(er_prsd, "</[[:alpha:]]")[[1]][1] -> er_prsd_fin
   er_prsd_fin
 }
 
-display_er <- function(resp) {
-  httr::content(resp, as = "text", encoding = "UTF-8") -> full_er
-  parse_er(full_er = full_er) -> er_prsd
+custom_er <- function(resp) {
+  httr::content(resp, as = "text", encoding = "UTF-8") -> er_html
+  parse_er_msg(er_html = er_html) -> er_prsd
   paste0("Your query returned the following error:", er_prsd) -> gen_er
-  paste0(gen_er, ".\nTurn on options(pvErrorViewer = TRUE) to see the full ",
+  paste0(gen_er, ".\nTurn on options(pv_error_viewer = TRUE) to see the full ",
          "error details in your rstudio viewer pane.") -> er_cnsol
 
-  getOption("pvErrorViewer") -> view_op_ys
-  haveViewer() -> hv_viewer
+  getOption("pv_error_viewer") -> view_op_ys
+  have_viewer() -> hv_viewer
 
   if (nchar(er_prsd) < 5) httr::stop_for_status(resp)
-  if (view_op_ys && hv_viewer) view_pv_error(full_er = full_er)
+  if (view_op_ys && hv_viewer) view_er_html(er_html = er_html)
   if (view_op_ys && !hv_viewer)
-    paste0Stop(er_cnsol, "\n\n", "Note: You need to install the rstudioapi ",
-               "package to view patentsview api errors in your viewer pane.")
+    paste0_stop(er_cnsol, "\n\n", "Note: You need to install the rstudioapi ",
+                "package to view patentsview api errors in your viewer pane.")
   if (!view_op_ys && hv_viewer)
-    paste0Stop(er_cnsol, "\n\n", "Turn on options(pvErrorViewer = TRUE) to ",
-               "see the full error details in your rstudio viewer pane.")
-  paste0Stop(gen_er)
+    paste0_stop(er_cnsol, "\n\n", "Turn on options(pv_error_viewer = TRUE) to ",
+                "see the full error details in your rstudio viewer pane.")
+  paste0_stop(gen_er)
 }
 
-process_pv_error <- function(resp) {
+throw_er <- function(resp) {
   httr::http_type(resp) -> typ
   grepl("text|html|xml", typ, ignore.case = TRUE) -> is_txt_html
-  if (is_txt_html) display_er(resp) else httr::stop_for_status(resp)
+  if (is_txt_html) custom_er(resp) else httr::stop_for_status(resp)
 }

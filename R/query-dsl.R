@@ -16,7 +16,7 @@ create_key_fun <- function(fun) {
     } else {
       create_one_fun(field = field, value = value, fun = fun) -> z
     }
-    structure(z, class = c(class(z), "pvquery"))
+    structure(z, class = c(class(z), "pv_query"))
   }
 }
 
@@ -26,7 +26,7 @@ create_array_fun <- function(fun) {
     list(...) -> k
     list(k) -> z
     names(z) <- paste0("_", fun)
-    structure(z, class = c(class(z), "pvquery"))
+    structure(z, class = c(class(z), "pv_query"))
   }
 }
 
@@ -42,4 +42,4 @@ with_pv <- function(code) {
   eval(substitute(code), pv_funs)
 }
 
-print.pvquery <- function(x) cat(jsonlite::toJSON(x, auto_unbox = TRUE))
+print.pv_query <- function(x) cat(jsonlite::toJSON(x, auto_unbox = TRUE))

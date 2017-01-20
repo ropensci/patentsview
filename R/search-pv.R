@@ -1,6 +1,13 @@
 get_base <- function(endpoint)
   sprintf("http://www.patentsview.org/api/%s/query", endpoint)
 
+tojson_2 <- function(x, ...) {
+  jsonlite::toJSON(x, ...) -> json
+  if (!grepl("[:alnum:]", json, ignore.case = TRUE))
+    "" -> json
+  json
+}
+
 tojson_arglist <- function(fields, subent_cnts, mtchd_subent_only,
                            page, per_page, sort) {
   list(
@@ -10,9 +17,9 @@ tojson_arglist <- function(fields, subent_cnts, mtchd_subent_only,
     per_page = per_page
   ) -> opts
   list(
-    fields = toJSON2(fields),
-    sort = toJSON2(list(as.list(sort)), auto_unbox = TRUE),
-    opts = toJSON2(opts, auto_unbox = TRUE)
+    fields = tojson_2(fields),
+    sort = tojson_2(list(as.list(sort)), auto_unbox = TRUE),
+    opts = tojson_2(opts, auto_unbox = TRUE)
   ) -> arg_list
   arg_list
 }
