@@ -15,14 +15,14 @@ get_data <- function(prsd_resp) {
   structure(
     list(prsd_resp[[1]]),
     names = names(prsd_resp[1]),
-    class = c("list", "pv_data")
+    class = c("list", "pv_data_result")
   )
 }
 
 get_query_results <- function(prsd_resp) {
   structure(
     prsd_resp[grepl("_count", names(prsd_resp))],
-    class = c("list", "pv_query_results")
+    class = c("list", "pv_query_result")
   )
 }
 
