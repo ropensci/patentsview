@@ -14,16 +14,17 @@ view_er_html <- function(er_html) {
 }
 
 parse_er_msg <- function(er_html) {
+  if (is.na(er_html)) return("")
   gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html) -> er_prsd
-  strsplit(er_prsd, "</[[:alpha:]]")[[1]][1]
+  strsplit(er_prsd, "</[[:alpha:]]")[[1]][1] -> er_maybe
+  ifelse(is.na(er_maybe), "", er_maybe)
 }
 
 custom_er <- function(resp) {
   httr::content(resp, as = "text", encoding = "UTF-8") -> er_html
   parse_er_msg(er_html = er_html) -> er_prsd
+
   paste0("Your query returned the following error:", er_prsd) -> gen_er
-  paste0(gen_er, ".\nTurn on options(pv_error_viewer = TRUE) to see the full ",
-         "error details in your rstudio viewer pane.") -> er_cnsol
 
   getOption("pv_error_viewer") -> view_op_ys
   have_viewer() -> hv_viewer
@@ -31,11 +32,8 @@ custom_er <- function(resp) {
   if (nchar(er_prsd) < 5) httr::stop_for_status(resp)
   if (view_op_ys && hv_viewer) view_er_html(er_html = er_html)
   if (view_op_ys && !hv_viewer)
-    paste0_stop(er_cnsol, "\n\n", "Note: You need to install the rstudioapi ",
+    paste0_stop(gen_er, "\n\n", "Note: You need to install the rstudioapi ",
                 "package to view patentsview api errors in your viewer pane.")
-  if (!view_op_ys && hv_viewer)
-    paste0_stop(er_cnsol, "\n\n", "Turn on options(pv_error_viewer = TRUE) to ",
-                "see the full error details in your rstudio viewer pane.")
   paste0_stop(gen_er)
 }
 
