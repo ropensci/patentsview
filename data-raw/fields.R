@@ -29,6 +29,19 @@ melt(all_tabs) %>%
     .$endpoint == "nber_subcat" ~ "nber_subcategories"
   )) -> fields
 
+# patent_id left off list for all endpoints:
+
+data.frame(
+  endpoint = unique(fields$endpoint),
+  field = rep("patent_id", 7),
+  data_type = rep("string", 7),
+  can_query = rep("y", 7),
+  stringsAsFactors = FALSE
+) %>%
+  rbind(fields) %>%
+  arrange(endpoint, field) %>%
+  distinct() -> fields
+
 write.csv(fields, "data-raw/fields.csv", row.names = FALSE)
 # tools::checkRdaFiles("R/")
 use_data(fields, internal = TRUE, overwrite = TRUE, compress = "gzip")
