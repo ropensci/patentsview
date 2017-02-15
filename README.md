@@ -1,12 +1,6 @@
 <!-- Formatting of this README was inspired by gaborcsardi's httrmock README -->
 
-```{r, echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
+
 
 # patentsview
 
@@ -18,7 +12,8 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-```{r eval = FALSE}
+
+```r
 devtools::install_github("crew102/patentsview")
 ```
 
@@ -27,7 +22,8 @@ devtools::install_github("crew102/patentsview")
 The [PatentsView API](http://www.patentsview.org/api/doc.html) provides 7 endpoints that users can query and download patent-related data from. The `patentsview` R package provides one function, `search_pv` to make it easy to interact with those endpoints. Let's take a look:
 
 
-```{r eval = FALSE}
+
+```r
 library(patentsview)
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}')
