@@ -1,3 +1,5 @@
+# Design adapated from http://adv-r.had.co.nz/dsl.html
+
 create_one_fun <- function(field, value, fun) {
   list(value) -> k
   names(k) <- field
@@ -8,7 +10,11 @@ create_one_fun <- function(field, value, fun) {
 
 create_key_fun <- function(fun) {
   force(fun)
-  function(field, value) {
+  function(...) {
+    list(...) -> value_p
+    names(value_p) -> field
+    unlist(value_p) -> value
+    names(value) <- NULL
     if (length(value) > 1) {
       lapply(value, function(value)
         create_one_fun(field = field, value = value, fun = fun)) -> z
@@ -39,5 +45,3 @@ pv_funs <- c(
 )
 
 with_pv <- function(code) eval(substitute(code), pv_funs)
-
-print.pv_query <- function(x) cat(jsonlite::toJSON(x, auto_unbox = TRUE))
