@@ -36,7 +36,7 @@ create_array_fun <- function(fun) {
   }
 }
 
-pv_funs <- c(
+qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
            "begins", "contains", "text_all", "text_any", "text_phrase"),
          create_key_fun, USE.NAMES = TRUE),
@@ -44,4 +44,5 @@ pv_funs <- c(
          create_array_fun, USE.NAMES = TRUE)
 )
 
-with_pv <- function(code) eval(substitute(code), pv_funs)
+#' @export
+with_qfuns <- function(code) eval(substitute(code), qry_funs)
