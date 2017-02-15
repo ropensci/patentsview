@@ -7,19 +7,17 @@ tojson_2 <- function(x, ...) {
   json
 }
 
-tojson_arglist <- function(fields, subent_cnts, mtchd_subent_only,
-                           page, per_page, sort) {
+to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
+                       page, per_page, sort) {
   list(
-    include_subentity_total_counts = subent_cnts,
-    matched_subentities_only = mtchd_subent_only,
-    page = page,
-    per_page = per_page
-  ) -> opts
-
-  list(
-    fields = tojson_2(fields),
-    sort = tojson_2(list(as.list(sort)), auto_unbox = TRUE),
-    opts = tojson_2(opts, auto_unbox = TRUE)
+    fields = fields,
+    sort = list(as.list(sort)),
+    opts = list(
+      include_subentity_total_counts = subent_cnts,
+      matched_subentities_only = mtchd_subent_only,
+      page = page,
+      per_page = per_page
+    )
   )
 }
 
@@ -27,19 +25,20 @@ get_get_url <- function(query, base_url, arg_list) {
   paste0(
     base_url,
     "?q=", query,
-    "&f=", arg_list$fields,
-    "&o=", arg_list$opts,
-    "&s=", arg_list$sort
-  )
+    "&f=", tojson_2(arg_list$fields),
+    "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE),
+    "&s=", tojson_2(arg_list$sort, auto_unbox = TRUE)
+  ) -> j
+  URLencode(j)
 }
 
 get_post_body <- function(query, arg_list) {
   paste0(
     '{',
     '"q":', query, ",",
-    '"f":', arg_list$fields, ",",
-    '"o":', arg_list$opts, ",",
-    '"s":', arg_list$sort,
+    '"f":', tojson_2(arg_list$fields), ",",
+    '"o":', tojson_2(arg_list$opts, auto_unbox = TRUE), ",",
+    '"s":', tojson_2(arg_list$sort, auto_unbox = TRUE),
     '}'
   ) -> body
   gsub('(,"[fs]":)([,}])', paste0('\\1', "{}", '\\2'), body)
@@ -61,10 +60,11 @@ search_pv <- function(query,
                 mtchd_subent_only = mtchd_subent_only, page = page,
                 per_page = per_page, sort = sort)
 
+  to_arglist(fields = fields, subent_cnts = subent_cnts,
+             mtchd_subent_only = mtchd_subent_only,
+             page = page, per_page = per_page, sort = sort) -> arg_list
+
   get_base(endpoint = endpoint) -> base_url
-  tojson_arglist(fields = fields, subent_cnts = subent_cnts,
-                 mtchd_subent_only = mtchd_subent_only,
-                 page = page, per_page = per_page, sort = sort) -> arg_list
 
   if (method == "GET") {
     get_get_url(query = query, base_url = base_url, arg_list = arg_list) -> url_to_get
