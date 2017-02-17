@@ -36,6 +36,7 @@ create_array_fun <- function(fun) {
   }
 }
 
+#' @export
 qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
            "begins", "contains", "text_all", "text_any", "text_phrase"),

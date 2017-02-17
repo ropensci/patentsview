@@ -1,4 +1,4 @@
-language: R
+language: r
 sudo: false
 cache: packages
 
@@ -6,8 +6,8 @@ branches:
   except:
   - dev
 
-after_success:
-- Rscript -e 'covr::codecov()'
+# after_success:
+# - Rscript -e 'covr::codecov()'
 
 warnings_are_errors: false
 
