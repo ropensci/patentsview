@@ -80,23 +80,35 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 
 #' Search PatentsView data
 #'
-#' @param query Either a character or JSON vector of length 1 with valid JSON query syntax or a list to be converted to JSON. See examples and/or query vignette.
-#' @param fields Character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. See \url{http://www.patentsview.org/api/patent.html#field_list} for a list of acceptable fields from the "patents" endpoint. Field lists for the six other endpoints are available on the PatentsView website as well.
-#' @param endpoint Character vector of length 1, consisting of one of the following values: \code{"patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", "nber_subcategories"}
-#' @param subent_cnts Do you want the total counts of unique subentities to be returned to you? This is equivlient to the \code{include_subentity_total_counts} parameter found here: \url{http://www.patentsview.org/api/query-language.html#options_parameter}. See details for an explanation of subentities.
-#' @param mtchd_subent_only Do you want all the subentities returned to you, even if they would be filtered by your query? This is the \code{matched_subentities_only} parameter found here: \url{http://www.patentsview.org/api/query-language.html#options_parameter}. See details for an explanation of subentities.
+#' @param query The query you wish to send to the API endpoint. This paramater can be any one of the following:
+#'  \itemize{
+#'   \item A character or JSON vector of length 1 with valid JSON query syntax (e.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'})
+#'   \item A list which will be converted to JSON (e.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))})
+#'   \item A call to one of the query helper functions found in the \code{qry_funs} list (e.g., \code{with_qfuns(gte(patent_date = "2007-01-04"))}. See examples and the and the "writing queries" vignette.
+#'  }
+#' @param fields A character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. Accecepible values for a given endpoint can be found in the API's online documentation. For example, field list for the patents endpoint can be found \href{http://www.patentsview.org/api/patent.html#field_list}{here}. Field lists for the six other endpoints are available on the PatentsView website as well.
+#' @param endpoint A character vector of length 1 indicating which API resource you wish to search. \code{endpoint} must be one of the following: \code{"patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", "nber_subcategories"}.
+#' @param subent_cnts Do you want the total counts of unique subentities to be returned to you? This is equivlient to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}. See details for an explanation of subentities.
+#' @param mtchd_subent_only Do you want all the subentities returned to you, even if they would be filtered by your query? This is the \code{matched_subentities_only} parameter found here: \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}. See details for an explanation of subentities.
 #' @param page The page number of the results that you want returned.
 #' @param per_page The number of records that should be returned per page. This value can be as high as 10,000 (e.g., \code{per_page = 10000}).
 #' @param all_pages Do you want to download all possible pages of output? If \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are ignored.
-#' @param sort A named character vector where the name indicatea the field that is to be sorted by and the value indicates the direction of sorting ("asc" or "desc"). For example, \code{sort = c("patent_number" = "asc")} would be an acceptable value, as would \code{sort = c("patent_number" = "asc", "patent_date" = "desc")}. \code{sort = NULL} (the default) means do not sort the results.
-#' @param method A character vector of length 1 indicating the HTTP method that you want to use to send the request. Options include \code{method = "GET"} or \code{method = "POST"}.
-#' @param browser The program to be used as the HTML browser to view error messages sent by the API. This should be either a character vector of length 1 giving the name of the program (assuming it is in your PATH...e.g., \code{browser = "chrome"}) or the full path to the program (e.g., \code{browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"}). Alternatively, you can provide an R function to be called to invoke the browser (e.g., \code{browser = rstudioapi::viewer}). Under Windows \code{NULL} is also allowed (and is the default), and implies that the file association mechanism will be used. To turn the browser off when using Windows, set \code{browser = "false"}.
-#' @param ... Arguments passed along to \code{\link[httr]{GET}} or \code{\link[httr]{POST}}.
+#' @param sort A named character vector where the name indicates the field to sort by and the value indicates the direction of sorting ("asc" or "desc"). For example, \code{sort = c("patent_number" = "asc")} or \code{sort = c("patent_number" = "asc", "patent_date" = "desc")}. \code{sort = NULL} (the default) means do not sort the results.
+#' @param method A character vector of length 1 indicating the HTTP method that you want to use to send the request. Possible values include \code{method = "GET"} or \code{method = "POST"}.
+#' @param error_browser The program used to view any HTML error messages sent by the API. This should be either a character vector of length 1 giving the name of the program (assuming it is in your PATH...e.g., \code{error_browser = "chrome"}) or the full path to the program (e.g., \code{error_browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"}). Alternatively, you can provide an R function to be called to invoke the error_browser (e.g., \code{error_browser = rstudioapi::viewer}). Under Windows, \code{NULL} is also an allowed value (and is the default), and implies that the file association mechanism will be used to determine the error_browser. To turn the error_browser off when using Windows, set \code{error_browser = "false"}.
+#' @param ... Arguments passed along to httr's \code{\link[httr]{GET}} or \code{\link[httr]{POST}} function.
 #'
-#' @return
-#' @export
+#' @return A list with the following three elements:
+#' \describe{
+#'   \item{data_results}{A list with one element - a data frame containing the data returned by the API. Each row in the data frame corresponds with one unique value of the field denoted by the endpoint. For example, if you search the assignee endpoint, then the data frame will be on the assignee-level, where each row corresponds to a single assignee. Fields that are not on the assignee-level for this result set will be returned in a list column.}
+#'   \item{query_results}{Entity counts across all pages of output (not just the page returned to you). If you set \code{subent_cnts = TRUE}, you will be returned both the counts of the main entities as well as any sub-entities that would be returned by your search. See description for a short explaination of entities/subentities.}
+#'   \item{request}{Details of the HTTP request that was sent to the client. When you set \code{all_pages = TRUE}, \emph{you will only get a sample request. In other words, you will not be given multiple requests for the multiple calls made to the API to loop over the pages.}}
+#'  }
 #'
+#' @details \strong{What is a subentity?}
 #' @examples
+#'
+#' @export
 search_pv <- function(query,
                       fields = NULL,
                       endpoint = "patents",
