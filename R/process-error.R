@@ -5,7 +5,7 @@ parse_er_msg <- function(er_html) {
   ifelse(is.na(er_maybe), "", er_maybe)
 }
 
-custom_er <- function(resp, browser) {
+custom_er <- function(resp, error_browser) {
   httr::content(resp, as = "text", encoding = "UTF-8") -> er_html
   parse_er_msg(er_html = er_html) -> er_prsd
 
@@ -18,18 +18,18 @@ custom_er <- function(resp, browser) {
     dir.create(tempDir)
     fi <- file.path(tempDir, "pv_error.html")
     writeLines(er_html, fi)
-    browseURL(url = fi, browser = browser)
+    browseURL(url = fi, browser = error_browser)
   }
 
   paste0_stop(gen_er)
 }
 
-throw_er <- function(resp, browser) {
+throw_er <- function(resp, error_browser) {
   httr::http_type(resp) -> typ
   grepl("text|html|xml", typ, ignore.case = TRUE) -> is_txt_html
   ifelse(
     is_txt_html,
-    custom_er(resp = resp, browser = browser),
+    custom_er(resp = resp, error_browser = error_browser),
     httr::stop_for_status(resp)
   )
 }

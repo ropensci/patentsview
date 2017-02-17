@@ -48,7 +48,7 @@ warn_for_get <- function(query)
   if (nchar(query) > 2000) paste0_msg("Your query is over 2,000 characters long, ",
                                       "I suggest using the POST method instead of GET.")
 
-one_request <- function(method, query, base_url, arg_list, browser, ...) {
+one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   httr::user_agent("https://github.com/crew102/patentsview") -> ua
   if (method == "GET") {
     get_get_url(query = query, base_url = base_url, arg_list = arg_list) -> get_url
@@ -58,12 +58,12 @@ one_request <- function(method, query, base_url, arg_list, browser, ...) {
     httr::POST(url = base_url, body = body, ua, ...) -> resp
   }
 
-  if (httr::http_error(resp)) throw_er(resp = resp, browser = browser)
+  if (httr::http_error(resp)) throw_er(resp = resp, error_browser = error_browser)
 
   process_resp(resp = resp)
 }
 
-request_apply <- function(ex_res, method, query, base_url, arg_list, browser, ...) {
+request_apply <- function(ex_res, method, query, base_url, arg_list, error_browser, ...) {
   ceiling(ex_res$query_results[[1]] / 10000) -> req_pages
   if (req_pages < 1)
     stop("No records matched your query...Can't download multiple pages",
@@ -72,7 +72,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, browser, ..
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
     one_request(method = method, query = query, base_url = base_url,
-                arg_list = arg_list, browser = browser, ...) -> x
+                arg_list = arg_list, error_browser = error_browser, ...) -> x
     x$data_results
   }) -> tmp
   do.call("rbind", c(tmp, make.row.names = FALSE))
@@ -107,7 +107,7 @@ search_pv <- function(query,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",
-                      browser = getOption("browser"),
+                      error_browser = getOption("browser"),
                       ...) {
 
   if (is.list(query) && !is.data.frame(query))
@@ -125,7 +125,7 @@ search_pv <- function(query,
   get_base(endpoint = endpoint) -> base_url
 
   one_request(method = method, query = query, base_url = base_url,
-              arg_list = arg_list, browser = browser, ...) -> res
+              arg_list = arg_list, error_browser = error_browser, ...) -> res
 
   if (!all_pages) return(res)
 
