@@ -1,27 +1,26 @@
 ---
 title: "Writing queries"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with patentsview}
+  %\VignetteIndexEntry{Writing queries}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# equiv in json, but note that cant easly tags like gte and contins:
+<!-- # equiv in json, but note that cant easly tags like gte and contins: -->
 
-list("_and" =
-       list(
-         list("gte" = list("inventor_last_name" = "Jobs")),
-         list("_or" =
-                list(
-                  list("some_tag" =  "some value"),
-                  list("some_other_tag" = "some_other_value"),
-                  list("another_tag" = "another_value")
-                  )
-              ),
-         list("assignee_lastknown_country" = "US")
-         )
-     ) -> k
-     
-     # note the unbox req for json
+<!-- list("_and" = -->
+<!--        list( -->
+<!--          list("gte" = list("inventor_last_name" = "Jobs")), -->
+<!--          list("_or" = -->
+<!--                 list( -->
+<!--                   list("some_tag" =  "some value"), -->
+<!--                   list("some_other_tag" = "some_other_value"), -->
+<!--                   list("another_tag" = "another_value") -->
+<!--                   ) -->
+<!--               ), -->
+<!--          list("assignee_lastknown_country" = "US") -->
+<!--          ) -->
+<!--      ) -> k -->
+
+<!--      # note the unbox req for json -->

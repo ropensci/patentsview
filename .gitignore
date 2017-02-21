@@ -2,7 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-inst/
-.Rprofile
+inst/dev.R
 R/sysdata.rda
-data-raw/*.csv
