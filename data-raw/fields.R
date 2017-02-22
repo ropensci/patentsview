@@ -16,8 +16,8 @@ clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
 
 melt(all_tabs) %>%
   rename(field = `API Field Name`, data_type = Type, can_query = Query,
-         endpoint = L1) %>%
-  select(endpoint, field, data_type, can_query) %>%
+         endpoint = L1, group = Group) %>%
+  select(endpoint, field, data_type, can_query, group) %>%
   mutate_each(funs(clean_field)) %>%
   mutate(endpoint = case_when(
     .$endpoint == "patent" ~ "patents",
@@ -36,6 +36,7 @@ data.frame(
   field = rep("patent_id", 7),
   data_type = rep("string", 7),
   can_query = rep("y", 7),
+  group = rep("patents", 7),
   stringsAsFactors = FALSE
 ) %>%
   rbind(fields) %>%
