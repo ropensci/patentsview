@@ -34,7 +34,7 @@ check_query <- function(query, endpoint) {
   c("_text_all", "_text_any", "_text_phrase") -> fltxt_opr
   c(simp_opr, num_opr, str_opr, fltxt_opr) -> all_opr
 
-  patentsview::fields -> flds
+  patentsview:::fields -> flds
   flds[flds$endpoint == endpoint & flds$can_query == "y",] -> flds_flt
 
   apply_checks <- function(x, endpoint) {
@@ -52,13 +52,4 @@ check_query <- function(query, endpoint) {
 
   apply_checks(x = query, endpoint = endpoint)
   invisible()
-}
-
-check_query.list <- function(query, endpoint)
-  check_query(query = query, endpoint = endpoint)
-
-check_query.character <- function(query, endpoint) {
-  jsonlite::fromJSON(txt = query, simplifyVector = FALSE,
-                     simplifyDataFrame = FALSE, simplifyMatrix = FALSE) -> lst
-  check_query(query = lst, endpoint = endpoint)
 }
