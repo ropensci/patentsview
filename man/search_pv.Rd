@@ -16,7 +16,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
  \item A call to one of the query helper functions found in the \code{qry_funs} list (e.g., \code{with_qfuns(gte(patent_date = "2007-01-04"))}. See examples and/or the "writing queries" vignette.
 }}
 
-\item{fields}{A character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. Accecepible field values for a given endpoint can be found in the API's online documentation. For example, the field list for the patents endpoint can be found \href{http://www.patentsview.org/api/patent.html#field_list}{here}. Field lists for the six other endpoints are available on the PatentsView website as well.}
+\item{fields}{A character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. Accecepible field values for a given endpoint can be found in the API's online documentation. For example, the field list for the patents endpoint can be found \href{http://www.patentsview.org/api/patent.html#field_list}{here}. Field lists for the six other endpoints are available on the PatentsView website as well...Note, you can use \code{\link{get_fields}} to get the field names for a given group, instead of typing out a bunch of field names.}
 
 \item{endpoint}{A character vector of length 1 indicating which web service resource you wish to search. \code{endpoint} must be one of the following: \code{"patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", "nber_subcategories"}.}
 

@@ -1,13 +1,9 @@
 validate_args <- function(query, fields, endpoint, method, subent_cnts,
                           mtchd_subent_only, page, per_page, sort) {
 
-  c("patents", "inventors", "assignees", "locations",
-    "cpc_subsections", "uspc_mainclasses", "nber_subcategories") -> ok_ends
   c("GET", "POST") -> ok_meth
 
-  asrt(all(endpoint %in% ok_ends, length(endpoint) == 1),
-       "endpoint must be a length 1 vector and be one of: ",
-              paste(ok_ends, collapse = ", "))
+  validate_endpoint(endpoint = endpoint)
   asrt(all(method %in% ok_meth, length(method) == 1),
        "method must be either 'GET' or 'POST'")
 
