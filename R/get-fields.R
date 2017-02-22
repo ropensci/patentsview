@@ -16,6 +16,6 @@
 get_fields <- function(endpoint, group) {
   validate_endpoint(endpoint = endpoint)
   validate_group(group = group)
-  patentsview:::fields -> flds
+  fields -> flds
   flds[flds$endpoint == endpoint & flds$group %in% group, "field"]
 }

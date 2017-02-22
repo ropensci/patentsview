@@ -24,7 +24,7 @@ validate_args <- function(query, fields, endpoint, method, subent_cnts,
 
   asrt(jsonlite::validate(query), "query is not valid json.")
 
-  patentsview:::fields -> flds
+  fields -> flds
   flds[flds$endpoint == endpoint, "field"] -> flds_flt
   asrt(all(fields %in% flds_flt),
        "Bad field(s): ",
