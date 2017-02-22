@@ -85,7 +85,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #' @param fields A character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. Accecepible field values for a given endpoint can be found in the API's online documentation. For example, the field list for the patents endpoint can be found \href{http://www.patentsview.org/api/patent.html#field_list}{here}. Field lists for the six other endpoints are available on the PatentsView website as well.
 #' @param endpoint A character vector of length 1 indicating which web service resource you wish to search. \code{endpoint} must be one of the following: \code{"patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", "nber_subcategories"}.
 #' @param subent_cnts Do you want the total counts of unique subentities to be returned to you? This is equivlient to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} and examples below for details on this argument.
-#' @param mtchd_subent_only Do you want all the subentities returned to you, even if they would be filtered by your query? This is the \code{matched_subentities_only} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} and examples below for details on this argument.
+#' @param mtchd_subent_only Do you want only the subentities that match your query to be returned to you? A value of \code{TRUE} means the subentity has to meet the query criterion in order for it to be returned, while a value of \code{FALSE} indicates that all subentity data will be returned, even those records that don't meet the query criterion. This is the \code{matched_subentities_only} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} as well as examples below for details on this argument.
 #' @param page The page number of the results that you want returned.
 #' @param per_page The number of records that should be returned per page. This value can be as high as 10,000 (e.g., \code{per_page = 10000}).
 #' @param all_pages Do you want to download all possible pages of output? If \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are ignored.
@@ -109,7 +109,7 @@ search_pv <- function(query,
                       fields = NULL,
                       endpoint = "patents",
                       subent_cnts = FALSE,
-                      mtchd_subent_only = FALSE,
+                      mtchd_subent_only = TRUE,
                       page = 1,
                       per_page = 25,
                       all_pages = FALSE,
