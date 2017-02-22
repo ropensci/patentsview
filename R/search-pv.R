@@ -29,7 +29,7 @@ get_get_url <- function(query, base_url, arg_list) {
     "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE),
     "&s=", tojson_2(arg_list$sort, auto_unbox = TRUE)
   ) -> j
-  URLencode(j)
+  utils::URLencode(j)
 }
 
 get_post_body <- function(query, arg_list) {

@@ -18,7 +18,7 @@ custom_er <- function(resp, error_browser) {
     dir.create(tempDir)
     fi <- file.path(tempDir, "pv_error.html")
     writeLines(er_html, fi)
-    browseURL(url = fi, browser = error_browser)
+    utils::browseURL(url = fi, browser = error_browser)
   }
 
   paste0_stop(gen_er)
