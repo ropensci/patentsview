@@ -16,6 +16,4 @@ test_that("validate_args throws errors for all bad args", {
   expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}',
                          fields = "patent_date",
                          sort = c("patent_number" = "asc")), "sort")
-  expect_error(search_pv(query = '{"patent_date":["1976-01-06"]}}'),
-               "query")
 })
