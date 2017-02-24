@@ -41,7 +41,7 @@ check_query <- function(query, endpoint) {
   c("_text_all", "_text_any", "_text_phrase") -> fltxt_opr
   c(simp_opr, num_opr, str_opr, fltxt_opr) -> all_opr
 
-  fields -> flds
+  fieldsdf -> flds
   flds[flds$endpoint == endpoint & flds$can_query == "y",] -> flds_flt
 
   apply_checks <- function(x, endpoint) {
