@@ -1,5 +1,5 @@
 #' @export
-print.pv_request <- function(x) {
+print.pv_request <- function(x, ...) {
   cat(
     "#### An HTTP request where:\n\n",
     "Method: ", x$method, "\n",
@@ -9,7 +9,7 @@ print.pv_request <- function(x) {
 }
 
 #' @export
-print.pv_data_result <- function(x) {
+print.pv_data_result <- function(x, ...) {
 
   x[[1]] -> df
   sapply(names(df), function(y) {
@@ -33,7 +33,7 @@ print.pv_data_result <- function(x) {
 }
 
 #' @export
-print.pv_query_result <- function(x) {
+print.pv_query_result <- function(x, ...) {
   unlist(x) -> res_vec
   cat(
     "#### Distinct entity counts across all pages of output:\n\n",
@@ -43,11 +43,11 @@ print.pv_query_result <- function(x) {
 }
 
 #' @export
-print.pv_result <- function(x) {
+print.pv_result <- function(x, ...) {
   print(x[1])
   cat("\n")
   print(x[2])
 }
 
 #' @export
-print.pv_query <- function(x) cat(jsonlite::toJSON(x, auto_unbox = TRUE))
+print.pv_query <- function(x, ...) cat(jsonlite::toJSON(x, auto_unbox = TRUE))
