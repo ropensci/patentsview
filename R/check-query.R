@@ -20,11 +20,18 @@ one_check <- function(operator, field, value, f1) {
     paste0_msg(value, " must be an integer")
 
   if (
-    (operator %in% c("_begins", "_contains") && !(f1$data_type == "string")) ||
-    (operator %in% c("_text_all", "_text_any", "_text_phrase") && !(f1$data_type == "fulltext")) ||
-    (f1$data_type %in% c("string", "fulltext") && operator %in% c("_gt", "_gte", "_lt", "_lte"))
-  )
-    paste0_msg("You cannot use the operator ", operator, " with field ", field)
+      (
+        operator %in% c("_begins", "_contains") && !(f1$data_type == "string")
+      ) ||
+      (
+        operator %in% c("_text_all", "_text_any", "_text_phrase") &&
+        !(f1$data_type == "fulltext")
+      ) ||
+      (
+        f1$data_type %in% c("string", "fulltext") &&
+        operator %in% c("_gt", "_gte", "_lt", "_lte")
+      )
+    ) paste0_msg("You cannot use the operator ", operator, " with field ", field)
 }
 
 check_query <- function(query, endpoint) {
