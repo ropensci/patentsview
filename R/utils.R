@@ -22,14 +22,14 @@ validate_endpoint <- function(endpoint) {
        paste(ok_ends, collapse = ", "))
 }
 
-validate_group <- function(group) {
+validate_groups <- function(groups) {
   c("applications", "assignees", "cpcs", "gov_interests", "inventors",
     "ipcs", "locations", "nbers", "patents", "rawinventors", "uspcs",
     "wipos", "years", "cpc_subsections", "cpc_subgroups", "coinventors",
     "coinvetnros", "application_citations", "cited_patents", "citedby_patents",
     "nber_subcategories", "uspc_mainclasses", "uspc_subclasses") -> ok_grps
 
-  asrt(group %in% ok_grps,
+  asrt(groups %in% ok_grps,
        "group must be one of: ",
        paste(ok_grps, collapse = ", "))
 }
