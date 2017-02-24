@@ -20,15 +20,20 @@ The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an inter
 ``` r
 library(patentsview)
 
-search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
           fields = c("patent_number", "patent_title"), endpoint = "patents")
 #> $data_results
 #> #### A data frame on the patent data level, containing the following columns: patent_number (character), patent_title (character)
-#>   patent_number                                       patent_title
-#> 1       7159246                    Glove with high tactile portion
-#> 2       7159247                     Cap having a flexible headband
-#> 3       7159248                Head covering with attached whistle
-#> 4       7159249 Self-balancing, load-distributing helmet structure
+#>   patent_number
+#> 1       7155746
+#> 2       7155747
+#> 3       7155748
+#> 4       7155749
+#>                                                            patent_title
+#> 1 Anti-wicking protective workwear and methods of making and using same
+#> 2                                               Head stabilizing system
+#> 3                                       Releasable toilet seat assembly
+#> 4                                    Toilet seat cover dispenser system
 #> 
 #> 
 #> $query_results
@@ -37,34 +42,34 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
 #> total_patent_count = 100,000
 ```
 
-This call to `search_pv` issues our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup>[1](#enttypes)</sup> Each endpoint has a slightly different set of fields that you can include in your query (e.g., `"patent_date"` in the above query) as well as a different set of fields whose data you can receive from the server (e.g., `"patent_number"` and `"patent_title"`). You can see a list of the acceptable field for the 7 endpoints at the PatentsView webpage. For example, the field list for the inventors endpoint is listed [here](herehttp://www.patentsview.org/api/inventor.html#field_list).
+This call to `search_pv` issues our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup>[1](#enttypes)</sup> Each endpoint has a slightly different set of fields that you can include in your query (e.g., `"patent_date"` in the above query) as well as a different set of fields whose data you can receive from the server (e.g., `"patent_number"` and `"patent_title"`). You can see a list of the acceptable fields for a given endpoint at that endpoint's API documentation page (e.g., the [inventor field list](http://www.patentsview.org/api/inventor.html#field_list)). Also see `?get_fields` for a quick way to put your field list together.
 
 Writing queries
 ---------------
 
-The PatentsView query syntax is documented on their [site](http://www.patentsview.org/api/query-language.html#query_string_format)<sup>[2](#qrylink)</sup>. With that being said, it can be a bit difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-04"}}'`). The `patentsview` package comes with a domain specific language to help users write queries. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors back and don't understand why. Check out the vignette on [writing queries](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
+The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format)<sup>[2](#qrylink)</sup>. With that being said, it can be a bit difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a domain specific language to help users write queries. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors back from the server and don't understand why. Check out the vignette on [writing queries](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
 
 ``` r
-qry_funs$gte(patent_date = "2007-01-04")
-#> {"_gte":{"patent_date":"2007-01-04"}}
+qry_funs$gte(patent_date = "2007-01-01")
+#> {"_gte":{"patent_date":"2007-01-01"}}
 ```
 
-...More complex queries are also possible:
+More complex queries are also possible:
 
 ``` r
 with_qfuns(
   and(
-    gte(patent_date = "2007-01-04"),
-    text_any(patent_abstract = c("dog", "cat"))
+    gte(patent_date = "2007-01-01"),
+    text_phrase(patent_abstract = c("computer program", "dog leash"))
   )
 )
-#> {"_and":[{"_gte":{"patent_date":"2007-01-04"}},{"_or":[{"_text_any":{"patent_abstract":"dog"}},{"_text_any":{"patent_abstract":"cat"}}]}]}
+#> {"_and":[{"_gte":{"patent_date":"2007-01-01"}},{"_or":[{"_text_phrase":{"patent_abstract":"computer program"}},{"_text_phrase":{"patent_abstract":"dog leash"}}]}]}
 ```
 
 Paginated responses
 -------------------
 
-By default `search_pv` returns 25 records per page and only the first page. I suggest using these defaults while you're in the process of figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you ahve that finalized, you can then download up to 10,000 records per page using the `per_page` parameter. You can also pick which page of results you want with `page`:
+By default `search_pv` returns 25 records per page and only the first page of results. I suggest using these defaults while you're in the process of figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have that finalized, you can then download up to 10,000 records per page using the `per_page` parameter. You can also pick which page of results you want with `page`:
 
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
@@ -84,7 +89,7 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 #> total_patent_count = 1,812
 ```
 
-If your result set has more than 10,000 records, you can download all pages of data in one call by setting `all_pages = TRUE`:
+If your result set has more than 10,000 records, you can download all pages in one call by setting `all_pages = TRUE`:
 
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
@@ -109,12 +114,15 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 #> total_patent_count = 1,812
 ```
 
-Note that `total_patent_count` is equal in the two last calls to `search_pv`, even though we got a lot more data from the second call. This is becuase the entity counts found the in `query_results` element correspond to counts across all possible pages of output, not just the one you downloaded.
+Entity counts
+-------------
+
+Note that we got the `total_patent_count` for the last two calls to `search_pv`, even though we got a lot more data from the second call. This is because the entity counts refer to the number of distinct entities (patents, assignees, inventors, etc.) across all **downloadable pages of output**, not just the one that was returned (e.g., page 2 above). **Downloadable pages of output** is the operative phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` for our first call to `search_pv`, even though there are many more than 100,000 patents that were published after 2007. See the FAQs below for details on how to overcome the 100,000 record restriction.
 
 7 entities for 7 endpoints
 --------------------------
 
-note list structure of subents note groups value of fields df
+what does it mean to search endpoint note list structure of subents note groups value of fields df
 
 FAQ
 ---
@@ -123,11 +131,13 @@ FAQ
 
 #### Does the API have any rate limiting/throttling controls?
 
-#### Some of my queries have result sets of 100,000 records, but I'm sure there are more out there. What's going on?
+#### How do I download more than 100,000 records?
+
+#### How do I access the data inside of the subentity lists?
 
 Examples
 --------
 
 ------------------------------------------------------------------------
 
-<a name="enttypes">1</a>: The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. <br> <a name="qrylink">2</a>: Note, this particular webpage includes details that are not relevant to the `query` argument, such as the field list and sort parameter.
+<a name="enttypes">1</a>: The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. <br> <a name="qrylink">2</a>: Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.

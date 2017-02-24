@@ -18,15 +18,17 @@ A character vector with field names.
 This function returns a list of fields that a given endpoint will provide data on (i.e., the fields you can pass to the \code{fields} argument in \code{\link{search_pv}}). You can limit these fields to only cover certain entity group(s) as well (which is reccomened, given the large number of possible fields for each endpoint).
 }
 \examples{
-# Get fields corresponding to the "assignees" group for the patents endpoint:
+# Get the fields in the "assignees" group for the patents endpoint:
 fields <- get_fields("patents", "assignees")
 
 # ...Ask the server for these fields:
 search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
           fields = fields, endpoint = "patents")
 
-# ...Get both patent and assignee-level fields:
-get_fields("patents", c("patents", "assignees"))
+# ...Pull patent and assignee-level fields:
+search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
+          fields = get_fields("patents", c("patents", "assignees")),
+          endpoint = "patents")
 
 }
 

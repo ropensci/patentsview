@@ -45,5 +45,37 @@ qry_funs <- c(
          create_array_fun, USE.NAMES = TRUE)
 )
 
+#' With qry_funs
+#'
+#' This function evaluates whatever code you pass to it in the environment of the \code{\link{qry_funs}} list. This allows you to cut down on typing when writing your queries.
+#'
+#' @param code Code to evaluate. See example.
+#'
+#' @return The result of \code{code} - i.e., your query.
+#'
+#' @examples
+#'
+#' # Without this function we have to do:
+#'
+#' qry_funs$and(
+#'   qry_funs$gte(patent_date = "2007-01-01"),
+#'   qry_funs$text_phrase(patent_abstract = c("computer program")),
+#'   qry_funs$or(
+#'     qry_funs$eq(inventor_last_name = "ihaka"),
+#'     qry_funs$eq(inventor_first_name = "chris")
+#'   )
+#' )
+#'
+#' # With it we can do:
+#'
+#' and(
+#'   gte(patent_date = "2007-01-01"),
+#'   text_phrase(patent_abstract = c("computer program")),
+#'   or(
+#'     eq(inventor_last_name = "ihaka"),
+#'     eq(inventor_first_name = "chris")
+#'   )
+#' )
+#'
 #' @export
 with_qfuns <- function(code) eval(substitute(code), qry_funs)

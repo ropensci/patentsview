@@ -78,13 +78,13 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #'
 #' @param query The query you wish to send to the API endpoint. This paramater can be any one of the following:
 #'  \itemize{
-#'   \item A character or JSON vector of length 1 with valid JSON query syntax (e.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'})
-#'   \item A list which will be converted to JSON (e.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))})
-#'   \item A call to one of the query helper functions found in the \code{qry_funs} list (e.g., \code{with_qfuns(gte(patent_date = "2007-01-04"))}. See examples and/or the "writing queries" vignette.
+#'   \item A character or JSON vector of length 1 with valid JSON query syntax (e.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}).
+#'   \item A list which will be converted to JSON (e.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}). You can easily create
+#'   \item An object of class "pv_query," which you create by calling one of the query helper functions found in the \code{qry_funs} list (e.g., \code{qry_funs$gte(patent_date = "2007-01-04")}). See the "writing queries" vignette for details.
 #'  }
 #' @param fields A character vector of data fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned, as per the PatentsView API. Accecepible field values for a given endpoint can be found in the API's online documentation. For example, the field list for the patents endpoint can be found \href{http://www.patentsview.org/api/patent.html#field_list}{here}. Field lists for the six other endpoints are available on the PatentsView website as well...Note, you can use \code{\link{get_fields}} to get the field names for a given group, instead of typing out a bunch of field names.
 #' @param endpoint A character vector of length 1 indicating which web service resource you wish to search. \code{endpoint} must be one of the following: \code{"patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", "nber_subcategories"}.
-#' @param subent_cnts Do you want the total counts of unique subentities to be returned to you? This is equivlient to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} and examples below for details on this argument.
+#' @param subent_cnts Do you want the total counts of unique subentities to be returned to you? This is equivlient to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} as well as examples below for details on this argument.
 #' @param mtchd_subent_only Do you want only the subentities that match your query to be returned to you? A value of \code{TRUE} means the subentity has to meet the query criterion in order for it to be returned, while a value of \code{FALSE} indicates that all subentity data will be returned, even those records that don't meet the query criterion. This is the \code{matched_subentities_only} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}...See README section \href{https://github.com/crew102/patentsview/blob/master/README.md}{7 entities for 7 endpoints} as well as examples below for details on this argument.
 #' @param page The page number of the results that you want returned.
 #' @param per_page The number of records that should be returned per page. This value can be as high as 10,000 (e.g., \code{per_page = 10000}).
@@ -101,7 +101,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #'   \item{request}{Details of the HTTP request that was sent to the client. When you set \code{all_pages = TRUE}, you will only get a sample request. In other words, you will not be given multiple requests for the multiple calls made to the API to loop over the pages.}
 #'  }
 #'
-#' @details \strong{What is a subentity?}
 #' @examples
 #'
 #' @export
