@@ -36,6 +36,10 @@ create_array_fun <- function(fun) {
   }
 }
 
+#' Query function list
+#'
+#' A list containing R functions that make it easy to use the elastic-like query operators used by the PatentsView API to write a query.
+#'
 #' @export
 qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
@@ -54,7 +58,6 @@ qry_funs <- c(
 #' @return The result of \code{code} - i.e., your query.
 #'
 #' @examples
-#'
 #' # Without this function we have to do:
 #'
 #' qry_funs$and(
