@@ -118,11 +118,9 @@ search_pv <- function(query,
                       error_browser = getOption("browser"),
                       ...) {
 
-  is.list(query) -> q_is_lst
-
-  if (q_is_lst) {
-    jsonlite::toJSON(query, auto_unbox = TRUE) -> query
+  if (is.list(query)) {
     check_query(query = query, endpoint = endpoint)
+    jsonlite::toJSON(query, auto_unbox = TRUE) -> query
   }
 
   validate_args(query = query, fields = fields, endpoint = endpoint,
