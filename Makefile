@@ -1,10 +1,10 @@
-all: data-raw/fields.csv readme_all doc vig
-dev: data-raw/fields.csv readme_dev doc vig
+all: data-raw/fieldsdf.csv readme_all doc vig
+dev: data-raw/fieldsdf.csv readme_dev doc vig
 .PHONY: clean
 
 # Pull endpoint fields from PatentsView website
-data-raw/fields.csv: data-raw/fields.R
-	Rscript -e "source('data-raw/fields.R')"
+data-raw/fields.csv: data-raw/fieldsdf.R
+	Rscript -e "source('data-raw/fieldsdf.R')"
 
 # Compile README
 readme_all: README.Rmd
