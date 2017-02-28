@@ -30,6 +30,11 @@ print.pv_data_result <- function(x, ...) {
 }
 
 #' @export
+print.pv_relay_db <- function(x, ...) {
+  str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
+}
+
+#' @export
 print.pv_query_result <- function(x, ...) {
   unlist(x) -> res_vec
   cat(

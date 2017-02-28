@@ -7,3 +7,4 @@
 * `search_pv` added to send a request to the PatentsView API
 * Functions inside of `qry_funs` added to help users write queries
 * `get_fields` added to quickly get field names
+* `as_relay_db` added to flatten data results
