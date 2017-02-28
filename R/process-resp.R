@@ -35,7 +35,7 @@ process_resp <- function(resp) {
 
   structure(
     list(
-      data_results = data,
+      data = data,
       query_results = query_results,
       request = request
     ),

@@ -6,3 +6,4 @@
 ^README-.*\.png$
 inst/dev.R
 ^appveyor\.yml$
+^Makefile$

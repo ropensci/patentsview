@@ -29,7 +29,6 @@ validate_groups <- function(groups) {
     "coinvetnros", "application_citations", "cited_patents", "citedby_patents",
     "nber_subcategories", "uspc_mainclasses", "uspc_subclasses") -> ok_grps
 
-  asrt(groups %in% ok_grps,
-       "group must be one of: ",
+  asrt(all(groups %in% ok_grps), "group must be one of: ",
        paste(ok_grps, collapse = ", "))
 }

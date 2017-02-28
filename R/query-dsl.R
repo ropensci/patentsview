@@ -38,7 +38,14 @@ create_array_fun <- function(fun) {
 
 #' Query function list
 #'
-#' A list containing R functions that make it easy to use the elastic-like query operators used by the PatentsView API to write a query.
+#' A list containing R functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette for details.
+#'
+#' @return An object of class \code{pv_query}. This is basically just a simple list with a print method attached to it.
+#'
+#' @examples
+#' qry_funs$eq(patent_date = "2001-01-01")
+#'
+#' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
 #'
 #' @export
 qry_funs <- c(
@@ -69,15 +76,17 @@ qry_funs <- c(
 #'   )
 #' )
 #'
-#' # With it we can do:
+#' #...With it we can do:
 #'
-#' and(
-#'   gte(patent_date = "2007-01-01"),
-#'   text_phrase(patent_abstract = c("computer program")),
-#'   or(
-#'     eq(inventor_last_name = "ihaka"),
-#'     eq(inventor_first_name = "chris")
-#'   )
+#' with_qfuns(
+#'  and(
+#'    gte(patent_date = "2007-01-01"),
+#'    text_phrase(patent_abstract = c("computer program")),
+#'    or(
+#'      eq(inventor_last_name = "ihaka"),
+#'      eq(inventor_first_name = "chris")
+#'    )
+#'  )
 #' )
 #'
 #' @export

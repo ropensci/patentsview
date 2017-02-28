@@ -16,7 +16,6 @@ The result of \code{code} - i.e., your query.
 This function evaluates whatever code you pass to it in the environment of the \code{\link{qry_funs}} list. This allows you to cut down on typing when writing your queries.
 }
 \examples{
-
 # Without this function we have to do:
 
 qry_funs$and(
@@ -30,13 +29,15 @@ qry_funs$and(
 
 # With it we can do:
 
-and(
-  gte(patent_date = "2007-01-01"),
-  text_phrase(patent_abstract = c("computer program")),
-  or(
-    eq(inventor_last_name = "ihaka"),
-    eq(inventor_first_name = "chris")
-  )
+with_qfuns(
+ and(
+   gte(patent_date = "2007-01-01"),
+   text_phrase(patent_abstract = c("computer program")),
+   or(
+     eq(inventor_last_name = "ihaka"),
+     eq(inventor_first_name = "chris")
+   )
+ )
 )
 
 }

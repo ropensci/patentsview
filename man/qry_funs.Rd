@@ -8,8 +8,17 @@
 \usage{
 qry_funs
 }
+\value{
+An object of class \code{pv_query}. This is basically just a simple list with a print method attached to it.
+}
 \description{
-A list containing R functions that make it easy to use the elastic-like query operators used by the PatentsView API to write a query.
+A list containing R functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette for details.
+}
+\examples{
+qry_funs$eq(patent_date = "2001-01-01")
+
+qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
+
 }
 \keyword{datasets}
 

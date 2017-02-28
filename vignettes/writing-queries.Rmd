@@ -7,6 +7,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+<!-- The `query` argument in `search_pv` accepts either raw JSON (e.g., `query = '{"_gte":{"patent_date":"2007-01-04"}}'`) -->
+
+<!-- note unpred behavior in api q language  -->
+    <!-- - or'ing together is specific to field -->
+    <!-- - bound box -->
+    
+<!-- note query builder tool -->
+
+<!-- note data types and allowable oper (i.e., text vs string and contains vs _text_all) -->
+
+
 <!-- # equiv in json, but note that cant easly tags like gte and contins: -->
 
 <!-- list("_and" = -->
