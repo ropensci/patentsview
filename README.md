@@ -15,39 +15,35 @@ devtools::install_github("crew102/patentsview")
 Basic usage
 -----------
 
-The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an interface to a disambiguated version of USPTO patent data. The `patentsview` R package provides one function, `search_pv`, to make it easy to interact with that API. Let's take a look:
+The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an interface to a disambiguated version of USPTO. The `patentsview` R package provides one main function, `search_pv`, to make it easy to interact with that API. Let's take a look:
 
 ``` r
 library(patentsview)
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          fields = c("patent_number", "patent_title"), endpoint = "patents")
-#> $data_results
-#> #### A data frame on the patent data level, containing the following columns: patent_number (character), patent_title (character)
-#>   patent_number
-#> 1       7155746
-#> 2       7155747
-#> 3       7155748
-#> 4       7155749
-#>                                                            patent_title
-#> 1 Anti-wicking protective workwear and methods of making and using same
-#> 2                                               Head stabilizing system
-#> 3                                       Releasable toilet seat assembly
-#> 4                                    Toilet seat cover dispenser system
+          fields = c("patent_number", "patent_title"), 
+          endpoint = "patents")
+#> $data
+#> #### A list with a single data frame  on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  2 variables:
+#>   ..$ patent_number: chr [1:25] "7155746" ...
+#>   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and methods of making and using same" ...
 #> 
 #> 
 #> $query_results
-#> #### Distinct entity counts across all pages of output:
+#> #### Distinct entity counts across all downloadable pages of output:
 #> 
 #> total_patent_count = 100,000
 ```
 
-This call to `search_pv` issues our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup>[1](#enttypes)</sup> Each endpoint has a slightly different set of fields that you can include in your query (e.g., `"patent_date"` in the above query) as well as a different set of fields whose data you can receive from the server (e.g., `"patent_number"` and `"patent_title"`). You can see a list of the acceptable fields for a given endpoint at that endpoint's API documentation page (e.g., the [inventor field list](http://www.patentsview.org/api/inventor.html#field_list)). Also see `?get_fields` for a quick way to put your field list together.
+This call to `search_pv` sends our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup><a href="#fn1" id="ref1">1</a></sup> Each endpoint has a slightly different set of fields that you can use in your query (e.g., `"patent_date"` in the above query) as well as a different set of data fields you can ask for (e.g., `"patent_number"` and `"patent_title"`). You can see a list of the acceptable fields for a given endpoint at that endpoint's API documentation page (e.g., the [inventor field list](http://www.patentsview.org/api/inventor.html#field_list)). Also see `?get_fields` for a quick way to create a field list without having to type out all of the names.
 
 Writing queries
 ---------------
 
-The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format)<sup>[2](#qrylink)</sup>. With that being said, it can be a bit difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a domain specific language to help users write queries. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors back from the server and don't understand why. Check out the vignette on [writing queries](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
+The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a domain specific language (DSL) to help users write queries. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
 
 ``` r
 qry_funs$gte(patent_date = "2007-01-01")
@@ -69,22 +65,23 @@ with_qfuns(
 Paginated responses
 -------------------
 
-By default `search_pv` returns 25 records per page and only the first page of results. I suggest using these defaults while you're in the process of figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have that finalized, you can then download up to 10,000 records per page using the `per_page` parameter. You can also pick which page of results you want with `page`:
+By default `search_pv` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` parameter to download up to 10,000 results per page. You can also pick which page of results you want with `page`:
 
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
           page = 2, per_page = 150) # gets records 150 - 300
-#> $data_results
-#> #### A data frame on the patent data level, containing the following columns: patent_id (character), patent_number (character), patent_title (character)
-#>   patent_id patent_number                                  patent_title
-#> 1   4408568       4408568            Furnace wall ash monitoring system
-#> 2   4416662       4416662                     Roller infusion apparatus
-#> 3   4425825       4425825 Geared input mechanism for a torque converter
-#> 4   4431312       4431312                         Radio alarm converter
+#> $data
+#> #### A list with a single data frame  on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 150 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:150] "4408568" ...
+#>   ..$ patent_number: chr [1:150] "4408568" ...
+#>   ..$ patent_title : chr [1:150] "Furnace wall ash monitoring system" ...
 #> 
 #> 
 #> $query_results
-#> #### Distinct entity counts across all pages of output:
+#> #### Distinct entity counts across all downloadable pages of output:
 #> 
 #> total_patent_count = 1,812
 ```
@@ -94,22 +91,18 @@ If your result set has more than 10,000 records, you can download all pages in o
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
           all_pages = TRUE) # all_pages = TRUE sets per_page = 10,000 and downloads all pages of output
-#> $data_results
-#> #### A data frame on the patent data level, containing the following columns: patent_id (character), patent_number (character), patent_title (character)
-#>   patent_id patent_number
-#> 1   3931611       3931611
-#> 2   3934732       3934732
-#> 3   3934883       3934883
-#> 4   3934997       3934997
-#>                                        patent_title
-#> 1 Program event recorder and data processing system
-#> 2                           Object transfer machine
-#> 3                                Disk record player
-#> 4 Production of one-piece stemware from glass, etc.
+#> $data
+#> #### A list with a single data frame  on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 1812 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:1812] "3931611" ...
+#>   ..$ patent_number: chr [1:1812] "3931611" ...
+#>   ..$ patent_title : chr [1:1812] "Program event recorder and data processing system" ...
 #> 
 #> 
 #> $query_results
-#> #### Distinct entity counts across all pages of output:
+#> #### Distinct entity counts across all downloadable pages of output:
 #> 
 #> total_patent_count = 1,812
 ```
@@ -117,27 +110,259 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 Entity counts
 -------------
 
-Note that we got the `total_patent_count` for the last two calls to `search_pv`, even though we got a lot more data from the second call. This is because the entity counts refer to the number of distinct entities (patents, assignees, inventors, etc.) across all **downloadable pages of output**, not just the one that was returned (e.g., page 2 above). **Downloadable pages of output** is the operative phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` for our first call to `search_pv`, even though there are many more than 100,000 patents that were published after 2007. See the FAQs below for details on how to overcome the 100,000 record restriction.
+Our last two calls to `search_pv` gave the same value for `total_patent_count`, even though we got a lot more data from the second call. This is because the entity counts in the `query_results` object refer to the number of distinct entities across all downloadable pages of output, not just the page that was returned (e.g., page 2 above). *Downloadable pages of output* is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` for our first call to `search_pv` even though there are way more than 100,000 patents that were published after 2007. See the FAQs below for details on how to overcome the 100,000 record restriction.
 
-7 entities for 7 endpoints
+Note that, by default, **PatentsView returns disambiguted versions of the entitites instead of raw data.** You can also ask for raw inventor first and last names, but raw assignee names are not available.
+
+7 endpoints for 7 entities
 --------------------------
 
-what does it mean to search endpoint note list structure of subents note groups value of fields df
+We can get similar data from the different endpoints. For example, the following two calls differ only in the endpoint that is chosen:
+
+``` r
+search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
+          endpoint = "patents", 
+          fields = c("patent_number", "inventor_last_name", "assignee_organization"))
+#> $data
+#> #### A list with a single data frame (with nested list(s) inside) on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  3 variables:
+#>   ..$ patent_number: chr [1:25] "3931611" ...
+#>   ..$ inventors    :List of 25
+#>   ..$ assignees    :List of 25
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 1,812
+```
+
+``` r
+search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
+          endpoint = "assignees", 
+          fields = c("patent_number", "inventor_last_name", "assignee_organization"))
+#> $data
+#> #### A list with a single data frame (with nested list(s) inside) on the assignee data level:
+#> 
+#> List of 1
+#>  $ assignees:'data.frame':   25 obs. of  3 variables:
+#>   ..$ assignee_organization: chr [1:25] "American Printing Components, LLC" ...
+#>   ..$ patents              :List of 25
+#>   ..$ inventors            :List of 25
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_assignee_count = 467
+```
+
+Your choice of endpoint determines two things:
+
+1.  **Which entity your query is aplied to.** For the first call shown above, the API searched for all patents that have at least one inventor on them with the last name of "chambers." For the second call, the API searched for all assignees that have at least one patent with a "chambers" inventor listed on it.
+
+2.  **The level of the data that is returned.** For example, the first call (to the patents endpoint) gave us data on the *patent level*, meaning that each row corresponded to a different patent. Any data that was not on the patent level was returned to us in a list column. These fields correspond to subentities.
 
 FAQ
 ---
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
+The API syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not adequately documented on their webpage. The [writing queries vignette](vignettes/writing-queries.Rmd) has more details on this.
+
 #### Does the API have any rate limiting/throttling controls?
+
+Not at the moment.
 
 #### How do I download more than 100,000 records?
 
+Your best bet is to split your query into pieces based on dates, then concatenate the results together. For example, we could split this query (which returns more than 100,000 records for the patents endpoint):
+
+``` r
+query <- with_qfuns(
+  text_any(patent_abstract = 'tool animal')
+)
+```
+
+... Into the following two queries:
+
+``` r
+query1 <- with_qfuns(
+  and(
+    text_any(patent_abstract = 'tool animal'),
+    lte(patent_date = "2010-01-01")
+  )
+)
+
+query2 <- with_qfuns(
+  and(
+    text_any(patent_abstract = 'tool animal'),
+    gt(patent_date = "2010-01-01")
+  )
+)
+```
+
 #### How do I access the data inside of the subentity lists?
+
+You can flatten your results using `as_relay_db`. As the name suggests, this function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
+
+``` r
+res <- search_pv(qry_funs$contains(inventor_last_name = "smith"), 
+                 endpoint = "assignees", 
+                 fields = get_fields("assignees", c("assignees", "applications", 
+                                                    "gov_interests")))
+res$data
+#> #### A list with a single data frame (with nested list(s) inside) on the assignee data level:
+#> 
+#> List of 1
+#>  $ assignees:'data.frame':   25 obs. of  18 variables:
+#>   ..$ assignee_first_name           : chr [1:25] NA ...
+#>   ..$ assignee_first_seen_date      : chr [1:25] "2000-10-17" ...
+#>   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
+#>   ..$ assignee_key_id               : chr [1:25] "20" ...
+#>   ..$ assignee_last_name            : chr [1:25] NA ...
+#>   ..$ assignee_last_seen_date       : chr [1:25] "2013-03-19" ...
+#>   ..$ assignee_lastknown_city       : chr [1:25] "Bend" ...
+#>   ..$ assignee_lastknown_country    : chr [1:25] "US" ...
+#>   ..$ assignee_lastknown_latitude   : chr [1:25] "44.0582" ...
+#>   ..$ assignee_lastknown_location_id: chr [1:25] "44.0581728|-121.3153096" ...
+#>   ..$ assignee_lastknown_longitude  : chr [1:25] "-121.315" ...
+#>   ..$ assignee_lastknown_state      : chr [1:25] "OR" ...
+#>   ..$ assignee_organization         : chr [1:25] "UltraCard, Inc." ...
+#>   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...
+#>   ..$ assignee_total_num_patents    : chr [1:25] "15" ...
+#>   ..$ assignee_type                 : chr [1:25] "2" ...
+#>   ..$ applications                  :List of 25
+#>   ..$ gov_interests                 :List of 25
+```
+
+This data frame has two list columns in it, one for each subentity. We can then call `as_relay_db` to split the entities into their own data frames:
+
+``` r
+as_relay_db(data = res$data, pk_var = "assignee_id") -> new_data
+
+new_data
+#> List of 3
+#>  $ applications :'data.frame':   124 obs. of  5 variables:
+#>   ..$ app_country: chr [1:124] "US" ...
+#>   ..$ app_date   : chr [1:124] "1998-07-10" ...
+#>   ..$ app_number : chr [1:124] "09113783" ...
+#>   ..$ app_type   : chr [1:124] "09" ...
+#>   ..$ assignee_id: chr [1:124] "00043de7382082391622e725605f37b5" ...
+#>  $ gov_interests:'data.frame':   25 obs. of  8 variables:
+#>   ..$ govint_contract_award_number: logi [1:25] NA ...
+#>   ..$ govint_org_id               : logi [1:25] NA ...
+#>   ..$ govint_org_level_one        : logi [1:25] NA ...
+#>   ..$ govint_org_level_three      : logi [1:25] NA ...
+#>   ..$ govint_org_level_two        : logi [1:25] NA ...
+#>   ..$ govint_org_name             : logi [1:25] NA ...
+#>   ..$ govint_raw_statement        : logi [1:25] NA ...
+#>   ..$ assignee_id                 : chr [1:25] "00043de7382082391622e725605f37b5" ...
+#>  $ assignees    :'data.frame':   25 obs. of  16 variables:
+#>   ..$ assignee_first_name           : chr [1:25] NA ...
+#>   ..$ assignee_first_seen_date      : chr [1:25] "2000-10-17" ...
+#>   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
+#>   ..$ assignee_key_id               : chr [1:25] "20" ...
+#>   ..$ assignee_last_name            : chr [1:25] NA ...
+#>   ..$ assignee_last_seen_date       : chr [1:25] "2013-03-19" ...
+#>   ..$ assignee_lastknown_city       : chr [1:25] "Bend" ...
+#>   ..$ assignee_lastknown_country    : chr [1:25] "US" ...
+#>   ..$ assignee_lastknown_latitude   : chr [1:25] "44.0582" ...
+#>   ..$ assignee_lastknown_location_id: chr [1:25] "44.0581728|-121.3153096" ...
+#>   ..$ assignee_lastknown_longitude  : chr [1:25] "-121.315" ...
+#>   ..$ assignee_lastknown_state      : chr [1:25] "OR" ...
+#>   ..$ assignee_organization         : chr [1:25] "UltraCard, Inc." ...
+#>   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...
+#>   ..$ assignee_total_num_patents    : chr [1:25] "15" ...
+#>   ..$ assignee_type                 : chr [1:25] "2" ...
+```
+
+Note that there is an "assignee\_id" column in each data frame, allowing us to link the data frames back together based on this variable (the primary key).
 
 Examples
 --------
 
+##### Patents that have been cited by more than 500 US patents
+
+``` r
+search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500))
+#> $data
+#> #### A list with a single data frame  on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:25] "3946398" ...
+#>   ..$ patent_number: chr [1:25] "3946398" ...
+#>   ..$ patent_title : chr [1:25] "Method and apparatus for recording with writing fluids and drop projection means therefor" ...
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 2,436
+```
+
+##### How many distinct inventors (disambiguated) are represented by these highly-cited patents?
+
+``` r
+search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500),
+          fields = c("patent_number", "inventor_id"),
+          subent_cnts = TRUE) # subent_cnts = TRUE gives inventor counts
+#> $data
+#> #### A list with a single data frame (with nested list(s) inside) on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  2 variables:
+#>   ..$ patent_number: chr [1:25] "3946398" ...
+#>   ..$ inventors    :List of 25
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 2,436, total_inventor_count = 4,223
+```
+
+##### Assignees who have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith") as well as the patents where those smiths occur.
+
+``` r
+search_pv(qry_funs$contains(inventor_last_name = "smith"), 
+          endpoint = "assignees", 
+          fields = get_fields("assignees", c("assignees", "patents")))
+#> $data
+#> #### A list with a single data frame (with nested list(s) inside) on the assignee data level:
+#> 
+#> List of 1
+#>  $ assignees:'data.frame':   25 obs. of  17 variables:
+#>   ..$ assignee_first_name           : chr [1:25] NA ...
+#>   ..$ assignee_first_seen_date      : chr [1:25] "2000-10-17" ...
+#>   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
+#>   ..$ assignee_key_id               : chr [1:25] "20" ...
+#>   ..$ assignee_last_name            : chr [1:25] NA ...
+#>   ..$ assignee_last_seen_date       : chr [1:25] "2013-03-19" ...
+#>   ..$ assignee_lastknown_city       : chr [1:25] "Bend" ...
+#>   ..$ assignee_lastknown_country    : chr [1:25] "US" ...
+#>   ..$ assignee_lastknown_latitude   : chr [1:25] "44.0582" ...
+#>   ..$ assignee_lastknown_location_id: chr [1:25] "44.0581728|-121.3153096" ...
+#>   ..$ assignee_lastknown_longitude  : chr [1:25] "-121.315" ...
+#>   ..$ assignee_lastknown_state      : chr [1:25] "OR" ...
+#>   ..$ assignee_organization         : chr [1:25] "UltraCard, Inc." ...
+#>   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...
+#>   ..$ assignee_total_num_patents    : chr [1:25] "15" ...
+#>   ..$ assignee_type                 : chr [1:25] "2" ...
+#>   ..$ patents                       :List of 25
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_assignee_count = 9,188
+```
+
 ------------------------------------------------------------------------
 
-<a name="enttypes">1</a>: The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. <br> <a name="qrylink">2</a>: Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.
+<sup id="fn1">1. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<a href="#ref1">â†©</a></sup>
+
+<sup id="fn2">2. Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.<a href="#ref2">â†©</a></sup>
