@@ -69,7 +69,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
     arg_list$opts$page <- i
     one_request(method = method, query = query, base_url = base_url,
                 arg_list = arg_list, error_browser = error_browser, ...) -> x
-    x$data_results
+    x$data
   }) -> tmp
   do.call("rbind", c(tmp, make.row.names = FALSE))
 }
@@ -96,7 +96,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #'
 #' @return A list with the following three elements:
 #' \describe{
-#'   \item{data_results}{A list with one element - a data frame containing the data returned by the server. Each row in the data frame corresponds to a unique value of the field denoted by the endpoint. For example, if you search the assignee endpoint, then the data frame will be on the assignee-level, where each row corresponds to a single assignee. Fields that are not on the assignee-level for this result set will be returned in a list column.}
+#'   \item{data}{A list with one element - a data frame containing the data returned by the server. Each row in the data frame corresponds to a unique value of the field denoted by the endpoint. For example, if you search the assignee endpoint, then the data frame will be on the assignee-level, where each row corresponds to a single assignee. Fields that are not on the assignee-level for this result set will be returned in a list column.}
 #'   \item{query_results}{Entity counts across all pages of output (not just the page returned to you). If you set \code{subent_cnts = TRUE}, you will be returned both the counts of the main entities as well as any sub-entities that would be returned by your search. See description for a short explaination of entities/subentities.}
 #'   \item{request}{Details of the HTTP request that was sent to the client. When you set \code{all_pages = TRUE}, you will only get a sample request. In other words, you will not be given multiple requests for the multiple calls made to the API to loop over the pages.}
 #'  }
@@ -140,7 +140,7 @@ search_pv <- function(query,
 
   request_apply(ex_res = res, method = method, query = query,
                 base_url = base_url, arg_list = arg_list, ...) -> full_data
-  res$data_results[[1]] <- full_data
+  res$data[[1]] <- full_data
 
   res
 }
