@@ -25,13 +25,13 @@ print.pv_data_result <- function(x, ...) {
   cat(
     "#### A list with a single data frame", lst, "on the", dat_level[[names(x)[1]]],
     "data level:\n\n")
-  str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
+  utils::str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
 
 }
 
 #' @export
 print.pv_relay_db <- function(x, ...) {
-  str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
+  utils::str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
 }
 
 #' @export
