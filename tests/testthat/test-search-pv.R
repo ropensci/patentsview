@@ -2,36 +2,33 @@ context("search_pv")
 
 test_that("API returns expected df names", {
 
-  c("assignees", "cpc_subsections", "inventors", "locations",
-    "nber_subcategories", "patents", "uspc_mainclasses") -> eps
+  eps <- c("assignees", "cpc_subsections", "inventors", "locations",
+           "nber_subcategories", "patents", "uspc_mainclasses")
 
-  sapply(eps,
-    FUN = function(x) {
-      search_pv('{"patent_number":"5116621"}', endpoint = x) -> j
-      names(j[[1]])
-    }, USE.NAMES = FALSE) -> z
+  z <- sapply(eps, FUN = function(x) {
+    j <- search_pv("{\"patent_number\":\"5116621\"}", endpoint = x)
+    names(j[[1]])
+  }, USE.NAMES = FALSE)
+
   expect_equal(eps, z)
-
 })
 
 test_that("A larger set of fields can be returned", {
 
-  c("assignees", "cpc_subsections", "inventors", "locations",
-    "nber_subcategories", "patents", "uspc_mainclasses") -> eps
+  eps <- c("assignees", "cpc_subsections", "inventors", "locations",
+           "nber_subcategories", "patents", "uspc_mainclasses")
 
-  sapply(eps,
-         FUN = function(x) {
-           get_fields(x, "patents") -> y
-           search_pv('{"patent_number":"5116621"}', endpoint = x, fields = y)
-         }) -> z
+  z <- sapply(eps, FUN = function(x) {
+    y <- get_fields(x, "patents")
+    search_pv("{\"patent_number\":\"5116621\"}", endpoint = x, fields = y)
+  })
 
   expect_true(TRUE)
-
 })
 
 test_that("DSL language-based query returns expected results", {
 
-  with_qfuns(
+  query <- with_qfuns(
     and(
       or(
         gte(patent_date = '2014-01-01'),
@@ -39,10 +36,9 @@ test_that("DSL language-based query returns expected results", {
       ),
       text_phrase(patent_abstract = c("computer program", "dog leash"))
     )
-  ) -> query
+  )
 
-  search_pv(query = query, endpoint = "patents") -> out
+  out <- search_pv(query = query, endpoint = "patents")
 
   expect_gt(out$query_results$total_patent_count, 1000)
-
 })

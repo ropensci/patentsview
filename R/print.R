@@ -10,23 +10,23 @@ print.pv_request <- function(x, ...) {
 
 #' @export
 print.pv_data_result <- function(x, ...) {
+  df <- x[[1]]
+  k <- sapply(names(df), function(y) class(df[, y]))
 
-  x[[1]] -> df
-  sapply(names(df), function(y) {
-    class(df[,y])
-  }) -> k
+  dat_level <- c(patents = "patent", inventors = "inventor",
+                 assignees = "assignee",  locations = "location",
+                 cpc_subsections = "CPC subsection",
+                 uspc_mainclasses = "USPC main class",
+                 nber_subcategories = "NBER subcategory")
 
-  c("patents" = "patent", "inventors" = "inventor", "assignees" = "assignee",
-    "locations" = "location", "cpc_subsections" = "CPC subsection",
-    "uspc_mainclasses" = "USPC main class",
-    "nber_subcategories" = "NBER subcategory") -> dat_level
   lst <- ifelse("list" %in% k, "(with nested list(s) inside)", "")
 
   cat(
-    "#### A list with a single data frame", lst, "on the", dat_level[[names(x)[1]]],
-    "data level:\n\n")
-  utils::str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
+    "#### A list with a single data frame", lst, "on the",
+    dat_level[[names(x)[1]]], "data level:\n\n"
+  )
 
+  utils::str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
 }
 
 #' @export
@@ -36,7 +36,7 @@ print.pv_relay_db <- function(x, ...) {
 
 #' @export
 print.pv_query_result <- function(x, ...) {
-  unlist(x) -> res_vec
+  res_vec <- unlist(x)
   cat(
     "#### Distinct entity counts across all downloadable pages of output:\n\n",
     paste0(names(res_vec), " = ", format_num(res_vec), collapse = ", "),

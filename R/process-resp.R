@@ -1,13 +1,15 @@
 get_request <- function(resp) {
-  structure(
+  gp <- structure(
     list(
       method = resp$req$method,
       url = resp$req$url
     ),
     class = c("list", "pv_request")
-  ) -> gp
+  )
 
-  if (gp$method == "POST") gp$body <- rawToChar(resp$req$options$postfields)
+  if (gp$method == "POST")
+    gp$body <- rawToChar(resp$req$options$postfields)
+
   gp
 }
 
@@ -27,11 +29,11 @@ get_query_results <- function(prsd_resp) {
 }
 
 process_resp <- function(resp) {
-  parse_resp(resp = resp) -> prsd_resp
+  prsd_resp <- parse_resp(resp = resp)
 
-  get_request(resp = resp) -> request
-  get_data(prsd_resp = prsd_resp) -> data
-  get_query_results(prsd_resp = prsd_resp) -> query_results
+  request <- get_request(resp = resp)
+  data <- get_data(prsd_resp = prsd_resp)
+  query_results <- get_query_results(prsd_resp = prsd_resp)
 
   structure(
     list(

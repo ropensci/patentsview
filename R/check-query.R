@@ -35,23 +35,23 @@ one_check <- function(operator, field, value, f1) {
 }
 
 check_query <- function(query, endpoint) {
-  c("_eq", "_neq") -> simp_opr
-  c("_gt", "_gte", "_lt", "_lte") -> num_opr
-  c("_begins", "_contains") -> str_opr
-  c("_text_all", "_text_any", "_text_phrase") -> fltxt_opr
-  c(simp_opr, num_opr, str_opr, fltxt_opr) -> all_opr
+  simp_opr <- c("_eq", "_neq")
+  num_opr <- c("_gt", "_gte", "_lt", "_lte")
+  str_opr <- c("_begins", "_contains")
+  fltxt_opr <- c("_text_all", "_text_any", "_text_phrase")
+  all_opr <- c(simp_opr, num_opr, str_opr, fltxt_opr)
 
-  fieldsdf -> flds
-  flds[flds$endpoint == endpoint & flds$can_query == "y",] -> flds_flt
+  flds <- fieldsdf
+  flds_flt <- flds[flds$endpoint == endpoint & flds$can_query == "y", ]
 
   apply_checks <- function(x, endpoint) {
-    swap_null_nms(x) -> x
+    x <- swap_null_nms(x)
     if (names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
       lapply(x, FUN = apply_checks)
     } else if (names(x) %in% all_opr) {
-      flds_flt[flds_flt$field == names(x[[1]]),] -> f1
-      one_check(operator = names(x), field = names(x[[1]]), value = unlist(x[[1]]),
-                f1 = f1)
+      f1 <- flds_flt[flds_flt$field == names(x[[1]]), ]
+      one_check(operator = names(x), field = names(x[[1]]),
+                value = unlist(x[[1]]), f1 = f1)
     } else {
       paste0_msg("Bad opeartor: ", names(x))
     }

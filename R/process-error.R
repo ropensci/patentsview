@@ -1,15 +1,15 @@
 parse_er_msg <- function(er_html) {
   if (is.na(er_html)) return("")
-  gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html) -> er_prsd
-  strsplit(er_prsd, "</[[:alpha:]]")[[1]][1] -> er_maybe
+  er_prsd <- gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html)
+  er_maybe <- strsplit(er_prsd, "</[[:alpha:]]")[[1]][1]
   ifelse(is.na(er_maybe), "", er_maybe)
 }
 
 custom_er <- function(resp, error_browser) {
-  httr::content(resp, as = "text", encoding = "UTF-8") -> er_html
-  parse_er_msg(er_html = er_html) -> er_prsd
+  er_html <- httr::content(resp, as = "text", encoding = "UTF-8")
+  er_prsd <- parse_er_msg(er_html = er_html)
 
-  paste0("Your query returned the following error:", er_prsd) -> gen_er
+  gen_er <- paste0("Your query returned the following error:", er_prsd)
 
   if (nchar(er_prsd) < 5) {
     httr::stop_for_status(resp)
@@ -25,8 +25,8 @@ custom_er <- function(resp, error_browser) {
 }
 
 throw_er <- function(resp, error_browser) {
-  httr::http_type(resp) -> typ
-  grepl("text|html|xml", typ, ignore.case = TRUE) -> is_txt_html
+  typ <- httr::http_type(resp)
+  is_txt_html <- grepl("text|html|xml", typ, ignore.case = TRUE)
   ifelse(
     is_txt_html,
     custom_er(resp = resp, error_browser = error_browser),

@@ -1,7 +1,7 @@
 validate_args <- function(query, fields, endpoint, method, subent_cnts,
                           mtchd_subent_only, page, per_page, sort) {
 
-  c("GET", "POST") -> ok_meth
+  ok_meth <- c("GET", "POST")
 
   validate_endpoint(endpoint = endpoint)
   asrt(all(method %in% ok_meth, length(method) == 1),
@@ -24,8 +24,8 @@ validate_args <- function(query, fields, endpoint, method, subent_cnts,
 
   asrt(jsonlite::validate(query), "query is not valid json.")
 
-  fieldsdf -> flds
-  flds[flds$endpoint == endpoint, "field"] -> flds_flt
+  flds <- fieldsdf
+  flds_flt <- flds[flds$endpoint == endpoint, "field"]
   asrt(all(fields %in% flds_flt),
        "Bad field(s): ",
        paste(fields[!(fields %in% flds_flt)], collapse = ", "))

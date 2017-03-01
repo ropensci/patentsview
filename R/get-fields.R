@@ -23,7 +23,7 @@
 #' @export
 get_fields <- function(endpoint, groups = NULL) {
   validate_endpoint(endpoint = endpoint)
-  fieldsdf -> flds
+  flds <- fieldsdf
   if (is.null(groups)) {
     flds[flds$endpoint == endpoint, "field"]
   } else {

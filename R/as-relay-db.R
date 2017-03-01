@@ -14,34 +14,33 @@
 #'
 #' @export
 as_relay_db <- function(data, pk_var) {
+  df <- data[[1]]
 
-  data[[1]] -> df
+  asrt(pk_var %in% colnames(df),
+       pk_var, " not in primary entity data frame")
 
-  asrt(pk_var %in% colnames(df), pk_var, " not in primary entity data frame")
+  prim_ent_var <- !sapply(df, is.list)
 
-  !sapply(df, is.list) -> prim_ent_var
+  sub_ent_df <- df[, !prim_ent_var, drop = FALSE]
+  sub_ents <- colnames(sub_ent_df)
 
-  df[,!prim_ent_var, drop = FALSE] -> sub_ent_df
-  colnames(sub_ent_df) -> sub_ents
-
-  sapply(sub_ents, FUN = function(x) {
-    sub_ent_df[[x]] -> temp
-    asrt(length(unique(df[,pk_var])) == length(temp),
+  out_sub_ent <- sapply(sub_ents, FUN = function(x) {
+    temp <- sub_ent_df[[x]]
+    asrt(length(unique(df[, pk_var])) == length(temp),
          pk_var, " cannot act as a primary key")
 
-    names(temp) <- df[,pk_var]
-    do.call("rbind", temp) -> xn
-    xn[,pk_var] <- gsub("\\.[0-9]*$", "", rownames(xn))
+    names(temp) <- df[, pk_var]
+    xn <- do.call("rbind", temp)
+    xn[, pk_var] <- gsub("\\.[0-9]*$", "", rownames(xn))
     rownames(xn) <- NULL
     xn
-  }, USE.NAMES = TRUE, simplify = FALSE) -> out_sub_ent
+  }, USE.NAMES = TRUE, simplify = FALSE)
 
-  names(data) -> prim_ent
-  df[,prim_ent_var, drop = FALSE] -> out_sub_ent[[prim_ent]]
+  prim_ent <- names(data)
+  out_sub_ent[[prim_ent]] <- df[, prim_ent_var, drop = FALSE]
 
   structure(
     out_sub_ent,
     class = c("list", "pv_relay_db")
   )
-
 }

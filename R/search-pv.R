@@ -2,8 +2,8 @@ get_base <- function(endpoint)
   sprintf("http://www.patentsview.org/api/%s/query", endpoint)
 
 tojson_2 <- function(x, ...) {
-  jsonlite::toJSON(x, ...) -> json
-  if (!grepl("[:alnum:]", json, ignore.case = TRUE)) "" -> json
+  json <- jsonlite::toJSON(x, ...)
+  if (!grepl("[:alnum:]", json, ignore.case = TRUE)) json <- ""
   json
 }
 
@@ -22,55 +22,56 @@ to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
 }
 
 get_get_url <- function(query, base_url, arg_list) {
-  paste0(
+  j <- paste0(
     base_url,
     "?q=", query,
     "&f=", tojson_2(arg_list$fields),
     "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE),
     "&s=", tojson_2(arg_list$sort, auto_unbox = TRUE)
-  ) -> j
+  )
   utils::URLencode(j)
 }
 
 get_post_body <- function(query, arg_list) {
-  paste0(
+  body <- paste0(
     '{',
     '"q":', query, ",",
     '"f":', tojson_2(arg_list$fields), ",",
     '"o":', tojson_2(arg_list$opts, auto_unbox = TRUE), ",",
     '"s":', tojson_2(arg_list$sort, auto_unbox = TRUE),
     '}'
-  ) -> body
+  )
   gsub('(,"[fs]":)([,}])', paste0('\\1', "{}", '\\2'), body)
 }
 
 one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
-  httr::user_agent("https://github.com/crew102/patentsview") -> ua
+  ua <- httr::user_agent("https://github.com/crew102/patentsview")
   if (method == "GET") {
-    get_get_url(query = query, base_url = base_url, arg_list = arg_list) -> get_url
-    httr::GET(url = get_url, ua, ...) -> resp
+    get_url <- get_get_url(query = query, base_url = base_url, arg_list = arg_list)
+    resp <- httr::GET(url = get_url, ua, ...)
   } else {
-    get_post_body(query = query, arg_list = arg_list) -> body
-    httr::POST(url = base_url, body = body, ua, ...) -> resp
+    body <- get_post_body(query = query, arg_list = arg_list)
+    resp <- httr::POST(url = base_url, body = body, ua, ...)
   }
 
-  if (httr::http_error(resp)) throw_er(resp = resp, error_browser = error_browser)
+  if (httr::http_error(resp))
+    throw_er(resp = resp, error_browser = error_browser)
 
   process_resp(resp = resp)
 }
 
 request_apply <- function(ex_res, method, query, base_url, arg_list, error_browser, ...) {
-  ceiling(ex_res$query_results[[1]] / 10000) -> req_pages
+  req_pages <- ceiling(ex_res$query_results[[1]]/10000)
   if (req_pages < 1)
     stop("No records matched your query...Can't download multiple pages",
          .call = FALSE)
-  sapply(1:req_pages, FUN = function(i) {
+  tmp <- sapply(1:req_pages, FUN = function(i) {
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
-    one_request(method = method, query = query, base_url = base_url,
-                arg_list = arg_list, error_browser = error_browser, ...) -> x
+    x <- one_request(method = method, query = query, base_url = base_url,
+                     arg_list = arg_list, error_browser = error_browser, ...)
     x$data
-  }) -> tmp
+  })
   do.call("rbind", c(tmp, make.row.names = FALSE))
 }
 
@@ -129,7 +130,7 @@ search_pv <- function(query,
 
   if (is.list(query)) {
     check_query(query = query, endpoint = endpoint)
-    jsonlite::toJSON(query, auto_unbox = TRUE) -> query
+    query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
   validate_args(query = query, fields = fields, endpoint = endpoint,
@@ -137,19 +138,19 @@ search_pv <- function(query,
                 mtchd_subent_only = mtchd_subent_only, page = page,
                 per_page = per_page, sort = sort)
 
-  to_arglist(fields = fields, subent_cnts = subent_cnts,
-             mtchd_subent_only = mtchd_subent_only,
-             page = page, per_page = per_page, sort = sort) -> arg_list
+  arg_list <- to_arglist(fields = fields, subent_cnts = subent_cnts,
+                         mtchd_subent_only = mtchd_subent_only,
+                         page = page, per_page = per_page, sort = sort)
 
-  get_base(endpoint = endpoint) -> base_url
+  base_url <- get_base(endpoint = endpoint)
 
-  one_request(method = method, query = query, base_url = base_url,
-              arg_list = arg_list, error_browser = error_browser, ...) -> res
+  res <- one_request(method = method, query = query, base_url = base_url,
+                     arg_list = arg_list, error_browser = error_browser, ...)
 
   if (!all_pages) return(res)
 
-  request_apply(ex_res = res, method = method, query = query,
-                base_url = base_url, arg_list = arg_list, ...) -> full_data
+  full_data <- request_apply(ex_res = res, method = method, query = query,
+                             base_url = base_url, arg_list = arg_list, ...)
   res$data[[1]] <- full_data
 
   res

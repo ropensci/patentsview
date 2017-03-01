@@ -1,9 +1,9 @@
 # Design adapated from http://adv-r.had.co.nz/dsl.html
 
 create_one_fun <- function(field, value, fun) {
-  list(value) -> k
+  k <- list(value)
   names(k) <- field
-  list(k) -> z
+  z <- list(k)
   names(z) <- paste0("_", fun)
   z
 }
@@ -11,16 +11,16 @@ create_one_fun <- function(field, value, fun) {
 create_key_fun <- function(fun) {
   force(fun)
   function(...) {
-    list(...) -> value_p
-    names(value_p) -> field
-    unlist(value_p) -> value
+    value_p <- list(...)
+    field <- names(value_p)
+    value <- unlist(value_p)
     names(value) <- NULL
     if (length(value) > 1) {
-      lapply(value, function(value)
-        create_one_fun(field = field, value = value, fun = fun)) -> z
-      z <- list("_or" = z)
+      z <- lapply(value, function(value)
+        create_one_fun(field = field, value = value, fun = fun))
+      z <- list(`_or` = z)
     } else {
-      create_one_fun(field = field, value = value, fun = fun) -> z
+      z <- create_one_fun(field = field, value = value, fun = fun)
     }
     structure(z, class = c(class(z), "pv_query"))
   }
@@ -29,8 +29,8 @@ create_key_fun <- function(fun) {
 create_array_fun <- function(fun) {
   force(fun)
   function(...) {
-    list(...) -> k
-    list(k) -> z
+    k <- list(...)
+    z <- list(k)
     names(z) <- paste0("_", fun)
     structure(z, class = c(class(z), "pv_query"))
   }
