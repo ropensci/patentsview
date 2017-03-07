@@ -238,10 +238,10 @@ res$data
 #>   ..$ gov_interests                 :List of 25
 ```
 
-This data frame has two list columns in it, one for each subentity. We can then call `as_relay_db` to split the entities into their own data frames:
+This data frame has two list columns in it, one for each subentity. We can then call `flatten_pv_data` to split the entities into their own data frames:
 
 ``` r
-as_relay_db(data = res$data, pk_var = "assignee_id") -> new_data
+flatten_pv_data(data = res$data, pk_var = "assignee_id") -> new_data
 
 new_data
 #> List of 3

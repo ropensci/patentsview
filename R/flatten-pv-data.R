@@ -1,4 +1,6 @@
-#' As relational database
+#' Flatten PatentsView Data
+#'
+#' This function converts a single data frame with list columns into multiple data frames. The multiple data frames can be merged into a single data frame using the primary key variable.
 #'
 #' @param data The data that was returned by the server when you called \code{\link{search_pv}}. This is the first element of the three-element result object you got back. It should be a list of length 1, with one data frame inside it. See examples.
 #' @param pk_var A length 1 character vector giving the name of the identifier that will link the data frames together. This should be the identifier for the primary entity. For example, if you searched the patents endpoint in you call to \code{search_pv}, you should specify \code{pk_var = "patent_id"}. You may have to go back and include this identifier in your fields list if you didn't originally chose to download it.
@@ -10,10 +12,9 @@
 #' res <- search_pv(query = qry_funs$gte(patent_date = "2016-01-01"),
 #'                  fields = get_fields("patents", c("patents", "inventors")))
 #'
-#' data2 <- as_relay_db(data = res$data, pk_var = "patent_id")
-#'
+#' data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
 #' @export
-as_relay_db <- function(data, pk_var) {
+flatten_pv_data <- function(data, pk_var) {
   df <- data[[1]]
 
   asrt(pk_var %in% colnames(df),
