@@ -1,5 +1,5 @@
-all: data-raw/fieldsdf.csv readme_all doc vig
-dev: data-raw/fieldsdf.csv readme_dev doc vig
+all: data-raw/fieldsdf.csv readme_all doc vig test
+dev: data-raw/fieldsdf.csv readme_dev doc vig test
 .PHONY: clean
 
 # Pull endpoint fields from PatentsView website
@@ -22,6 +22,11 @@ vig: inst/doc/writing-queries.html
 
 inst/doc/writing-queries.html: vignettes/writing-queries.Rmd
 	Rscript -e "devtools::build_vignettes()"
+
+# Test package
+test:
+	Rscript -e "library(testthat); library(patentsview); \
+	test_dir('tests/testthat/'); test_examples('man')"
 
 # Clean
 clean:
