@@ -19,11 +19,12 @@ print.pv_data_result <- function(x, ...) {
                  uspc_mainclasses = "USPC main class",
                  nber_subcategories = "NBER subcategory")
 
-  lst <- ifelse("list" %in% k, "(with nested list(s) inside)", "")
+  lst <- ifelse("list" %in% k, " (with list column(s) inside) ", " ")
 
   cat(
-    "#### A list with a single data frame", lst, "on the",
-    dat_level[[names(x)[1]]], "data level:\n\n"
+    "#### A list with a single data frame", lst, "on the ",
+    dat_level[[names(x)[1]]], " data level:\n\n",
+    sep = ""
   )
 
   utils::str(x, vec.len = 1, max.level = 2, give.attr = FALSE)
