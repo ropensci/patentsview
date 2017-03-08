@@ -7,20 +7,20 @@
 flatten_pv_data(data, pk_var)
 }
 \arguments{
-\item{data}{The data that was returned by the server when you called \code{\link{search_pv}}. This is the first element of the three-element result object you got back. It should be a list of length 1, with one data frame inside it. See examples.}
+\item{data}{The data returned \code{\link{search_pv}}. This is the first element of the three-element result object you got back. It should be a list of length 1, with one data frame inside it. See examples.}
 
-\item{pk_var}{A length 1 character vector giving the name of the identifier that will link the data frames together. This should be the identifier for the primary entity. For example, if you searched the patents endpoint in you call to \code{search_pv}, you should specify \code{pk_var = "patent_id"}. You may have to go back and include this identifier in your fields list if you didn't originally chose to download it.}
+\item{pk_var}{A length 1 character vector giving the name of the identifier that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you should specify \code{pk_var = "patent_id"}. This identifier has to be included in the \code{fields} vector when you called \code{search_pv}.}
 }
 \value{
 A list with a data frame for each distinct entity type included in your data object. Each data frame should have a column giving the pk_var, so you can link the tables back together.
 }
 \description{
-This function converts a single data frame with list columns into multiple data frames. The multiple data frames can be merged into a single data frame using the primary key variable.
+This function converts a single data frame with subentity-based list columns into multiple data frames, one for each entity type. The multiple data frames can be merged into a single data frame using the primary key variable.
 }
 \examples{
 
 res <- search_pv(query = qry_funs$gte(patent_date = "2016-01-01"),
-                 fields = get_fields("patents", c("patents", "inventors")))
+                 fields = get_fields("patents", c("patents", "inventors"))) # patent_id is included
 
 data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
 }

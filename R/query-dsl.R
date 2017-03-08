@@ -38,7 +38,7 @@ create_array_fun <- function(fun) {
 
 #' Query function list
 #'
-#' A list containing R functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette for details.
+#' A list of functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette and examples below for details.
 #'
 #' @return An object of class \code{pv_query}. This is basically just a simple list with a print method attached to it.
 #'
@@ -46,7 +46,6 @@ create_array_fun <- function(fun) {
 #' qry_funs$eq(patent_date = "2001-01-01")
 #'
 #' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
-#'
 #' @export
 qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
@@ -56,7 +55,7 @@ qry_funs <- c(
          create_array_fun, USE.NAMES = TRUE)
 )
 
-#' With qry_funs
+#' With Query Functions
 #'
 #' This function evaluates whatever code you pass to it in the environment of the \code{\link{qry_funs}} list. This allows you to cut down on typing when writing your queries.
 #'
@@ -65,8 +64,7 @@ qry_funs <- c(
 #' @return The result of \code{code} - i.e., your query.
 #'
 #' @examples
-#' # Without this function we have to do:
-#'
+#' # Without with_qfuns we have to do:
 #' qry_funs$and(
 #'   qry_funs$gte(patent_date = "2007-01-01"),
 #'   qry_funs$text_phrase(patent_abstract = c("computer program")),
@@ -77,7 +75,6 @@ qry_funs <- c(
 #' )
 #'
 #' #...With it we can do:
-#'
 #' with_qfuns(
 #'  and(
 #'    gte(patent_date = "2007-01-01"),
@@ -88,6 +85,5 @@ qry_funs <- c(
 #'    )
 #'  )
 #' )
-#'
 #' @export
 with_qfuns <- function(code) eval(substitute(code), qry_funs)

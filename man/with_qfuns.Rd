@@ -2,7 +2,7 @@
 % Please edit documentation in R/query-dsl.R
 \name{with_qfuns}
 \alias{with_qfuns}
-\title{With qry_funs}
+\title{With Query Functions}
 \usage{
 with_qfuns(code)
 }
@@ -16,8 +16,7 @@ The result of \code{code} - i.e., your query.
 This function evaluates whatever code you pass to it in the environment of the \code{\link{qry_funs}} list. This allows you to cut down on typing when writing your queries.
 }
 \examples{
-# Without this function we have to do:
-
+# Without with_qfuns we have to do:
 qry_funs$and(
   qry_funs$gte(patent_date = "2007-01-01"),
   qry_funs$text_phrase(patent_abstract = c("computer program")),
@@ -27,8 +26,7 @@ qry_funs$and(
   )
 )
 
-# With it we can do:
-
+#...With it we can do:
 with_qfuns(
  and(
    gte(patent_date = "2007-01-01"),
@@ -39,6 +37,5 @@ with_qfuns(
    )
  )
 )
-
 }
 

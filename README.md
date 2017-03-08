@@ -1,7 +1,7 @@
 patentsview
 ===========
 
-> An R client to the PatentsView API
+> An R Client to the PatentsView API
 
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip) [![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview) [![](http://www.r-pkg.org/badges/version/patentsview)](http://www.r-pkg.org/pkg/patentsview)
 
@@ -178,7 +178,7 @@ Not at the moment.
 
 #### How do I download more than 100,000 records?
 
-Your best bet is to split your query into pieces based on dates, then concatenate the results together. For example, we could split this query (which returns more than 100,000 records for the patents endpoint):
+Your best bet is to split your query into pieces based on dates, then concatenate the results together. For example, the below query returns more than 100,000 records for the patents endpoint:
 
 ``` r
 query <- with_qfuns(
@@ -186,17 +186,17 @@ query <- with_qfuns(
 )
 ```
 
-... Into the following two queries:
+...To download all of these records, we could split the query into two pieces and make two calls to `search_pv`:
 
 ``` r
-query1 <- with_qfuns(
+query_1a <- with_qfuns(
   and(
     text_any(patent_abstract = 'tool animal'),
     lte(patent_date = "2010-01-01")
   )
 )
 
-query2 <- with_qfuns(
+query_1b <- with_qfuns(
   and(
     text_any(patent_abstract = 'tool animal'),
     gt(patent_date = "2010-01-01")
@@ -206,10 +206,10 @@ query2 <- with_qfuns(
 
 #### How do I access the data inside of the subentity lists?
 
-You can flatten your results using `as_relay_db`. As the name suggests, this function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
+You can flatten your results using `flatten_pv_data`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
 
 ``` r
-res <- search_pv(qry_funs$contains(inventor_last_name = "smith"), 
+res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
                  endpoint = "assignees", 
                  fields = get_fields("assignees", c("assignees", "applications", 
                                                     "gov_interests")))
@@ -241,7 +241,7 @@ res$data
 This data frame has two list columns in it, one for each subentity. We can then call `flatten_pv_data` to split the entities into their own data frames:
 
 ``` r
-flatten_pv_data(data = res$data, pk_var = "assignee_id") -> new_data
+new_data <- flatten_pv_data(data = res$data, pk_var = "assignee_id")
 
 new_data
 #> List of 3
@@ -279,7 +279,7 @@ new_data
 #>   ..$ assignee_type                 : chr [1:25] "2" ...
 ```
 
-Note that there is an "assignee\_id" column in each data frame, allowing us to link the data frames back together based on this variable (the primary key).
+Note that there is an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable (the primary key).
 
 Examples
 --------
@@ -287,7 +287,7 @@ Examples
 ##### Patents that have been cited by more than 500 US patents
 
 ``` r
-search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500))
+search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 #> $data
 #> #### A list with a single data frame  on the patent data level:
 #> 
@@ -307,7 +307,7 @@ search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500))
 ##### How many distinct inventors (disambiguated) are represented by these highly-cited patents?
 
 ``` r
-search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500),
+search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           fields = c("patent_number", "inventor_id"),
           subent_cnts = TRUE) # subent_cnts = TRUE gives inventor counts
 #> $data
@@ -325,10 +325,10 @@ search_pv(qry_funs$gt(patent_num_cited_by_us_patents = 500),
 #> total_patent_count = 2,436, total_inventor_count = 4,223
 ```
 
-##### Assignees who have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith") as well as the patents where those smiths occur.
+##### Assignees who have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith"), as well as the patents where those smiths occur.
 
 ``` r
-search_pv(qry_funs$contains(inventor_last_name = "smith"), 
+search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
           endpoint = "assignees", 
           fields = get_fields("assignees", c("assignees", "patents")))
 #> $data
@@ -361,8 +361,37 @@ search_pv(qry_funs$contains(inventor_last_name = "smith"),
 #> total_assignee_count = 9,188
 ```
 
+##### Get the top ten CPC subsections for patents funded by the DOE:
+
+``` r
+search_pv(query = with_qfuns(contains(govint_org_name = 'department of energy')), 
+          endpoint = "cpc_subsections", 
+          fields = get_fields("cpc_subsections", "cpc_subsections"), 
+          sort = c("cpc_total_num_patents" = "desc"), 
+          per_page = 10)
+#> $data
+#> #### A list with a single data frame (with nested list(s) inside) on the CPC subsection data level:
+#> 
+#> List of 1
+#>  $ cpc_subsections:'data.frame': 10 obs. of  8 variables:
+#>   ..$ cpc_first_seen_date    : chr [1:10] "1975-05-25" ...
+#>   ..$ cpc_last_seen_date     : chr [1:10] "2016-11-22" ...
+#>   ..$ cpc_subsection_id      : chr [1:10] "Y10" ...
+#>   ..$ cpc_subsection_title   : chr [1:10] "Technical subjects covered by former uspc" ...
+#>   ..$ cpc_total_num_assignees: chr [1:10] "107843" ...
+#>   ..$ cpc_total_num_inventors: chr [1:10] "852948" ...
+#>   ..$ cpc_total_num_patents  : chr [1:10] "840412" ...
+#>   ..$ cpc_subgroups          :List of 10
+#> 
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_cpc_subsection_count = 121
+```
+
 ------------------------------------------------------------------------
 
-<sup id="fn1">1. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<a href="#ref1">â†©</a></sup>
+<sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#ref1">back</a></sup>
 
-<sup id="fn2">2. Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.<a href="#ref2">â†©</a></sup>
+<sup id="fn2">2</sup> Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup>
