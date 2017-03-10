@@ -8,7 +8,6 @@ vignette: >
 ---
 
 ```{r, echo = FALSE, message = FALSE}
-library(patentsview)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -38,19 +37,19 @@ Let's say you wanted to find all patents published in the last 10 years that hav
 2. Use a list (which will be converted to JSON by `search_pv`):
 
 ```{r}
-list(`_and` = 
+list("_and" = 
      list(
-        list(`_gte` = list(patent_date = "2007-03-01")),
-        list(`_or` = 
+        list("_gte" = list(patent_date = "2007-03-01")),
+        list("_or" = 
                list(
-                 list(`_contains` = list(patent_title = "dog")),
-                 list(`_text_all` = list(patent_abstract = "dog"))
+                 list("_contains" = list(patent_title = "dog")),
+                 list("_text_all" = list(patent_abstract = "dog"))
                  )
              ),
-        list(`_or` = 
+        list("_or" = 
                list(
-                 list(`_eq` = list(assingee_country = "US")),
-                 list(`_eq` = list(assingee_country = "CA"))
+                 list("_eq" = list(assingee_country = "US")),
+                 list("_eq" = list(assingee_country = "CA"))
                  )
              )
     )
@@ -104,8 +103,8 @@ Compared to method 1, method 3 will correctly[^1] "or" together values if you pu
 * All of the functions that comprise the DSL are found in the `qry_funs` list (e.g., `qry_funs$eq()`). You can evaluate code in the context of this list using the function `with_qfuns()`. See  `?with_qfuns()` for an example that demonstrates how using this function saves you typing.
 
 * There are two types of functions for the DSL:
-1. **Comparison operators**. These functions are used to compare a field to a value. For example, using the "less than or equal to" function (`qry_funs$lte`), we can make sure that publication date of the patent is less than or equal to some date (e.g., `query = qry_funs$lte(patent_date = "2001-01-05")`). See the [comparison operators section](http://www.patentsview.org/api/query-language.html#field_list_format) online for a list of the 11 functions and what they do (note, the R equivalent of the function drops the leading "_"). 
-2. **Array functions**. There are three of these (`and`, `or`, and `not`). You can use these functions to logically combine the calls to the comparison functions (e.g., require that the patent date is less than or equal to 2001-01-05 _and_ that the inventor's last name is "Ihaka": `query = with_qfuns(and(lte(patent_date = "2001-01-05"), eq(inventor_last_name = "Ihaka")))`).
+  + **Comparison operators**. These functions are used to compare a field to a value. For example, using the "less than or equal to" function (`qry_funs$lte`), we can make sure that publication date of the patent is less than or equal to some date (e.g., `query = qry_funs$lte(patent_date = "2001-01-05")`). See the [comparison operators section](http://www.patentsview.org/api/query-language.html#field_list_format) online for a list of the 11 functions and what they do (note, the R equivalent of the function drops the leading "_"). 
+  + **Array functions**. There are three of these (`and`, `or`, and `not`). You can use these functions to logically combine the calls to the comparison functions (e.g., require that the patent date is less than or equal to 2001-01-05 _and_ that the inventor's last name is "Ihaka": `query = with_qfuns(and(lte(patent_date = "2001-01-05"), eq(inventor_last_name = "Ihaka")))`).
 
 
 

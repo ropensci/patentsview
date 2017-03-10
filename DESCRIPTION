@@ -5,7 +5,8 @@ Version: 0.1.0.9000
 Authors@R: person("Christopher", "Baker", email = "chriscrewbaker@gmail.com",
     role = c("aut", "cre"))
 Encoding: UTF-8
-Description: Provides functions to simplify the PatnetsView API query lanaguage,
+Description: Provides functions to simplify the PatnetsView API
+    (http://www.patentsview.org/api/doc.html) query lanaguage,
     send GET and POST requests to the API's seven endpoints, and parse the data
     that comes back.
 URL: https://github.com/crew102/patentsview

@@ -60,5 +60,9 @@ search_pv(query = '{"_gt":{"patent_year":2010}}',
 search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
           endpoint = "assignees",
           fields = get_fields("assignees", c("assignees", "patents")))
+
+search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
+          config = httr::timeout(40))
+
 }
 

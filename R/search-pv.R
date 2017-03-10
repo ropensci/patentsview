@@ -115,6 +115,10 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 #'           endpoint = "assignees",
 #'           fields = get_fields("assignees", c("assignees", "patents")))
+#'
+#' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
+#'           config = httr::timeout(40))
+#'
 #' @export
 search_pv <- function(query,
                       fields = NULL,

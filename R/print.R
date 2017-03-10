@@ -48,7 +48,6 @@ print.pv_query_result <- function(x, ...) {
 #' @export
 print.pv_result <- function(x, ...) {
   print(x[1])
-  cat("\n")
   print(x[2])
 }
 
