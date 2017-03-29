@@ -40,8 +40,13 @@ flatten_pv_data <- function(data, pk_var) {
   prim_ent <- names(data)
   out_sub_ent[[prim_ent]] <- df[, prim_ent_var, drop = FALSE]
 
+  out_sub_ent_reord <- lapply(out_sub_ent, FUN = function(x) {
+    colnames(x) -> coln
+    x[,c(pk_var, coln[!(pk_var == coln)])]
+  })
+
   structure(
-    out_sub_ent,
+    out_sub_ent_reord,
     class = c("list", "pv_relay_db")
   )
 }
