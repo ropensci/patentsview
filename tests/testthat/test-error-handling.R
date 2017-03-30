@@ -9,7 +9,4 @@ test_that("Bad query arguments get informative error messages", {
   bad_qr <- patentsview:::tojson_2(b_list)
   expect_error(search_pv(query = bad_qr, error_browser = "false"), "array")
 
-  b_list <- list(`_contains` = list(assignee_state = c("new")))
-  bad_qr <- patentsview:::tojson_2(b_list)
-  search_pv(query = bad_qr, error_browser = "false")
 })

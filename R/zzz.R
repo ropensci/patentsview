@@ -3,7 +3,7 @@
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.patentsview <- list(
-    pv_browser = FALSE
+    pv_browser = "false"
   )
   toset <- !(names(op.patentsview) %in% names(op))
   if(any(toset)) options(op.patentsview[toset])

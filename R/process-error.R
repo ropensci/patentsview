@@ -6,12 +6,13 @@ parse_er_msg <- function(er_html) {
 }
 
 custom_er <- function(resp, error_browser) {
+
   er_html <- httr::content(resp, as = "text", encoding = "UTF-8")
   er_prsd <- parse_er_msg(er_html = er_html)
 
   gen_er <- paste0("Your query returned the following error:", er_prsd)
 
-  if (nchar(er_prsd) < 5 || !error_browser) {
+  if (nchar(er_prsd) < 5) {
     httr::stop_for_status(resp)
   } else {
     tempDir <- tempfile()
