@@ -94,7 +94,13 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #' @param all_pages Do you want to download all possible pages of output? If \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are ignored.
 #' @param sort A named character vector where the name indicates the field to sort by and the value indicates the direction of sorting ("asc" or "desc"). For example, \code{sort = c("patent_number" = "asc")} or\cr\code{sort = c("patent_number" = "asc", "patent_date" = "desc")}. \code{sort = NULL} (the default) means do not sort the results. You must include any fields that you are sorting by in the \code{fields} vector.
 #' @param method A character vector of length 1 indicating the HTTP method that you want to use to send the request. Possible values include \code{"GET"} or \code{"POST"}. \strong{Use the POST method when your query is very long (say, over 2,000 characters in length)}.
-#' @param error_browser The program used to view any HTML error messages sent by the API. This should be either a character vector of length 1 giving the name of the program (e.g., \code{error_browser = "chrome"}) assuming it is on your PATH, or the full path to the program if it is not on your PATH. Alternatively, you can provide an R function to be called to invoke the error browser (e.g., \code{error_browser = rstudioapi::viewer}). Under Windows, \code{NULL} is also an allowed value for \code{error_browser} (and is the default), and implies that the file association mechanism will be used to determine which browser is used. To turn error browsing off on Windows, set \code{error_browser = "false"}.
+#' @param error_browser The program used to view any HTML error message sent by the API. This should be any of the following:
+#' \itemize{
+#'   \item The value \code{FALSE} (the default), which turns the error browser off. You will get a sample of the error message that was sent by the API as an R error message in this case.
+#'   \item A character vector of length 1 giving the name of the program to use to view the HTML error message. If the name of the program is on your PATH, just specify the program name (e.g., \code{error_browser = "chrome"}). Otherwise, include the full path to the program.
+#'   \item An R function to be called to invoke the browser (e.g., \code{error_browser = rstudioapi::viewer})
+#'   \item Under Windows, \code{NULL} is also an allowed and implies that the file association mechanism will be used to determine which browser is used.
+#'  }
 #' @param ... Arguments passed along to httr's \code{\link[httr]{GET}} or \code{\link[httr]{POST}} function.
 #'
 #' @return A list with the following three elements:
@@ -119,6 +125,12 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, error_brows
 #' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 #'           config = httr::timeout(40))
 #'
+#'\dontrun{
+#' # Will view error message in RStudio viewer pane:
+#' search_pv(query = with_qfuns(not(text_any(patent_title = "hi"))),
+#'           error_browser = rstudioapi::viewer)
+#'}
+#'
 #' @export
 search_pv <- function(query,
                       fields = NULL,
@@ -130,7 +142,7 @@ search_pv <- function(query,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",
-                      error_browser = getOption("browser"),
+                      error_browser = getOption("pv_browser"),
                       ...) {
 
   if (is.list(query)) {

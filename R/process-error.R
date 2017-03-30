@@ -11,7 +11,7 @@ custom_er <- function(resp, error_browser) {
 
   gen_er <- paste0("Your query returned the following error:", er_prsd)
 
-  if (nchar(er_prsd) < 5) {
+  if (nchar(er_prsd) < 5 || !error_browser) {
     httr::stop_for_status(resp)
   } else {
     tempDir <- tempfile()
