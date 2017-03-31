@@ -37,7 +37,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 
 \item{error_browser}{The program used to view any HTML error message sent by the API. This should be any of the following:
 \itemize{
-  \item The value \code{FALSE} (the default), which turns the error browser off. You will get a sample of the error message that was sent by the API as an R error message in this case.
+  \item The string "false" (the default), which turns the error browser off. You will get a sample of the error message that was sent by the API as an R error message in this case.
   \item A character vector of length 1 giving the name of the program to use to view the HTML error message. If the name of the program is on your PATH, just specify the program name (e.g., \code{error_browser = "chrome"}). Otherwise, include the full path to the program.
   \item An R function to be called to invoke the browser (e.g., \code{error_browser = rstudioapi::viewer})
   \item Under Windows, \code{NULL} is also an allowed and implies that the file association mechanism will be used to determine which browser is used.

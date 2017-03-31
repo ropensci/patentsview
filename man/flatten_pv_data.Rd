@@ -24,4 +24,3 @@ res <- search_pv(query = qry_funs$gte(patent_date = "2016-01-01"),
 
 data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
 }
-

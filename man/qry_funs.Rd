@@ -20,4 +20,3 @@ qry_funs$eq(patent_date = "2001-01-01")
 qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
 }
 \keyword{datasets}
-

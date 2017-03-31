@@ -29,4 +29,3 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
           fields = get_fields("patents", c("patents", "assignees")),
           endpoint = "patents")
 }
-
