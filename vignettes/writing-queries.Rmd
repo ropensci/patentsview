@@ -97,7 +97,7 @@ jsonlite::toJSON(query_v_3, auto_unbox = TRUE)
 
 Methods 1 and 3 shown above are both much shorter than method 2, making them easier to type out. Furthermore, it's a lot easier to get the JSON syntax correct when using method 3 (b/c you don't have to write any JSON at all) compared to method 1...The API is picky about the JSON syntax, so it's not trivial to get it right. For example, the API will throw an error if you use a box in your query when is not absolutely necessary, even if your query is still valid JSON (e.g., `query = {"_gte":{"patent_date":["2007-03-01"]}}` will throw an error). 
 
-Compared to method 1, method 3 will correctly[^1] "or" together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for `assingee_country` (`c("US", "CA")`). This safely converted the single "equals" statement in the third element of the query (`eq(assingee_country = c("US", "CA"))`) to two separate equals statements that are "or'd" together. 
+Compared to method 1, method 3 will correctly<sup><a href="#fn1" id="ref1">1</a></sup> "or" together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for `assingee_country` (`c("US", "CA")`). This safely converted the single "equals" statement in the third element of the query (`eq(assingee_country = c("US", "CA"))`) to two separate equals statements that are "or'd" together. 
 
 ## Basics of the query DSL
 
@@ -115,7 +115,7 @@ Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inve
 qry_funs$lte(assignee_total_num_inventors = 10)
 ```
 
-Patents assigned to the "CPC subsection"[^2] of G12 (Physics instruments):
+Patents assigned to the "CPC subsection"<sup><a href="#fn2" id="ref2">2</a></sup> of G12 (Physics instruments):
 
 ```{r}
 qry_funs$lte(cpc_subsection_id = "G12")
@@ -152,5 +152,7 @@ with_qfuns(
 )
 ```
 
-[^1]: One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation notes that the following GET request (which happens to work) uses value arrays: For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays like this. For many of the comparison operators, one cannot "or" together values like the above. Thus, the query DSL in `patentsview` never relies on value arrays when constructing the JSON.
-[^2]: PatentsView gets the names of the CPC hierarchy wrong. For example, a "CPC subsection" according to PatentsView is actually a CPC class.
+*** 
+<sup id="fn1">1</sup> One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation notes that the following GET request (which happens to work) uses value arrays: For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays like this. For many of the comparison operators, one cannot "or" together values like the above. Thus, the query DSL in `patentsview` never relies on value arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup>
+
+<sup id="fn2">2</sup> PatentsView gets the names of the CPC hierarchy wrong. For example, a "CPC subsection" according to PatentsView is actually a CPC class.<sup><a href="#ref2">back</a></sup>
