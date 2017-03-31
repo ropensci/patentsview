@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 
 [![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview)
-[![](http://www.r-pkg.org/badges/version/patentsview)](http://www.r-pkg.org/pkg/patentsview)
 
 ## Installation
 
@@ -106,13 +105,13 @@ Your choice of endpoint determines two things:
 
 ## Examples
 
-##### Which patents have been cited by more than 500 US patents?
+Which patents have been cited by more than 500 US patents?
 
 ```{r eval = params$eval_all}
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 ```
 
-##### How many distinct inventors (disambiguated) are represented by these highly-cited patents?
+How many distinct inventors (disambiguated) are represented by these highly-cited patents?
 
 ```{r eval = params$eval_all}
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
@@ -120,7 +119,7 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           subent_cnts = TRUE) # subent_cnts = TRUE gives subentity counts  (i.e., inventor counts)
 ```
 
-##### Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
+Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
 
 ```{r eval = params$eval_all}
 search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
@@ -128,12 +127,12 @@ search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
           fields = get_fields("assignees", c("assignees", "patents")))
 ```
 
-##### What are the top ten CPC subsections for patents funded by the DOE:
+What are the top ten CPC subsections for patents funded by the DOE?
 
 ```{r eval = params$eval_all}
 search_pv(query = with_qfuns(contains(govint_org_name = 'department of energy')), 
           endpoint = "cpc_subsections", 
-          fields = get_fields("cpc_subsections", "cpc_subsections"), 
+          fields =  "cpc_total_num_patents",
           sort = c("cpc_total_num_patents" = "desc"), 
           per_page = 10)
 ```
@@ -196,7 +195,7 @@ new_data <- flatten_pv_data(data = res$data, pk_var = "assignee_id")
 new_data
 ```
 
-Note that there is now an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable (the primary key).
+Note that there is now an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable. 
 
 *** 
 <sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#ref1">back</a></sup>
