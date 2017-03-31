@@ -36,6 +36,15 @@ create_array_fun <- function(fun) {
   }
 }
 
+create_not_fun <- function(fun) {
+  force(fun)
+  function(...) {
+    k <- list(...)
+    names(k) <- paste0("_", fun)
+    structure(k, class = c(class(k), "pv_query"))
+  }
+}
+
 #' Query function list
 #'
 #' A list of functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette and examples below for details.
@@ -51,8 +60,8 @@ qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
            "begins", "contains", "text_all", "text_any", "text_phrase"),
          create_key_fun, USE.NAMES = TRUE),
-  sapply(c("not", "and", "or"),
-         create_array_fun, USE.NAMES = TRUE)
+  sapply(c("and", "or"), create_array_fun, USE.NAMES = TRUE),
+  sapply("not", create_not_fun, USE.NAMES = TRUE)
 )
 
 #' With Query Functions
