@@ -7,3 +7,5 @@
 inst/dev.R
 ^appveyor\.yml$
 ^Makefile$
+^data-raw$
+^cran-comments\.md$
