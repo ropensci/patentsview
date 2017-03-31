@@ -1,9 +1,9 @@
 patentsview
-===========
+================
 
 > An R Client to the PatentsView API
 
-[![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview) [![](http://www.r-pkg.org/badges/version/patentsview)](http://www.r-pkg.org/pkg/patentsview)
+[![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview)
 
 Installation
 ------------
@@ -19,6 +19,7 @@ The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an inter
 
 ``` r
 library(patentsview)
+#> Warning: package 'patentsview' was built under R version 3.3.3
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
           fields = c("patent_number", "patent_title"), 
@@ -42,7 +43,7 @@ This call to `search_pv` sends our query to the "patents" endpoint. The PatentsV
 Writing queries
 ---------------
 
-The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` comes with a simple domain specific language (DSL) to make writing queries easier on the user. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
+The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` comes with a simple domain specific language (DSL) to make writing queries easier on the user. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
 
 ``` r
 qry_funs$gte(patent_date = "2007-01-01")
@@ -163,7 +164,7 @@ Your choice of endpoint determines two things:
 Examples
 --------
 
-##### Which patents have been cited by more than 500 US patents?
+Which patents have been cited by more than 500 US patents?
 
 ``` r
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
@@ -182,7 +183,7 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 #> total_patent_count = 2,436
 ```
 
-##### How many distinct inventors (disambiguated) are represented by these highly-cited patents?
+How many distinct inventors (disambiguated) are represented by these highly-cited patents?
 
 ``` r
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
@@ -202,7 +203,7 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
 #> total_patent_count = 2,436, total_inventor_count = 4,223
 ```
 
-##### Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
+Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
 
 ``` r
 search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
@@ -237,27 +238,20 @@ search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 #> total_assignee_count = 9,188
 ```
 
-##### What are the top ten CPC subsections for patents funded by the DOE:
+What are the top ten CPC subsections for patents funded by the DOE?
 
 ``` r
 search_pv(query = with_qfuns(contains(govint_org_name = 'department of energy')), 
           endpoint = "cpc_subsections", 
-          fields = get_fields("cpc_subsections", "cpc_subsections"), 
+          fields =  "cpc_total_num_patents",
           sort = c("cpc_total_num_patents" = "desc"), 
           per_page = 10)
 #> $data
-#> #### A list with a single data frame (with list column(s) inside) on the CPC subsection data level:
+#> #### A list with a single data frame on the CPC subsection data level:
 #> 
 #> List of 1
-#>  $ cpc_subsections:'data.frame': 10 obs. of  8 variables:
-#>   ..$ cpc_first_seen_date    : chr [1:10] "1975-05-25" ...
-#>   ..$ cpc_last_seen_date     : chr [1:10] "2016-11-22" ...
-#>   ..$ cpc_subsection_id      : chr [1:10] "Y10" ...
-#>   ..$ cpc_subsection_title   : chr [1:10] "Technical subjects covered by former uspc" ...
-#>   ..$ cpc_total_num_assignees: chr [1:10] "107843" ...
-#>   ..$ cpc_total_num_inventors: chr [1:10] "852948" ...
-#>   ..$ cpc_total_num_patents  : chr [1:10] "840412" ...
-#>   ..$ cpc_subgroups          :List of 10
+#>  $ cpc_subsections:'data.frame': 10 obs. of  1 variable:
+#>   ..$ cpc_total_num_patents: chr [1:10] "840412" ...
 #> 
 #> $query_results
 #> #### Distinct entity counts across all downloadable pages of output:
@@ -270,7 +264,7 @@ FAQ
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](vignettes/writing-queries.Rmd) has more details on this.
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) has more details on this.
 
 #### Does the API have any rate limiting/throttling controls?
 
@@ -346,12 +340,13 @@ new_data <- flatten_pv_data(data = res$data, pk_var = "assignee_id")
 new_data
 #> List of 3
 #>  $ applications :'data.frame':   124 obs. of  5 variables:
+#>   ..$ assignee_id: chr [1:124] "00043de7382082391622e725605f37b5" ...
 #>   ..$ app_country: chr [1:124] "US" ...
 #>   ..$ app_date   : chr [1:124] "1998-07-10" ...
 #>   ..$ app_number : chr [1:124] "09113783" ...
 #>   ..$ app_type   : chr [1:124] "09" ...
-#>   ..$ assignee_id: chr [1:124] "00043de7382082391622e725605f37b5" ...
 #>  $ gov_interests:'data.frame':   25 obs. of  8 variables:
+#>   ..$ assignee_id                 : chr [1:25] "00043de7382082391622e725605f37b5" ...
 #>   ..$ govint_contract_award_number: logi [1:25] NA ...
 #>   ..$ govint_org_id               : logi [1:25] NA ...
 #>   ..$ govint_org_level_one        : logi [1:25] NA ...
@@ -359,11 +354,10 @@ new_data
 #>   ..$ govint_org_level_two        : logi [1:25] NA ...
 #>   ..$ govint_org_name             : logi [1:25] NA ...
 #>   ..$ govint_raw_statement        : logi [1:25] NA ...
-#>   ..$ assignee_id                 : chr [1:25] "00043de7382082391622e725605f37b5" ...
 #>  $ assignees    :'data.frame':   25 obs. of  16 variables:
+#>   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
 #>   ..$ assignee_first_name           : chr [1:25] NA ...
 #>   ..$ assignee_first_seen_date      : chr [1:25] "2000-10-17" ...
-#>   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
 #>   ..$ assignee_key_id               : chr [1:25] "20" ...
 #>   ..$ assignee_last_name            : chr [1:25] NA ...
 #>   ..$ assignee_last_seen_date       : chr [1:25] "2013-03-19" ...
@@ -379,7 +373,7 @@ new_data
 #>   ..$ assignee_type                 : chr [1:25] "2" ...
 ```
 
-Note that there is now an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable (the primary key).
+Note that there is now an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable.
 
 ------------------------------------------------------------------------
 

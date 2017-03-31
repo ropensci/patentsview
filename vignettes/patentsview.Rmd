@@ -1,7 +1,10 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+title: "patentsview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{patentsview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 params:
   eval_all: FALSE
 ---
@@ -12,8 +15,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-# patentsview
 
 > An R Client to the PatentsView API
 
@@ -42,7 +43,7 @@ This call to `search_pv` sends our query to the "patents" endpoint. The PatentsV
 
 ## Writing queries 
 
-The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` comes with a simple domain specific language (DSL) to make writing queries easier on the user. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
+The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` comes with a simple domain specific language (DSL) to make writing queries easier on the user. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
 
 ```{r}
 qry_funs$gte(patent_date = "2007-01-01")
@@ -141,7 +142,7 @@ search_pv(query = with_qfuns(contains(govint_org_name = 'department of energy'))
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](vignettes/writing-queries.Rmd) has more details on this. 
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) has more details on this. 
 
 #### Does the API have any rate limiting/throttling controls?
 
