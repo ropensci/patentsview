@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 params:
-  eval_all: FALSE
+  eval_all: TRUE
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -43,7 +43,7 @@ This call to `search_pv` sends our query to the "patents" endpoint. The PatentsV
 
 ## Writing queries 
 
-The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` comes with a simple domain specific language (DSL) to make writing queries easier on the user. I strongly recommend using this DSL for all but the most basic queries, especially if you're getting errors and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can re-write our query using this DSL as:
+The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're getting errors back from the server and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
 
 ```{r}
 qry_funs$gte(patent_date = "2007-01-01")
@@ -62,7 +62,7 @@ with_qfuns(
 
 ## Paginated responses
 
-By default, `search_pv` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` parameter to download up to 10,000 results per page. You can also choose which page of results you want with the `page` parameter:
+By default, `search_pv` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` parameter to download up to 10,000 records per page. You can also choose which page of results you want with the `page` parameter:
 
 ```{r eval = params$eval_all}
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
@@ -78,7 +78,7 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 
 ## Entity counts
 
-Our last two calls to `search_pv` gave the same value for `total_patent_count`, even though we got a lot more data from the second call. This is because the entity counts in the `query_results` object refer to the number of distinct entities across all downloadable pages of output, not just the page that was returned. *Downloadable pages of output* is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` when we searched for patents published on or after 2007, even though there are many more than 100,000 of such patents. See the FAQs below for details on how to overcome the 100,000 record restriction.
+Our last two calls to `search_pv` gave the same value for `total_patent_count` in the `query_results` object, even though we got a lot more data from the second call. This is because the entity counts in `query_results` refer to the number of distinct entities across all downloadable pages of output, not just the page that was returned. *Downloadable pages of output* is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` when we searched for patents published on or after 2007, even though there are many more than 100,000 of such patents. See the FAQs below for details on how to overcome the 100,000 record restriction.
 
 Note that, by default, **PatentsView returns disambiguted versions of the entitites instead of raw data.** You can also ask for raw inventor first and last names, but raw assignee names are not available.
 
@@ -100,9 +100,9 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 
 Your choice of endpoint determines two things:
 
-1. **Which entity your query is aplied to.** For the first call shown above, the API searched for *patents* that have at least one inventor on them with the last name of "chambers." For the second call, the API searched for *assignees* that correspond to a "chambers" inventor (via the patents that are assigned to them).
+1. **Which entity your query is aplied to.** For the first call shown above, the API searched for *patents* that have at least one inventor on them with the last name of "chambers." For the second call, the API searched for *assignees* that were assigned a patent that has at least one inventor on it with the last name of "chambers."
 
-2. **The structure of the data frame that is returned.** For example, the first call (to the patents endpoint) gave us a data frame on the *patent level*, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns, named after the subentity that the field belongs to (e.g., the `inventors` subentity).<sup><a href="#fn3" id="ref3">3</a></sup> See the FAQs below for details on flattening the subentity lists.
+2. **The structure of the data frame that is returned.** The first call (which was to the patents endpoint) gave us a data frame on the *patent level*, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns, named after the subentity that the field belongs to (e.g., the `inventors` subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the *assignee level*, meaning that each row corresponded to a different assignee. Note, you can flatten the subentity lists with `flatten_pv_data` (see FAQs below).
 
 ## Examples
 
@@ -123,9 +123,12 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
 Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
 
 ```{r eval = params$eval_all}
+# Get all possible assignee-level and patent-level data fields available for the assignees endpoint:
+asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
+
+# Ask the PatentsView API for these fields:
 search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
-          endpoint = "assignees", 
-          fields = get_fields("assignees", c("assignees", "patents")))
+          endpoint = "assignees", fields = asgn_pat_flds)
 ```
 
 What are the top ten CPC subsections for patents funded by the DOE?
@@ -188,7 +191,7 @@ res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 res$data
 ```
 
-This data frame has assignee-level columns that are vecters (e.g., `assignee_last_seen_date`) and subentity-level columns (applications subentity and government interest statement subentity) that are lists. We can then call `flatten_pv_data` to split the single data frame into three different data frames, one for each entity/subentity:
+This data frame has assignee-level columns that are vectors (e.g., `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., applications subentity, `res$data$assignees$applications`, and government interest statement subentity, `res$data$assignees$gov_interests`). We can call `flatten_pv_data` to split the single data frame (`res$data$assignees`) into three different data frames, one for each entity/subentity:
 
 ```{r}
 new_data <- flatten_pv_data(data = res$data, pk_var = "assignee_id")

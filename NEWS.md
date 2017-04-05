@@ -1,8 +1,8 @@
-# patentsview 0.1.0.9000
+# patentsview 0.1.0
 
-* First version
+* Date: 4/5/2017
 
-### New functions
+#### New functions
 
 * `search_pv` added to send requests to the PatentsView API
 * Functions inside of `qry_funs` added to help users write queries

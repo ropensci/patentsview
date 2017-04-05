@@ -73,7 +73,7 @@ qry_funs <- c(
 #' @return The result of \code{code} - i.e., your query.
 #'
 #' @examples
-#' # Without with_qfuns we have to do:
+#' # Without with_qfuns, we have to do:
 #' qry_funs$and(
 #'   qry_funs$gte(patent_date = "2007-01-01"),
 #'   qry_funs$text_phrase(patent_abstract = c("computer program")),
@@ -83,7 +83,7 @@ qry_funs <- c(
 #'   )
 #' )
 #'
-#' #...With it we can do:
+#' #...With it, this becomes:
 #' with_qfuns(
 #'  and(
 #'    gte(patent_date = "2007-01-01"),
