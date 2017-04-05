@@ -15,6 +15,10 @@
 #' data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
 #' @export
 flatten_pv_data <- function(data, pk_var) {
+
+  asrt("pv_data_result" %in% class(data),
+       " Wrong input type for data...See example for correct input type")
+
   df <- data[[1]]
 
   asrt(pk_var %in% colnames(df),
