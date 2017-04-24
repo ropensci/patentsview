@@ -1,6 +1,4 @@
-# patentsview 0.1.0
-
-* Date: 4/5/2017
+# patentsview 0.1.0 (2017-05-01)
 
 #### New functions
 
