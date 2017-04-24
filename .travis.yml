@@ -2,10 +2,13 @@ language: r
 sudo: false
 cache: packages
 
-r:
-  - oldrel
-  - release
-  - devel
+matrix:
+  include:
+  - r: oldrel
+  - r: release
+  - r: devel
+  - os: osx
+    r: release
 
 branches:
   except:
