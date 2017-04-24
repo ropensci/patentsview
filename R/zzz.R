@@ -1,5 +1,5 @@
 # Adapted from Hadley's httr and dplyr zzz.R files.
-
+#' @noRd
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.patentsview <- list(

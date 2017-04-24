@@ -1,3 +1,4 @@
+#' @noRd
 validate_args <- function(query, fields, endpoint, method, subent_cnts,
                           mtchd_subent_only, page, per_page, sort) {
 

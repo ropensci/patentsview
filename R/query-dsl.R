@@ -1,5 +1,6 @@
 # Design adapated from http://adv-r.had.co.nz/dsl.html
 
+#' @noRd
 create_one_fun <- function(field, value, fun) {
   k <- list(value)
   names(k) <- field
@@ -8,6 +9,7 @@ create_one_fun <- function(field, value, fun) {
   z
 }
 
+#' @noRd
 create_key_fun <- function(fun) {
   force(fun)
   function(...) {
@@ -26,6 +28,7 @@ create_key_fun <- function(fun) {
   }
 }
 
+#' @noRd
 create_array_fun <- function(fun) {
   force(fun)
   function(...) {
@@ -36,6 +39,7 @@ create_array_fun <- function(fun) {
   }
 }
 
+#' @noRd
 create_not_fun <- function(fun) {
   force(fun)
   function(...) {

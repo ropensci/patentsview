@@ -45,7 +45,7 @@ flatten_pv_data <- function(data, pk_var) {
   out_sub_ent[[prim_ent]] <- df[, prim_ent_var, drop = FALSE]
 
   out_sub_ent_reord <- lapply(out_sub_ent, FUN = function(x) {
-    colnames(x) -> coln
+    coln <- colnames(x)
     x[,c(pk_var, coln[!(pk_var == coln)])]
   })
 

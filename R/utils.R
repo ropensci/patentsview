@@ -1,18 +1,24 @@
+#' @noRd
 paste0_stop <- function(...) stop(paste0(...), call. = FALSE)
 
+#' @noRd
 paste0_msg <- function(...) message(paste0(...))
 
+#' @noRd
 asrt <- function (expr, ...) if (!expr) paste0_stop(...)
 
+#' @noRd
 parse_resp <- function(resp) {
   j <- httr::content(resp, as = "text", encoding = "UTF-8")
   jsonlite::fromJSON(j, simplifyVector = TRUE, simplifyDataFrame = TRUE,
                      simplifyMatrix = TRUE)
 }
 
+#' @noRd
 format_num <- function(x) format(x, big.mark = ",", scientific = FALSE,
                                  trim = TRUE)
 
+#' @noRd
 validate_endpoint <- function(endpoint) {
   ok_ends <- c("patents", "inventors", "assignees", "locations",
                "cpc_subsections", "uspc_mainclasses", "nber_subcategories")
@@ -22,6 +28,7 @@ validate_endpoint <- function(endpoint) {
        paste(ok_ends, collapse = ", "))
 }
 
+#' @noRd
 validate_groups <- function(groups) {
   ok_grps <- c("applications", "assignees", "cpcs", "gov_interests",
                "inventors", "ipcs", "locations", "nbers", "patents", "rawinventors",

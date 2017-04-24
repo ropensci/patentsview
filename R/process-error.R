@@ -1,3 +1,4 @@
+#' @noRd
 parse_er_msg <- function(er_html) {
   if (is.na(er_html)) return("")
   er_prsd <- gsub(".*<strong>Message:</strong>(.*)</.*File:", "\\1", er_html)
@@ -5,6 +6,7 @@ parse_er_msg <- function(er_html) {
   ifelse(is.na(er_maybe), "", er_maybe)
 }
 
+#' @noRd
 custom_er <- function(resp, error_browser) {
 
   er_html <- httr::content(resp, as = "text", encoding = "UTF-8")
@@ -25,6 +27,7 @@ custom_er <- function(resp, error_browser) {
   paste0_stop(gen_er)
 }
 
+#' @noRd
 throw_er <- function(resp, error_browser) {
   typ <- httr::http_type(resp)
   is_txt_html <- grepl("text|html|xml", typ, ignore.case = TRUE)

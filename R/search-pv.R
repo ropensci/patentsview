@@ -1,12 +1,15 @@
+#' @noRd
 get_base <- function(endpoint)
   sprintf("http://www.patentsview.org/api/%s/query", endpoint)
 
+#' @noRd
 tojson_2 <- function(x, ...) {
   json <- jsonlite::toJSON(x, ...)
   if (!grepl("[:alnum:]", json, ignore.case = TRUE)) json <- ""
   json
 }
 
+#' @noRd
 to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
                        page, per_page, sort) {
   list(
@@ -21,6 +24,7 @@ to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
   )
 }
 
+#' @noRd
 get_get_url <- function(query, base_url, arg_list) {
   j <- paste0(
     base_url,
@@ -32,6 +36,7 @@ get_get_url <- function(query, base_url, arg_list) {
   utils::URLencode(j)
 }
 
+#' @noRd
 get_post_body <- function(query, arg_list) {
   body <- paste0(
     '{',
@@ -44,6 +49,7 @@ get_post_body <- function(query, arg_list) {
   gsub('(,"[fs]":)([,}])', paste0('\\1', "{}", '\\2'), body)
 }
 
+#' @noRd
 one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   ua <- httr::user_agent("https://github.com/crew102/patentsview")
 
@@ -61,6 +67,7 @@ one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   process_resp(resp = resp)
 }
 
+#' @noRd
 request_apply <- function(ex_res, method, query, base_url, arg_list, error_browser, ...) {
   req_pages <- ceiling(ex_res$query_results[[1]]/10000)
   if (req_pages < 1)

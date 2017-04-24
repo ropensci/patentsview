@@ -1,13 +1,17 @@
+#' @noRd
 swap_null_nms <- function(obj) {
   names(obj) <- ifelse(is.null(names(obj)), NA, names(obj))
   obj
 }
 
+#' @noRd
 is_int <- function(x)
   if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps^0.5 else FALSE
 
+#' @noRd
 is_date <- function(x) grepl("[12][[:digit:]]{3}-[01][[:digit:]]-[0-3][[:digit:]]", x)
 
+#' @noRd
 one_check <- function(operator, field, value, f1) {
 
   if (nrow(f1) == 0)
@@ -34,6 +38,7 @@ one_check <- function(operator, field, value, f1) {
     ) paste0_msg("You cannot use the operator ", operator, " with field ", field)
 }
 
+#' @noRd
 check_query <- function(query, endpoint) {
   simp_opr <- c("_eq", "_neq")
   num_opr <- c("_gt", "_gte", "_lt", "_lte")

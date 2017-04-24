@@ -1,3 +1,4 @@
+#' @noRd
 get_request <- function(resp) {
   gp <- structure(
     list(
@@ -13,6 +14,7 @@ get_request <- function(resp) {
   gp
 }
 
+#' @noRd
 get_data <- function(prsd_resp) {
   structure(
     list(prsd_resp[[1]]),
@@ -21,6 +23,7 @@ get_data <- function(prsd_resp) {
   )
 }
 
+#' @noRd
 get_query_results <- function(prsd_resp) {
   structure(
     prsd_resp[grepl("_count", names(prsd_resp))],
@@ -28,6 +31,7 @@ get_query_results <- function(prsd_resp) {
   )
 }
 
+#' @noRd
 process_resp <- function(resp) {
   prsd_resp <- parse_resp(resp = resp)
 
