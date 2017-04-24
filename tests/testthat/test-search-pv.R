@@ -1,7 +1,7 @@
 context("search_pv")
 
 test_that("API returns expected df names for all endpoints", {
-
+  skip_on_cran()
   eps <- c("assignees", "cpc_subsections", "inventors", "locations",
            "nber_subcategories", "patents", "uspc_mainclasses")
 
@@ -14,7 +14,7 @@ test_that("API returns expected df names for all endpoints", {
 })
 
 test_that("DSL language-based query returns expected results", {
-
+  skip_on_cran()
   query <- with_qfuns(
     and(
       or(
