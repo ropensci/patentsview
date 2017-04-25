@@ -26,7 +26,7 @@ inst/doc/patentsview.html: vignettes/patentsview.Rmd
 # Test package
 test:
 	Rscript -e "library(testthat); library(patentsview); \
-	test_dir('tests/testthat/'); test_examples('man')"
+	devtools::test(); test_examples('man')"
 
 # Clean
 clean:
