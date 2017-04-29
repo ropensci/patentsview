@@ -15,12 +15,7 @@ doc:
 	Rscript -e "devtools::document()"
 
 # Compile vignettes
-vig: inst/doc/writing-queries.html inst/doc/patentsview.html
-
-inst/doc/writing-queries.html: vignettes/writing-queries.Rmd
-	Rscript -e "devtools::build_vignettes()"
-
-inst/doc/patentsview.html: vignettes/patentsview.Rmd
+vig: vignettes/writing-queries.Rmd vignettes/patentsview.Rmd
 	Rscript -e "devtools::build_vignettes()"
 
 # Test package
