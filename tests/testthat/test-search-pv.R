@@ -5,10 +5,10 @@ test_that("API returns expected df names for all endpoints", {
   eps <- c("assignees", "cpc_subsections", "inventors", "locations",
            "nber_subcategories", "patents", "uspc_mainclasses")
 
-  z <- sapply(eps, FUN = function(x) {
+  z <- vapply(eps, FUN = function(x) {
     j <- search_pv("{\"patent_number\":\"5116621\"}", endpoint = x)
     names(j[[1]])
-  }, USE.NAMES = FALSE)
+  }, FUN.VALUE = character(1))
 
   expect_equal(eps, z)
 })

@@ -11,7 +11,8 @@ print.pv_request <- function(x, ...) {
 #' @export
 print.pv_data_result <- function(x, ...) {
   df <- x[[1]]
-  k <- sapply(names(df), function(y) class(df[, y]))
+
+  k <- vapply(names(df), function(y) class(df[, y]), FUN.VALUE = character(1))
 
   dat_level <- c(patents = "patent", inventors = "inventor",
                  assignees = "assignee",  locations = "location",

@@ -24,7 +24,7 @@ flatten_pv_data <- function(data, pk_var) {
   asrt(pk_var %in% colnames(df),
        pk_var, " not in primary entity data frame")
 
-  prim_ent_var <- !sapply(df, is.list)
+  prim_ent_var <- !vapply(df, is.list, logical(1))
 
   sub_ent_df <- df[, !prim_ent_var, drop = FALSE]
   sub_ents <- colnames(sub_ent_df)
