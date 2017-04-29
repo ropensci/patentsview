@@ -54,7 +54,8 @@ one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   ua <- httr::user_agent("https://github.com/crew102/patentsview")
 
   if (method == "GET") {
-    get_url <- get_get_url(query = query, base_url = base_url, arg_list = arg_list)
+    get_url <- get_get_url(query = query, base_url = base_url,
+                           arg_list = arg_list)
     resp <- httr::GET(url = get_url, ua, ...)
   } else {
     body <- get_post_body(query = query, arg_list = arg_list)
@@ -68,7 +69,8 @@ one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
 }
 
 #' @noRd
-request_apply <- function(ex_res, method, query, base_url, arg_list, error_browser, ...) {
+request_apply <- function(ex_res, method, query, base_url, arg_list,
+                          error_browser, ...) {
   req_pages <- ceiling(ex_res$query_results[[1]]/10000)
   if (req_pages < 1)
     stop("No records matched your query...Can't download multiple pages",

@@ -119,7 +119,8 @@ We can get similar data from the different endpoints. For example, the following
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
           endpoint = "patents", 
-          fields = c("patent_number", "inventor_last_name", "assignee_organization"))
+          fields = c("patent_number", "inventor_last_name", 
+                     "assignee_organization"))
 #> $data
 #> #### A list with a single data frame (with list column(s) inside) on the patent data level:
 #> 
@@ -138,7 +139,8 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 ``` r
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
           endpoint = "assignees", 
-          fields = c("patent_number", "inventor_last_name", "assignee_organization"))
+          fields = c("patent_number", "inventor_last_name", 
+                     "assignee_organization"))
 #> $data
 #> #### A list with a single data frame (with list column(s) inside) on the assignee data level:
 #> 
@@ -185,9 +187,10 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 How many distinct inventors (disambiguated) are represented by these highly-cited patents?
 
 ``` r
+# Setting subent_cnts = TRUE will give us the subentity counts.  
+# In this case, inventors are subentities so we will get their counts.
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
-          fields = c("patent_number", "inventor_id"),
-          subent_cnts = TRUE) # subent_cnts = TRUE gives subentity counts  (i.e., inventor counts)
+          fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
 #> $data
 #> #### A list with a single data frame (with list column(s) inside) on the patent data level:
 #> 
@@ -243,7 +246,7 @@ search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 What are the top ten CPC subsections for patents funded by the DOE?
 
 ``` r
-search_pv(query = with_qfuns(contains(govint_org_name = 'department of energy')), 
+search_pv(query = qry_funs$contains(govint_org_name = 'department of energy'), 
           endpoint = "cpc_subsections", 
           fields =  "cpc_total_num_patents",
           sort = c("cpc_total_num_patents" = "desc"), 
@@ -307,7 +310,7 @@ You can flatten your results using `flatten_pv_data`. This function creates a se
 ``` r
 res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
                  endpoint = "assignees", 
-                 fields = get_fields("assignees", c("assignees", "applications", 
+                 fields = get_fields("assignees", c("assignees","applications", 
                                                     "gov_interests")))
 res$data
 #> #### A list with a single data frame (with list column(s) inside) on the assignee data level:
