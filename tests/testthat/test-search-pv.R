@@ -1,9 +1,10 @@
 context("search_pv")
 
+eps <- c("assignees", "cpc_subsections", "inventors", "locations",
+         "nber_subcategories", "patents", "uspc_mainclasses")
+
 test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
-  eps <- c("assignees", "cpc_subsections", "inventors", "locations",
-           "nber_subcategories", "patents", "uspc_mainclasses")
 
   z <- vapply(eps, FUN = function(x) {
     j <- search_pv("{\"patent_number\":\"5116621\"}", endpoint = x)
@@ -15,6 +16,7 @@ test_that("API returns expected df names for all endpoints", {
 
 test_that("DSL language-based query returns expected results", {
   skip_on_cran()
+
   query <- with_qfuns(
     and(
       or(
@@ -28,4 +30,52 @@ test_that("DSL language-based query returns expected results", {
   out <- search_pv(query = query, endpoint = "patents")
 
   expect_gt(out$query_results$total_patent_count, 1000)
+})
+
+test_that("search_pv can pull all fields for all endpoints except locations", {
+  skip_on_cran()
+
+  eps_no_loc <- eps[eps != "locations"]
+
+  z <- lapply(eps_no_loc, FUN = function(x) {
+    search_pv("{\"patent_number\":\"5116621\"}", endpoint = x,
+              fields = get_fields(x))
+  })
+
+  expect_true(TRUE)
+})
+
+# As per this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/24
+test_that("Locations endpoint returns error when asked for all avail. fields", {
+  skip_on_cran()
+
+  expect_error(
+    search_pv("{\"patent_number\":\"5116621\"}", endpoint = "locations",
+              fields = get_fields("locations"))
+  )
+})
+
+# Though note this issue:
+# https://github.com/CSSIP-AIR/PatentsView-API/issues/26
+test_that("search_pv can return subent_cnts", {
+  skip_on_cran()
+
+  fields <- get_fields("patents", c("patents", "inventors"))
+  out_spv <- search_pv("{\"patent_number\":\"5116621\"}", fields = fields,
+                       subent_cnts = TRUE)
+  expect_true(length(out_spv$query_results) == 2)
+})
+
+test_that("Sort option works as expected", {
+  skip_on_cran()
+
+  fields <- get_fields("assignees", c("assignees"))
+  query <- qry_funs$gt(patent_date = "2015-01-01")
+
+  out_spv <- search_pv(query = query, fields = fields,
+                       endpoint = "assignees",
+                       sort = c("assignee_last_name" = "desc"))
+
+  f_char <- substr(out_spv$data$assignees$assignee_last_name, 1, 1)
+  expect_gt(sum(f_char == "Z"), 20)
 })
