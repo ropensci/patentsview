@@ -15,7 +15,7 @@ get_fields(endpoint, groups = NULL)
 A character vector with field names.
 }
 \description{
-This function returns a vector of fields that a given API endpoint will return (i.e., the fields you can pass to the \code{fields} argument in \code{\link{search_pv}}). You can limit these fields to only cover certain entity group(s) as well (which is reccomened, given the large number of possible fields for each endpoint).
+This function returns a vector of fields that a given API endpoint will return (i.e., the fields you can pass to the \code{fields} argument in \code{\link{search_pv}}). You can limit these fields to only cover certain entity group(s) as well (which is recommended, given the large number of possible fields for each endpoint).
 }
 \examples{
 # Get all assignee-level fields for the patents endpoint, then pass this to search_pv:

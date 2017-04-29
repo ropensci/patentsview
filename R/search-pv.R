@@ -91,7 +91,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'
 #' This function makes an HTTP request to the PatentsView API for data matching the user's query.
 #'
-#' @param query The query that the API will use to filter records. This paramater can be any one of the following:
+#' @param query The query that the API will use to filter records. This parameter can be any one of the following:
 #'  \itemize{
 #'   \item A character or JSON vector of length 1 with valid JSON syntax\cr E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
 #'   \item A list which will be converted to JSON by \code{search_pv}\cr E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
@@ -99,8 +99,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'  }
 #' @param fields A character vector of fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned. Acceptable fields for a given endpoint can be found at the API's online documentation (e.g., check out the field list for the \href{http://www.patentsview.org/api/patent.html#field_list}{patents endpoint})...Note, you can use \code{\link{get_fields}} to get possible field names for a given endpoint.
 #' @param endpoint A character vector of length 1 indicating which web service resource you wish to search. \code{endpoint} must be one of the following: "patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
-#' @param subent_cnts Do you want the total counts of unique subentities to be returned? This is equivlient to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
-#' @param mtchd_subent_only Do you want only the subentities that match your query to be returned? A value of \code{TRUE} indicates that the subentity has to meet your query's requirnments in order for it to be returned, while a value of \code{FALSE} indicates that all subentity data will be returned, even those records that don't meet your query's requirnments. This is equivlient to the \code{matched_subentities_only} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
+#' @param subent_cnts Do you want the total counts of unique subentities to be returned? This is equivalent to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
+#' @param mtchd_subent_only Do you want only the subentities that match your query to be returned? A value of \code{TRUE} indicates that the subentity has to meet your query's requirements in order for it to be returned, while a value of \code{FALSE} indicates that all subentity data will be returned, even those records that don't meet your query's requirements. This is equivalent to the \code{matched_subentities_only} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This value can be as high as 10,000 (e.g., \code{per_page = 10000}).
 #' @param all_pages Do you want to download all possible pages of output? If \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are ignored.
