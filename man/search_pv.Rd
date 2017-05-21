@@ -10,16 +10,16 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
   ...)
 }
 \arguments{
-\item{query}{The query that the API will use to filter records. This parameter can be any one of the following:
+\item{query}{The query that the API will use to filter records. \code{query} can come in any one of the following forms:
 \itemize{
- \item A character or JSON vector of length 1 with valid JSON syntax\cr E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
- \item A list which will be converted to JSON by \code{search_pv}\cr E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
+ \item A character or JSON element with valid JSON syntax\cr E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
+ \item A list which will be converted to JSON syntax by \code{search_pv} via \code{\link[jsonlite]{toJSON}}\cr E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
  \item An object of class \code{pv_query}, which you create by calling one of the functions found in the \code{\link{qry_funs}} list...See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries vignette} for details.\cr E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 }}
 
 \item{fields}{A character vector of fields that you want returned from the server. A value of \code{NULL} indicates that the default fields should be returned. Acceptable fields for a given endpoint can be found at the API's online documentation (e.g., check out the field list for the \href{http://www.patentsview.org/api/patent.html#field_list}{patents endpoint})...Note, you can use \code{\link{get_fields}} to get possible field names for a given endpoint.}
 
-\item{endpoint}{A character vector of length 1 indicating which web service resource you wish to search. \code{endpoint} must be one of the following: "patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".}
+\item{endpoint}{The web service resource you wish to search. \code{endpoint} must be one of the following: "patents", "inventors", "assignees", "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".}
 
 \item{subent_cnts}{Do you want the total counts of unique subentities to be returned? This is equivalent to the \code{include_subentity_total_counts} parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.}
 
@@ -33,7 +33,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 
 \item{sort}{A named character vector where the name indicates the field to sort by and the value indicates the direction of sorting (direction should be either "asc" or "desc"). For example, \code{sort = c("patent_number" = "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" = "desc")}. \code{sort = NULL} (the default) means do not sort the results. You must include any fields that you wish to sort by in \code{fields}.}
 
-\item{method}{A character vector of length 1 indicating the HTTP method that you want to use to send the request. Possible values include "GET" or "POST". \strong{Use the POST method when your query is very long (say, over 2,000 characters in length)}.}
+\item{method}{The HTTP method that you want to use to send the request. Possible values include "GET" or "POST". \strong{Use the POST method when your query is very long (say, over 2,000 characters in length)}.}
 
 \item{error_browser}{The program used to view the HTML containing any error messages sent by the API. This should be one of the following:
 \itemize{

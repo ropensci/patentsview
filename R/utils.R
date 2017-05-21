@@ -24,7 +24,7 @@ validate_endpoint <- function(endpoint) {
                "cpc_subsections", "uspc_mainclasses", "nber_subcategories")
 
   asrt(all(endpoint %in% ok_ends, length(endpoint) == 1),
-       "endpoint must be a length 1 vector and be one of: ",
+       "endpoint must be one of the following: ",
        paste(ok_ends, collapse = ", "))
 }
 
@@ -38,5 +38,5 @@ validate_groups <- function(groups) {
                "nber_subcategories", "uspc_mainclasses", "uspc_subclasses")
 
   asrt(all(groups %in% ok_grps),
-       "group must be one of: ", paste(ok_grps, collapse = ", "))
+       "group must be one of the following: ", paste(ok_grps, collapse = ", "))
 }
