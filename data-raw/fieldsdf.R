@@ -39,7 +39,8 @@ fieldsdf <-
     data_type = rep("string", 7),
     can_query = rep("y", 7),
     group = rep("patents", 7),
-    stringsAsFactors = FALSE) %>%
+    stringsAsFactors = FALSE
+    ) %>%
       rbind(fields) %>%
       arrange(endpoint, field) %>%
       distinct()
