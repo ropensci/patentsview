@@ -184,7 +184,7 @@ query_1b <- with_qfuns(
 
 #### How do I access the data inside of the subentity list columns?
 
-You can flatten your results using `flatten_pv_data`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify: For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
+You can flatten your results using `flatten_pv_data`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
 
 ```{r}
 res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
@@ -197,7 +197,7 @@ res$data
 This data frame has assignee-level columns that are vectors (e.g., `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., applications subentity, `res$data$assignees$applications`, and government interest statement subentity, `res$data$assignees$gov_interests`). We can call `flatten_pv_data` to split the single data frame (`res$data$assignees`) into three different data frames, one for each entity/subentity:
 
 ```{r}
-new_data <- flatten_pv_data(data = res$data, pk_var = "assignee_id")
+new_data <- flatten_pv_data(data = res$data, pk = "assignee_id")
 
 new_data
 ```

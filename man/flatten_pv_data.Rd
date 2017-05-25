@@ -4,15 +4,15 @@
 \alias{flatten_pv_data}
 \title{Flatten PatentsView Data}
 \usage{
-flatten_pv_data(data, pk_var)
+flatten_pv_data(data, pk = get_ok_pk(names(data)))
 }
 \arguments{
 \item{data}{The data returned \code{\link{search_pv}}. This is the first element of the three-element result object you got back from \code{search_pv}. It should be a list of length 1, with one data frame inside it. See examples.}
 
-\item{pk_var}{The column/field name that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you could specify \code{pk_var = "patent_id"}. This identifier has to be included in your \code{fields} vector when you called \code{search_pv}.}
+\item{pk}{The column/field name that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you could specify \code{pk = "patent_id"}. This identifier has to be included in your \code{fields} vector when you call \code{search_pv}.}
 }
 \value{
-A list with multiple data frames, one for each entity/subentity type. Each data frame will have the column specified by \code{pk_var} in it, so you can link the tables back together.
+A list with multiple data frames, one for each entity/subentity type. Each data frame will have \code{pk} field in it, so you can link the tables back together.
 }
 \description{
 This function converts a single data frame that has subentity-level list columns in it into multiple data frames, one for each entity/subentity type. The multiple data frames can be merged together using the primary key variable specified by the user.
@@ -20,5 +20,5 @@ This function converts a single data frame that has subentity-level list columns
 \examples{
 fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
+data2 <- flatten_pv_data(data = res$data, pk = "patent_id")
 }
