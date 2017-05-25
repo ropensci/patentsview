@@ -30,3 +30,17 @@ get_fields <- function(endpoint, groups = NULL) {
     flds[flds$endpoint == endpoint & flds$group %in% groups, "field"]
   }
 }
+
+#' Get endpoints
+#'
+#' This function reminds the user what the 7 possible PatentsView API endpoings are.
+#'
+#' @return A character vector with the names of the 7 endpoints.
+#'
+#' @examples
+#' get_endpoints()
+#' @export
+get_endpoints <- function() {
+  c("assignees", "cpc_subsections", "inventors", "locations",
+    "nber_subcategories", "patents", "uspc_mainclasses")
+}

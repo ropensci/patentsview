@@ -382,7 +382,7 @@ Note that there is now an `assignee_id` column in each data frame, allowing us t
 
 ------------------------------------------------------------------------
 
-<sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#ref1">back</a></sup>
+<sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. You can use `get_endpoints()` to get the endpoint names as the API expects them to appear (e.g., `assignees`, `cpc_subsections`, `inventors`, `locations`, `nber_subcategories`, `patents`, and `uspc_mainclasses`)<sup><a href="#ref1">back</a></sup>
 
 <sup id="fn2">2</sup> Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup>
 

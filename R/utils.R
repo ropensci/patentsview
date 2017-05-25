@@ -20,8 +20,7 @@ format_num <- function(x) format(x, big.mark = ",", scientific = FALSE,
 
 #' @noRd
 validate_endpoint <- function(endpoint) {
-  ok_ends <- c("patents", "inventors", "assignees", "locations",
-               "cpc_subsections", "uspc_mainclasses", "nber_subcategories")
+  ok_ends <- get_endpoints()
 
   asrt(all(endpoint %in% ok_ends, length(endpoint) == 1),
        "endpoint must be one of the following: ",

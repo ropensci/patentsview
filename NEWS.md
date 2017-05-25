@@ -4,5 +4,5 @@
 
 * `search_pv` added to send requests to the PatentsView API
 * Functions inside of `qry_funs` added to help users write queries
-* `get_fields` added to quickly get field names
+* `get_fields` and `get_endpoints` added to quickly get possible field names and endpoints, respectively
 * `flatten_pv_data` added to flatten data results
