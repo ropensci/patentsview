@@ -8,11 +8,9 @@
 #' @return A list with multiple data frames, one for each entity/subentity type. Each data frame will have the column specified by \code{pk_var} in it, so you can link the tables back together.
 #'
 #' @examples
-#'
 #' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
 #' data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
-#'
 #' @export
 flatten_pv_data <- function(data, pk_var) {
 

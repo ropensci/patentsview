@@ -123,7 +123,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'  }
 #'
 #' @examples
-#'
 #' search_pv(query = qry_funs$gt(patent_year = 2010))
 #'
 #' search_pv(query = '{"_gt":{"patent_year":2010}}',
@@ -143,7 +142,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #' search_pv(query = with_qfuns(not(text_any(patent_title = "hi"))),
 #'           error_browser = rstudioapi::viewer)
 #'}
-#'
 #' @export
 search_pv <- function(query,
                       fields = NULL,

@@ -57,7 +57,6 @@ A list with the following three elements:
 This function makes an HTTP request to the PatentsView API for data matching the user's query.
 }
 \examples{
-
 search_pv(query = qry_funs$gt(patent_year = 2010))
 
 search_pv(query = '{"_gt":{"patent_year":2010}}',
@@ -77,5 +76,4 @@ search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 search_pv(query = with_qfuns(not(text_any(patent_title = "hi"))),
           error_browser = rstudioapi::viewer)
 }
-
 }

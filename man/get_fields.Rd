@@ -29,5 +29,4 @@ fields <- get_fields(endpoint = "patents", groups = "assignees")
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
           fields = fields, endpoint = "patents")
-
 }

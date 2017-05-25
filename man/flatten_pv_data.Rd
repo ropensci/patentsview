@@ -18,9 +18,7 @@ A list with multiple data frames, one for each entity/subentity type. Each data 
 This function converts a single data frame that has subentity-level list columns in it into multiple data frames, one for each entity/subentity type. The multiple data frames can be merged together using the primary key variable specified by the user.
 }
 \examples{
-
 fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
 data2 <- flatten_pv_data(data = res$data, pk_var = "patent_id")
-
 }
