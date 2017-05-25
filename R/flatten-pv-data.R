@@ -1,3 +1,11 @@
+get_ok_pk <- function(endpoint) {
+  ifelse(
+    endpoint %in% c('uspc_mainclasses', 'nber_subcategories'),
+    gsub("i?es$", "_id", endpoint),
+    gsub("s$", "_id", endpoint)
+  )
+}
+
 #' Flatten PatentsView Data
 #'
 #' This function converts a single data frame that has subentity-level list columns in it into multiple data frames, one for each entity/subentity type. The multiple data frames can be merged together using the primary key variable specified by the user.
@@ -27,11 +35,13 @@ flatten_pv_data <- function(data, pk_var) {
   sub_ent_df <- df[, !prim_ent_var, drop = FALSE]
   sub_ents <- colnames(sub_ent_df)
 
+  ok_pk <- get_ok_pk(endpoint = names(data))
+
   out_sub_ent <- sapply(sub_ents, FUN = function(x) {
     temp <- sub_ent_df[[x]]
     asrt(length(unique(df[, pk_var])) == length(temp),
-         pk_var, " cannot act as a primary key")
-
+         pk_var, " cannot act as a primary key because it is not a ",
+         "unique identifier.\n\nTry using ", ok_pk, " instead.")
     names(temp) <- df[, pk_var]
     xn <- do.call("rbind", temp)
     xn[, pk_var] <- gsub("\\.[0-9]*$", "", rownames(xn))
