@@ -7,13 +7,18 @@
 get_ok_pk(endpoint)
 }
 \arguments{
-\item{endpoint}{The endpoint which you would like to know a potential primary key for.}
+\item{endpoint}{The endpoint which you would like to know a potential primary
+key for.}
 }
 \value{
-The name of the primary key that you could pass to \code{\link{flatten_pv_data}}.
+The name of the primary key that you could pass to
+  \code{\link{flatten_pv_data}}.
 }
 \description{
-This function suggests a value that you could use for the \code{pk} argument in \code{\link{flatten_pv_data}}. It will return a potential unique identifier for a given entity (i.e., a given endpoint). For example, it will return "patent_id" when \code{endpoint = "patents"}.
+This function suggests a value that you could use for the \code{pk} argument
+in \code{\link{flatten_pv_data}}. It will return a potential unique
+identifier for a given entity (i.e., a given endpoint). For example, it will
+return "patent_id" when \code{endpoint = "patents"}.
 }
 \examples{
 get_ok_pk(endpoint = "inventors") # Returns "inventor_id"

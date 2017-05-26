@@ -7,15 +7,29 @@
 flatten_pv_data(data, pk = get_ok_pk(names(data)))
 }
 \arguments{
-\item{data}{The data returned \code{\link{search_pv}}. This is the first element of the three-element result object you got back from \code{search_pv}. It should be a list of length 1, with one data frame inside it. See examples.}
+\item{data}{The data returned \code{\link{search_pv}}. This is the first
+element of the three-element result object you got back from
+\code{search_pv}. It should be a list of length 1, with one data frame
+inside it. See examples.}
 
-\item{pk}{The column/field name that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you could specify \code{pk = "patent_id"} or \code{pk = "patent_number"}. \strong{This identifier has to have been included in your \code{fields} vector when you called \code{search_pv}}. You can use \code{\link{get_ok_pk}} to suggest a potential primary key for your data.}
+\item{pk}{The column/field name that will link the data frames together. This
+should be the unique identifier for the primary entity. For example, if you
+used the patents endpoint in your call to \code{search_pv}, you could
+specify \code{pk = "patent_id"} or \code{pk = "patent_number"}.
+\strong{This identifier has to have been included in your \code{fields}
+vector when you called \code{search_pv}}. You can use
+\code{\link{get_ok_pk}} to suggest a potential primary key for your data.}
 }
 \value{
-A list with multiple data frames, one for each entity/subentity type. Each data frame will have the column specified by \code{pk} in it, so you can link the tables back together.
+A list with multiple data frames, one for each entity/subentity type.
+  Each data frame will have the column specified by \code{pk} in it, so you
+  can link the tables back together.
 }
 \description{
-This function converts a single data frame that has subentity-level list columns in it into multiple data frames, one for each entity/subentity type. The multiple data frames can be merged together using the primary key variable specified by the user.
+This function converts a single data frame that has subentity-level list
+columns in it into multiple data frames, one for each entity/subentity type.
+The multiple data frames can be merged together using the primary key
+variable specified by the user.
 }
 \examples{
 fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")

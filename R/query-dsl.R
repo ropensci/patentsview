@@ -51,9 +51,12 @@ create_not_fun <- function(fun) {
 
 #' Query function list
 #'
-#' A list of functions that make it easy to write PatentsView queries. See the \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing queries} vignette and examples below for details.
+#' A list of functions that make it easy to write PatentsView queries. See the
+#' \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing
+#' queries} vignette and examples below for details.
 #'
-#' @return An object of class \code{pv_query}. This is basically just a simple list with a print method attached to it.
+#' @return An object of class \code{pv_query}. This is basically just a simple
+#'   list with a print method attached to it.
 #'
 #' @examples
 #' qry_funs$eq(patent_date = "2001-01-01")
@@ -70,7 +73,9 @@ qry_funs <- c(
 
 #' With Query Functions
 #'
-#' This function evaluates whatever code you pass to it in the environment of the \code{\link{qry_funs}} list. This allows you to cut down on typing when writing your queries.
+#' This function evaluates whatever code you pass to it in the environment of
+#' the \code{\link{qry_funs}} list. This allows you to cut down on typing when
+#' writing your queries.
 #'
 #' @param code Code to evaluate. See example.
 #'
