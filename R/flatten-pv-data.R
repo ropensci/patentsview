@@ -1,3 +1,15 @@
+#' Get OK primary key
+#'
+#' This function suggests a value that you could use for the \code{pk} argument in \code{\link{flatten_pv_data}}. It will return a potential unique identifier for a given entity (i.e., a given endpoint). For example, it will return "patent_id" when \code{endpoint = "patents"}.
+#'
+#' @param endpoint The endpoint which you would like to know a potential primary key for.
+#'
+#' @return The name of the primary key that you could pass to \code{\link{flatten_pv_data}}.
+#'
+#' @examples
+#' get_ok_pk(endpoint = "inventors") # Returns "inventor_id"
+#' get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
+#' @export
 get_ok_pk <- function(endpoint) {
   ifelse(
     endpoint %in% c('uspc_mainclasses', 'nber_subcategories'),
@@ -11,7 +23,7 @@ get_ok_pk <- function(endpoint) {
 #' This function converts a single data frame that has subentity-level list columns in it into multiple data frames, one for each entity/subentity type. The multiple data frames can be merged together using the primary key variable specified by the user.
 #'
 #' @param data The data returned \code{\link{search_pv}}. This is the first element of the three-element result object you got back from \code{search_pv}. It should be a list of length 1, with one data frame inside it. See examples.
-#' @param pk The column/field name that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you could specify \code{pk = "patent_id"}. This identifier has to be included in your \code{fields} vector when you called \code{search_pv}.
+#' @param pk The column/field name that will link the data frames together. This should be the unique identifier for the primary entity. For example, if you used the patents endpoint in your call to \code{search_pv}, you could specify \code{pk = "patent_id"} or \code{pk = "patent_number"}. \strong{This identifier has to have been included in your \code{fields} vector when you called \code{search_pv}}. You can use \code{\link{get_ok_pk}} to suggest a potential primary key for your data.
 #'
 #' @return A list with multiple data frames, one for each entity/subentity type. Each data frame will have the column specified by \code{pk} in it, so you can link the tables back together.
 #'
@@ -20,7 +32,7 @@ get_ok_pk <- function(endpoint) {
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
 #' data2 <- flatten_pv_data(data = res$data, pk = "patent_id")
 #' @export
-flatten_pv_data <- function(data, pk) {
+flatten_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   asrt("pv_data_result" %in% class(data),
        " Wrong input type for data...See example for correct input type")
