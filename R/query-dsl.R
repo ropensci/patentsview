@@ -66,9 +66,9 @@ create_not_fun <- function(fun) {
 qry_funs <- c(
   sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
            "begins", "contains", "text_all", "text_any", "text_phrase"),
-         create_key_fun, USE.NAMES = TRUE),
-  sapply(c("and", "or"), create_array_fun, USE.NAMES = TRUE),
-  sapply("not", create_not_fun, USE.NAMES = TRUE)
+         create_key_fun, USE.NAMES = TRUE, simplify = FALSE),
+  sapply(c("and", "or"), create_array_fun, USE.NAMES = TRUE, simplify = FALSE),
+  sapply("not", create_not_fun, USE.NAMES = TRUE, simplify = FALSE)
 )
 
 #' With Query Functions
