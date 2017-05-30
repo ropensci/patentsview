@@ -1,29 +1,32 @@
 #' Get OK primary key
 #'
 #' This function suggests a value that you could use for the \code{pk} argument
-#' in \code{\link{flatten_pv_data}}. It will return a potential unique
-#' identifier for a given entity (i.e., a given endpoint). For example, it will
-#' return "patent_id" when \code{endpoint = "patents"}.
+#' in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
+#' It will return a potential unique identifier for a given entity (i.e., a
+#' given endpoint). For example, it will return "patent_id" when
+#' \code{endpoint = "patents"}.
 #'
 #' @param endpoint The endpoint which you would like to know a potential primary
 #'   key for.
 #'
-#' @return The name of the primary key that you could pass to
-#'   \code{\link{flatten_pv_data}}.
+#' @return The name of the primary key (\code{pk}) that you could pass to
+#'   \code{\link{unnest_pv_data}}.
 #'
 #' @examples
 #' get_ok_pk(endpoint = "inventors") # Returns "inventor_id"
 #' get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
 #' @export
 get_ok_pk <- function(endpoint) {
+  es_eps <- c("uspc_mainclasses" = "uspc_mainclass_id",
+              "nber_subcategories" = "nber_subcategory_id")
   ifelse(
-    endpoint %in% c('uspc_mainclasses', 'nber_subcategories'),
-    gsub("i?es$", "_id", endpoint),
+    endpoint %in% names(es_eps),
+    es_eps[[endpoint]],
     gsub("s$", "_id", endpoint)
   )
 }
 
-#' Flatten PatentsView Data
+#' Unnest PatentsView Data
 #'
 #' This function converts a single data frame that has subentity-level list
 #' columns in it into multiple data frames, one for each entity/subentity type.
@@ -43,15 +46,15 @@ get_ok_pk <- function(endpoint) {
 #'   \code{\link{get_ok_pk}} to suggest a potential primary key for your data.
 #'
 #' @return A list with multiple data frames, one for each entity/subentity type.
-#'   Each data frame will have the column specified by \code{pk} in it, so you
-#'   can link the tables back together.
+#'   Each data frame will have the \code{pk} column in it, so you can link the
+#'   tables back together.
 #'
 #' @examples
 #' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-#' data2 <- flatten_pv_data(data = res$data, pk = "patent_id")
+#' data2 <- unnest_pv_data(data = res$data, pk = "patent_id")
 #' @export
-flatten_pv_data <- function(data, pk = get_ok_pk(names(data))) {
+unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   asrt("pv_data_result" %in% class(data),
        " Wrong input type for data...See example for correct input type")

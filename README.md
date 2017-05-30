@@ -160,7 +160,7 @@ Your choice of endpoint determines two things:
 
 1.  **Which entity your query is aplied to.** For the first call shown above, the API searched for *patents* that have at least one inventor on them with the last name of "chambers." For the second call, the API searched for *assignees* that were assigned a patent that has at least one inventor on it with the last name of "chambers."
 
-2.  **The structure of the data frame that is returned.** The first call (which was to the patents endpoint) gave us a data frame on the *patent level*, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns, named after the subentity that the field belongs to (e.g., the `inventors` subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the *assignee level*, meaning that each row corresponded to a different assignee. Note, you can flatten the subentity lists with `flatten_pv_data` (see FAQs below).
+2.  **The structure of the data frame that is returned.** The first call (which was to the patents endpoint) gave us a data frame on the *patent level*, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns, named after the subentity that the field belongs to (e.g., the `inventors` subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the *assignee level*, meaning that each row corresponded to a different assignee. Note, you can unnest the data frames that are stored in the list columns using with `unnest_pv_data` (see FAQs below).
 
 Examples
 --------
@@ -303,9 +303,9 @@ query_1b <- with_qfuns(
 )
 ```
 
-#### How do I access the data inside of the subentity list columns?
+#### How do I access the data frames inside of the subentity list columns?
 
-You can flatten your results using `flatten_pv_data`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and government interest statements:
+You can unnest the data frames from the list columns using `unnest_pv_data`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and "government interest statements":
 
 ``` r
 res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
@@ -337,10 +337,10 @@ res$data
 #>   ..$ gov_interests                 :List of 25
 ```
 
-This data frame has assignee-level columns that are vectors (e.g., `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., applications subentity, `res$data$assignees$applications`, and government interest statement subentity, `res$data$assignees$gov_interests`). We can call `flatten_pv_data` to split the single data frame (`res$data$assignees`) into three different data frames, one for each entity/subentity:
+The `res$data` data frame has assignee-level vector columns (e.g., the vector `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., the list `res$data$assignees$applications`). The list columns have data frames nested inside them, which we can extract using `unnest_pv_data`:
 
 ``` r
-new_data <- flatten_pv_data(data = res$data, pk = "assignee_id")
+new_data <- unnest_pv_data(data = res$data, pk = "assignee_id")
 
 new_data
 #> List of 3
@@ -378,7 +378,7 @@ new_data
 #>   ..$ assignee_type                 : chr [1:25] "2" ...
 ```
 
-Note that there is now an `assignee_id` column in each data frame, allowing us to link the data frames back together based on this variable.
+Now we are left with a series of flat data frames, instead of a single data frame with data frames nested inside. These flat data frames can be joined together as needed via the primary key (`assignee_id`).
 
 ------------------------------------------------------------------------
 
