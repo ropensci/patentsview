@@ -1,7 +1,6 @@
 context("search_pv")
 
-eps <- c("assignees", "cpc_subsections", "inventors", "locations",
-         "nber_subcategories", "patents", "uspc_mainclasses")
+eps <- get_endpoints()
 
 test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
@@ -14,7 +13,7 @@ test_that("API returns expected df names for all endpoints", {
   expect_equal(eps, z)
 })
 
-test_that("DSL language-based query returns expected results", {
+test_that("DSL-based query returns expected results", {
   skip_on_cran()
 
   query <- with_qfuns(

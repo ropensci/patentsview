@@ -10,5 +10,4 @@ test_that("Bad query arguments get informative error messages", {
   b_list <- list(`_neq` = list(patent_date = c("1976-01-01", "1976-01-01")))
   bad_qr <- patentsview:::tojson_2(b_list)
   expect_error(search_pv(query = bad_qr, error_browser = "false"), "array")
-
 })
