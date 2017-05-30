@@ -28,7 +28,8 @@ fields <-
       .$endpoint == "cpc_subsection" ~ "cpc_subsections",
       .$endpoint == "uspc" ~ "uspc_mainclasses",
       .$endpoint == "nber_subcat" ~ "nber_subcategories"
-    ))
+    )) %>%
+    mutate(group = ifelse(group == "coinvetnros", "coinventors", group))
 
 # patent_id left off list for all endpoints:
 

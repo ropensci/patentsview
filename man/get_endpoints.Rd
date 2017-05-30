@@ -10,7 +10,7 @@ get_endpoints()
 A character vector with the names of the 7 endpoints.
 }
 \description{
-This function reminds the user what the 7 possible PatentsView API endpoings
+This function reminds the user what the 7 possible PatentsView API endpoints
 are.
 }
 \examples{

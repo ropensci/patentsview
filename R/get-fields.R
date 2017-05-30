@@ -14,7 +14,7 @@
 #'   on the value of \code{endpoint}: "applications", "assignees", "cpcs",
 #'   "gov_interests", "inventors", "ipcs", "locations", "nbers", "patents",
 #'   "rawinventors", "uspcs", "wipos", "years", "cpc_subsections",
-#'   "cpc_subgroups", "coinventors", "coinvetnros", "application_citations",
+#'   "cpc_subgroups", "coinventors", "application_citations",
 #'   "cited_patents", "citedby_patents", "nber_subcategories",
 #'   "uspc_mainclasses", and "uspc_subclasses". See the field tables located
 #'   online to see which fields correspond to which groups (e.g., the
@@ -51,7 +51,7 @@ get_fields <- function(endpoint, groups = NULL) {
 
 #' Get endpoints
 #'
-#' This function reminds the user what the 7 possible PatentsView API endpoings
+#' This function reminds the user what the 7 possible PatentsView API endpoints
 #' are.
 #'
 #' @return A character vector with the names of the 7 endpoints.
