@@ -27,13 +27,15 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
  }}
 
-\item{fields}{A character vector of fields that you want returned from the
-server. A value of \code{NULL} indicates that the default fields should be
+\item{fields}{A character vector of the fields that you want returned to you.
+A value of \code{NULL} indicates that the default fields should be
 returned. Acceptable fields for a given endpoint can be found at the API's
 online documentation (e.g., check out the field list for the
 \href{http://www.patentsview.org/api/patent.html#field_list}{patents
-endpoint})...Note, you can use \code{\link{get_fields}} to get possible
-field names for a given endpoint.}
+endpoint}) or by viewing the \code{fieldsdf} data frame
+(\code{View(patentsview::fieldsdf)}). You can also use
+\code{\link{get_fields}} to list out the fields available for a given
+endpoint.}
 
 \item{endpoint}{The web service resource you wish to search. \code{endpoint}
 must be one of the following: "patents", "inventors", "assignees",
