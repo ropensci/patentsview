@@ -17,9 +17,11 @@ clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
 fields <-
   melt(all_tabs) %>%
     rename(field = `API Field Name`, data_type = Type, can_query = Query,
-           endpoint = L1, group = Group) %>%
-    select(endpoint, field, data_type, can_query, group) %>%
-    mutate_each(funs(clean_field)) %>%
+           endpoint = L1, group = Group, common_name = `Common Name`,
+           description = Description) %>%
+    select(endpoint, field, data_type, can_query, group,
+           common_name, description) %>%
+    mutate_at(vars(1:5), funs(clean_field)) %>%
     mutate(endpoint = case_when(
       .$endpoint == "patent" ~ "patents",
       .$endpoint == "inventor" ~ "inventors",
@@ -40,12 +42,13 @@ fieldsdf <-
     data_type = rep("string", 7),
     can_query = rep("y", 7),
     group = rep("patents", 7),
+    common_name = rep("Patent ID", 7),
+    description = rep("Unique database ID for patent", 7),
     stringsAsFactors = FALSE
-    ) %>%
-      rbind(fields) %>%
-      arrange(endpoint, field) %>%
-      distinct()
+  ) %>%
+    rbind(fields) %>%
+    arrange(endpoint, field) %>%
+    distinct()
 
 write.csv(fieldsdf, "data-raw/fieldsdf.csv", row.names = FALSE)
-# tools::checkRdaFiles("R/")
-use_data(fieldsdf, internal = TRUE, overwrite = TRUE, compress = "gzip")
+use_data(fieldsdf, internal = FALSE, overwrite = TRUE)
