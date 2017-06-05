@@ -60,10 +60,19 @@ search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 
 ## ----eval = params$eval_all----------------------------------------------
-# Setting subent_cnts = TRUE will give us the subentity counts.  
-# In this case, inventors are subentities so we will get their counts.
+# Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
+# are subentities, this means we will get their counts.
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
+
+## ----eval = params$eval_all----------------------------------------------
+query <- with_qfuns(
+  and(
+    gte(patent_date = "2010-01-01"),
+    contains(assignee_organization = "microsoft")
+  )
+)
+search_pv(query = query)
 
 ## ----eval = params$eval_all----------------------------------------------
 # Get all possible assignee-level and patent-level data fields available for 

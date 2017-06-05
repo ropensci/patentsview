@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="entity-counts" class="section level2">
 <h2>Entity counts</h2>
 <p>Our last two calls to <code>search_pv</code> gave the same value for <code>total_patent_count</code> in the <code>query_results</code> object, even though we got a lot more data from the second call. This is because the entity counts in <code>query_results</code> refer to the number of distinct entities across all downloadable pages of output, not just the page that was returned. <em>Downloadable pages of output</em> is an important phrase here, as the API limits us to 100,000 records per query. For example, we got <code>total_patent_count = 100,000</code> when we searched for patents published on or after 2007, even though there are many more than 100,000 of such patents. See the FAQs below for details on how to overcome the 100,000 record restriction.</p>
-<p>Note that, by default, <strong>PatentsView returns disambiguted versions of the entitites instead of raw data.</strong> You can also ask for raw inventor first and last names, but raw assignee names are not available.</p>
+<p>Note that, by default, <strong>PatentsView returns disambiguted versions of assignees, inventors, and locations, instead of raw data.</strong> You can also ask for raw inventor first and last names, but raw assignee names are not available.</p>
 </div>
 <div id="endpoints-for-7-entities" class="section level2">
 <h2>7 endpoints for 7 entities</h2>
@@ -240,8 +240,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 2,436</span></code></pre></div>
 <p>How many distinct inventors (disambiguated) are represented by these highly-cited patents?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setting subent_cnts = TRUE will give us the subentity counts.  </span>
-<span class="co"># In this case, inventors are subentities so we will get their counts.</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setting subent_cnts = TRUE will give us the subentity counts. Since inventors </span>
+<span class="co"># are subentities, this means we will get their counts.</span>
 <span class="kw">search_pv</span>(<span class="dt">query =</span> qry_funs$<span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>),
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">&quot;patent_number&quot;</span>, <span class="st">&quot;inventor_id&quot;</span>), <span class="dt">subent_cnts =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; $data</span>
@@ -256,6 +256,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 2,436, total_inventor_count = 4,223</span></code></pre></div>
+<p>What patents has Microsoft (disambiguated) published since 2010?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query &lt;-<span class="st"> </span><span class="kw">with_qfuns</span>(
+  <span class="kw">and</span>(
+    <span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2010-01-01&quot;</span>),
+    <span class="kw">contains</span>(<span class="dt">assignee_organization =</span> <span class="st">&quot;microsoft&quot;</span>)
+  )
+)
+<span class="kw">search_pv</span>(<span class="dt">query =</span> query)
+<span class="co">#&gt; $data</span>
+<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; List of 1</span>
+<span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_id    : chr [1:25] &quot;7643030&quot; ...</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:25] &quot;7643030&quot; ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:25] &quot;Method and system for efficiently evaluating and drawing NURBS surfaces for 3D graphics&quot; ...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $query_results</span>
+<span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; total_patent_count = 20,629</span></code></pre></div>
 <p>Which assignees have an inventor whose last name contains “smith” (e.g., “smith”, “johnson-smith”)? Also, give me the patent data where those “smiths” occur.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get all possible assignee-level and patent-level data fields available for </span>
 <span class="co"># the assignees endpoint:</span>

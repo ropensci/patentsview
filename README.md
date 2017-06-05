@@ -143,7 +143,7 @@ Entity counts
 
 Our last two calls to `search_pv` gave the same value for `total_patent_count` in the `query_results` object, even though we got a lot more data from the second call. This is because the entity counts in `query_results` refer to the number of distinct entities across all downloadable pages of output, not just the page that was returned. *Downloadable pages of output* is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` when we searched for patents published on or after 2007, even though there are many more than 100,000 of such patents. See the FAQs below for details on how to overcome the 100,000 record restriction.
 
-Note that, by default, **PatentsView returns disambiguted versions of the entitites instead of raw data.** You can also ask for raw inventor first and last names, but raw assignee names are not available.
+Note that, by default, **PatentsView returns disambiguted versions of assignees, inventors, and locations, instead of raw data.** You can also ask for raw inventor first and last names, but raw assignee names are not available.
 
 7 endpoints for 7 entities
 --------------------------
@@ -221,8 +221,8 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 How many distinct inventors (disambiguated) are represented by these highly-cited patents?
 
 ``` r
-# Setting subent_cnts = TRUE will give us the subentity counts.  
-# In this case, inventors are subentities so we will get their counts.
+# Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
+# are subentities, this means we will get their counts.
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
 #> $data
@@ -237,6 +237,31 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
 #> #### Distinct entity counts across all downloadable pages of output:
 #> 
 #> total_patent_count = 2,436, total_inventor_count = 4,223
+```
+
+What patents has Microsoft (disambiguated) published since 2010?
+
+``` r
+query <- with_qfuns(
+  and(
+    gte(patent_date = "2010-01-01"),
+    contains(assignee_organization = "microsoft")
+  )
+)
+search_pv(query = query)
+#> $data
+#> #### A list with a single data frame on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:25] "7643030" ...
+#>   ..$ patent_number: chr [1:25] "7643030" ...
+#>   ..$ patent_title : chr [1:25] "Method and system for efficiently evaluating and drawing NURBS surfaces for 3D graphics" ...
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 20,629
 ```
 
 Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
