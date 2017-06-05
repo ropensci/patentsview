@@ -21,8 +21,33 @@ The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an inter
 library(patentsview)
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          fields = c("patent_number", "patent_title"), 
           endpoint = "patents")
+#> $data
+#> #### A list with a single data frame on the patent data level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame': 25 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:25] "7155746" ...
+#>   ..$ patent_number: chr [1:25] "7155746" ...
+#>   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and methods of making and using same" ...
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 100,000
+```
+
+This call to `search_pv` sends our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#fn1" id="ref1">1</a></sup>
+
+Fields
+------
+
+Each endpoint has a different set of *queryable* and *retrievable* fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown above). Retrievable fields are those that you can get data on. In the above query we didn't specify which fields we wanted to retrieve, so we were given the endpoint's set of default fields. You can specify which fields you want to retrieve using the `fields` argument:
+
+``` r
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
+          endpoint = "patents", 
+          fields = c("patent_number", "patent_title"))
 #> $data
 #> #### A list with a single data frame on the patent data level:
 #> 
@@ -37,12 +62,21 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
 #> total_patent_count = 100,000
 ```
 
-This call to `search_pv` sends our query to the "patents" endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup><a href="#fn1" id="ref1">1</a></sup> Each endpoint has a different set of *queryable* fields (i.e., fields that you can include in your query, such as `"patent_date"` in the above example) as well as a different set of *retrievable* fields (i.e., fields that you can ask for data on, such as `"patent_number"` and `"patent_title"` in the above example). You can see the list of the acceptable fields for a given endpoint at that endpoint's online field list table (e.g., the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). You can also use the `get_fields` function for a quick way to list all of the retrievable fields for a given endpoint.
+To list all of the retrievable fields for a given endpoint, use `get_fields`:
+
+``` r
+retr_fields <- get_fields(endpoint = "patents")
+head(retr_fields)
+#> [1] "app_country"       "app_date"          "app_number"       
+#> [4] "app_type"          "appcit_app_number" "appcit_category"
+```
+
+You can see an endpoint's list of queryable and retrievable fields by viewing the endpoint's online field list table (e.g., the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). These online tables also appear in the `fieldsdf` data frame, which you can load using `data("fieldsdf")` or `View(patentsview::fieldsdf)`.
 
 Writing queries
 ---------------
 
-The PatentsView query syntax is documented on their [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're getting errors back from the server and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
+The PatentsView query syntax is documented on the [API query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're getting errors back from the server and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
 
 ``` r
 qry_funs$gte(patent_date = "2007-01-01")
@@ -208,7 +242,8 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
 Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
 
 ``` r
-# Get all possible assignee-level and patent-level data fields available for the assignees endpoint:
+# Get all possible assignee-level and patent-level data fields available for 
+# the assignees endpoint:
 asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
 
 # Ask the PatentsView API for these fields:
@@ -382,7 +417,7 @@ Now we are left with a series of flat data frames, instead of a single data fram
 
 ------------------------------------------------------------------------
 
-<sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. You can use `get_endpoints()` to get the endpoint names as the API expects them to appear (e.g., `assignees`, `cpc_subsections`, `inventors`, `locations`, `nber_subcategories`, `patents`, and `uspc_mainclasses`)<sup><a href="#ref1">back</a></sup>
+<sup id="fn1">1</sup>You can use `get_endpoints()` to get the endpoint names as the API expects them to appear (e.g., `assignees`, `cpc_subsections`, `inventors`, `locations`, `nber_subcategories`, `patents`, and `uspc_mainclasses`)<sup><a href="#ref1">back</a></sup>
 
 <sup id="fn2">2</sup> Note, this particular webpage includes some details that are not relevant to the `query` argument, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup>
 

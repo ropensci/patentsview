@@ -14,8 +14,16 @@ knitr::opts_chunk$set(
 library(patentsview)
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          fields = c("patent_number", "patent_title"), 
           endpoint = "patents")
+
+## ------------------------------------------------------------------------
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
+          endpoint = "patents", 
+          fields = c("patent_number", "patent_title"))
+
+## ------------------------------------------------------------------------
+retr_fields <- get_fields(endpoint = "patents")
+head(retr_fields)
 
 ## ------------------------------------------------------------------------
 qry_funs$gte(patent_date = "2007-01-01")
@@ -58,7 +66,8 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
 
 ## ----eval = params$eval_all----------------------------------------------
-# Get all possible assignee-level and patent-level data fields available for the assignees endpoint:
+# Get all possible assignee-level and patent-level data fields available for 
+# the assignees endpoint:
 asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
 
 # Ask the PatentsView API for these fields:

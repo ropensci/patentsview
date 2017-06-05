@@ -82,11 +82,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Basic usage</h2>
 <p>The <a href="http://www.patentsview.org/api/doc.html">PatentsView API</a> provides an interface to a disambiguated version of USPTO. The <code>patentsview</code> R package provides one main function, <code>search_pv</code>, to make it easy to interact with that API. Let’s take a look:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
-<span class="co">#&gt; Warning: package 'patentsview' was built under R version 3.5.0</span>
 
 <span class="kw">search_pv</span>(<span class="dt">query =</span> <span class="st">'{&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-01-01&quot;}}'</span>,
-          <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">&quot;patent_number&quot;</span>, <span class="st">&quot;patent_title&quot;</span>), 
           <span class="dt">endpoint =</span> <span class="st">&quot;patents&quot;</span>)
+<span class="co">#&gt; $data</span>
+<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; List of 1</span>
+<span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_id    : chr [1:25] &quot;7155746&quot; ...</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:25] &quot;7155746&quot; ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:25] &quot;Anti-wicking protective workwear and methods of making and using same&quot; ...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $query_results</span>
+<span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; total_patent_count = 100,000</span></code></pre></div>
+<p>This call to <code>search_pv</code> sends our query to the “patents” endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#fn1" id="ref1">1</a></sup></p>
+</div>
+<div id="fields" class="section level2">
+<h2>Fields</h2>
+<p>Each endpoint has a different set of <em>queryable</em> and <em>retrievable</em> fields. Queryable fields are those that you can include in your query (e.g., <code>patent_date</code> shown above). Retrievable fields are those that you can get data on. In the above query we didn’t specify which fields we wanted to retrieve, so we were given the endpoint’s set of default fields. You can specify which fields you want to retrieve using the <code>fields</code> argument:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search_pv</span>(<span class="dt">query =</span> <span class="st">'{&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-01-01&quot;}}'</span>,
+          <span class="dt">endpoint =</span> <span class="st">&quot;patents&quot;</span>, 
+          <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">&quot;patent_number&quot;</span>, <span class="st">&quot;patent_title&quot;</span>))
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
 <span class="co">#&gt; </span>
@@ -99,11 +118,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 100,000</span></code></pre></div>
-<p>This call to <code>search_pv</code> sends our query to the “patents” endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types.<sup><a href="#fn1" id="ref1">1</a></sup> Each endpoint has a different set of <em>queryable</em> fields (i.e., fields that you can include in your query, such as <code>&quot;patent_date&quot;</code> in the above example) as well as a different set of <em>retrievable</em> fields (i.e., fields that you can ask for data on, such as <code>&quot;patent_number&quot;</code> and <code>&quot;patent_title&quot;</code> in the above example). You can see the list of the acceptable fields for a given endpoint at that endpoint’s online field list table (e.g., the <a href="http://www.patentsview.org/api/inventor.html#field_list">inventor field list table</a>). Note the “Query” column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). You can also use the <code>get_fields</code> function for a quick way to list all of the retrievable fields for a given endpoint.</p>
+<p>To list all of the retrievable fields for a given endpoint, use <code>get_fields</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">retr_fields &lt;-<span class="st"> </span><span class="kw">get_fields</span>(<span class="dt">endpoint =</span> <span class="st">&quot;patents&quot;</span>)
+<span class="kw">head</span>(retr_fields)
+<span class="co">#&gt; [1] &quot;app_country&quot;       &quot;app_date&quot;          &quot;app_number&quot;       </span>
+<span class="co">#&gt; [4] &quot;app_type&quot;          &quot;appcit_app_number&quot; &quot;appcit_category&quot;</span></code></pre></div>
+<p>You can see an endpoint’s list of queryable and retrievable fields by viewing the endpoint’s online field list table (e.g., the <a href="http://www.patentsview.org/api/inventor.html#field_list">inventor field list table</a>). Note the “Query” column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). These online tables also appear in the <code>fieldsdf</code> data frame, which you can load using <code>data(&quot;fieldsdf&quot;)</code> or <code>View(patentsview::fieldsdf)</code>.</p>
 </div>
 <div id="writing-queries" class="section level2">
 <h2>Writing queries</h2>
-<p>The PatentsView query syntax is documented on their <a href="http://www.patentsview.org/api/query-language.html#query_string_format">API query language page</a>.<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you’re writing it by hand (i.e., just writing the query in a string like <code>'{&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-01-01&quot;}}'</code>). The <code>patentsview</code> package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you’re getting errors back from the server and don’t understand why. Check out the <a href="https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd">writing queries vignette</a> for more details…We can rewrite our query using this DSL as:</p>
+<p>The PatentsView query syntax is documented on the <a href="http://www.patentsview.org/api/query-language.html#query_string_format">API query language page</a>.<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you’re writing it by hand (i.e., just writing the query in a string like <code>'{&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-01-01&quot;}}'</code>). The <code>patentsview</code> package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you’re getting errors back from the server and don’t understand why. Check out the <a href="https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd">writing queries vignette</a> for more details…We can rewrite our query using this DSL as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2007-01-01&quot;</span>)
 <span class="co">#&gt; {&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-01-01&quot;}}</span></code></pre></div>
 <p>More complex queries are also possible:</p>
@@ -233,7 +257,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 2,436, total_inventor_count = 4,223</span></code></pre></div>
 <p>Which assignees have an inventor whose last name contains “smith” (e.g., “smith”, “johnson-smith”)? Also, give me the patent data where those “smiths” occur.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get all possible assignee-level and patent-level data fields available for the assignees endpoint:</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get all possible assignee-level and patent-level data fields available for </span>
+<span class="co"># the assignees endpoint:</span>
 asgn_pat_flds &lt;-<span class="st"> </span><span class="kw">get_fields</span>(<span class="st">&quot;assignees&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;assignees&quot;</span>, <span class="st">&quot;patents&quot;</span>))
 
 <span class="co"># Ask the PatentsView API for these fields:</span>
@@ -384,7 +409,7 @@ new_data
 <span class="co">#&gt;   ..$ assignee_type                 : chr [1:25] &quot;2&quot; ...</span></code></pre></div>
 <p>Now we are left with a series of flat data frames, instead of a single data frame with data frames nested inside. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
 <hr />
-<p><sup id="fn1">1</sup> The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes. You can use <code>get_endpoints()</code> to get the endpoint names as the API expects them to appear (e.g., <code>assignees</code>, <code>cpc_subsections</code>, <code>inventors</code>, <code>locations</code>, <code>nber_subcategories</code>, <code>patents</code>, and <code>uspc_mainclasses</code>)<sup><a href="#ref1">back</a></sup></p>
+<p><sup id="fn1">1</sup>You can use <code>get_endpoints()</code> to get the endpoint names as the API expects them to appear (e.g., <code>assignees</code>, <code>cpc_subsections</code>, <code>inventors</code>, <code>locations</code>, <code>nber_subcategories</code>, <code>patents</code>, and <code>uspc_mainclasses</code>)<sup><a href="#ref1">back</a></sup></p>
 <p><sup id="fn2">2</sup> Note, this particular webpage includes some details that are not relevant to the <code>query</code> argument, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup></p>
 <p><sup id="fn3">3</sup> If we were to download more than one inventor-level field, we would see that all inventor-level fields get placed in the <code>inventors</code> list column.<sup><a href="#ref3">back</a></sup></p>
 </div>
