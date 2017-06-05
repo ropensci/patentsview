@@ -7,7 +7,8 @@
 get_fields(endpoint, groups = NULL)
 }
 \arguments{
-\item{endpoint}{The API endpoint whose field list you want to get.}
+\item{endpoint}{The API endpoint whose field list you want to get. See
+\code{\link{get_endpoints}} for the list of the 7 endpoints.}
 
 \item{groups}{A character vector giving the group(s) whose fields you want
 returned. A value of \code{NULL} indicates that you want all of the

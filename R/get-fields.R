@@ -6,7 +6,8 @@
 #' entity group(s) as well (which is recommended, given the large number of
 #' possible fields for each endpoint).
 #'
-#' @param endpoint The API endpoint whose field list you want to get.
+#' @param endpoint The API endpoint whose field list you want to get. See
+#'   \code{\link{get_endpoints}} for the list of the 7 endpoints.
 #' @param groups A character vector giving the group(s) whose fields you want
 #'   returned. A value of \code{NULL} indicates that you want all of the
 #'   endpoint's fields (i.e., do not filter the field list based on group
