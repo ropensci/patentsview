@@ -5,7 +5,7 @@ get_base <- function(endpoint)
 #' @noRd
 tojson_2 <- function(x, ...) {
   json <- jsonlite::toJSON(x, ...)
-  if (!grepl("[:alnum:]", json, ignore.case = TRUE)) json <- ""
+  if (!grepl("[[:alnum:]]", json, ignore.case = TRUE)) json <- ""
   json
 }
 
