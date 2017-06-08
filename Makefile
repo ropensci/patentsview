@@ -1,4 +1,4 @@
-all: data-raw/fieldsdf.csv README.md doc vig test
+all: data-raw/fieldsdf.csv doc README.md vig test
 .PHONY: clean
 
 # Pull endpoint fields from PatentsView website
