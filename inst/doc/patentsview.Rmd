@@ -228,9 +228,7 @@ res$data
 The `res$data` data frame has assignee-level vector columns (e.g., the vector `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., the list `res$data$assignees$applications`). The list columns have data frames nested inside them, which we can extract using `unnest_pv_data`:
 
 ```{r}
-new_data <- unnest_pv_data(data = res$data, pk = "assignee_id")
-
-new_data
+unnest_pv_data(data = res$data, pk = "assignee_id")
 ```
 
 Now we are left with a series of flat data frames, instead of a single data frame with data frames nested inside. These flat data frames can be joined together as needed via the primary key (`assignee_id`).

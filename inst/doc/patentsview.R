@@ -118,7 +118,5 @@ res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 res$data
 
 ## ------------------------------------------------------------------------
-new_data <- unnest_pv_data(data = res$data, pk = "assignee_id")
-
-new_data
+unnest_pv_data(data = res$data, pk = "assignee_id")
 

@@ -57,7 +57,7 @@ get_ok_pk <- function(endpoint) {
 unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   asrt("pv_data_result" %in% class(data),
-       " Wrong input type for data...See example for correct input type")
+       "Wrong input type for data...See example for correct input type")
 
   df <- data[[1]]
 
@@ -71,7 +71,7 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   ok_pk <- get_ok_pk(endpoint = names(data))
 
-  out_sub_ent <- sapply(sub_ents, FUN = function(x) {
+  out_sub_ent <- sapply(sub_ents, function(x) {
     temp <- sub_ent_df[[x]]
     asrt(length(unique(df[, pk])) == length(temp),
          pk, " cannot act as a primary key because it is not a ",
@@ -86,9 +86,9 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
   prim_ent <- names(data)
   out_sub_ent[[prim_ent]] <- df[, prim_ent_var, drop = FALSE]
 
-  out_sub_ent_reord <- lapply(out_sub_ent, FUN = function(x) {
+  out_sub_ent_reord <- lapply(out_sub_ent, function(x) {
     coln <- colnames(x)
-    x[,c(pk, coln[!(pk == coln)])]
+    x[, c(pk, coln[!(pk == coln)])]
   })
 
   structure(

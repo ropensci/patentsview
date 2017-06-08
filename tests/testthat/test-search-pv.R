@@ -5,7 +5,7 @@ eps <- get_endpoints()
 test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
 
-  z <- vapply(eps, FUN = function(x) {
+  z <- vapply(eps, function(x) {
     j <- search_pv("{\"patent_number\":\"5116621\"}", endpoint = x)
     names(j[[1]])
   }, FUN.VALUE = character(1), USE.NAMES = FALSE)
@@ -36,7 +36,7 @@ test_that("search_pv can pull all fields for all endpoints except locations", {
 
   eps_no_loc <- eps[eps != "locations"]
 
-  z <- lapply(eps_no_loc, FUN = function(x) {
+  z <- lapply(eps_no_loc, function(x) {
     search_pv("{\"patent_number\":\"5116621\"}", endpoint = x,
               fields = get_fields(x))
   })

@@ -400,9 +400,7 @@ res$data
 The `res$data` data frame has assignee-level vector columns (e.g., the vector `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., the list `res$data$assignees$applications`). The list columns have data frames nested inside them, which we can extract using `unnest_pv_data`:
 
 ``` r
-new_data <- unnest_pv_data(data = res$data, pk = "assignee_id")
-
-new_data
+unnest_pv_data(data = res$data, pk = "assignee_id")
 #> List of 3
 #>  $ applications :'data.frame':   124 obs. of  5 variables:
 #>   ..$ assignee_id: chr [1:124] "00043de7382082391622e725605f37b5" ...
