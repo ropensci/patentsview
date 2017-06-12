@@ -49,7 +49,7 @@ check_query <- function(query, endpoint) {
   fltxt_opr <- c("_text_all", "_text_any", "_text_phrase")
   all_opr <- c(simp_opr, num_opr, str_opr, fltxt_opr)
 
-  flds <- fieldsdf
+  flds <- patentsview::fieldsdf
   flds_flt <- flds[flds$endpoint == endpoint & flds$can_query == "y", ]
 
   apply_checks <- function(x, endpoint) {
