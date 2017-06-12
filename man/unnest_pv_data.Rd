@@ -29,7 +29,9 @@ A list with multiple data frames, one for each entity/subentity type.
 This function converts a single data frame that has subentity-level list
 columns in it into multiple data frames, one for each entity/subentity type.
 The multiple data frames can be merged together using the primary key
-variable specified by the user.
+variable specified by the user (see the
+\href{http://r4ds.had.co.nz/relational-data.html}{Relational data} chapter
+in "R for Data Science" for an in-depth introduction to joining tabular data).
 }
 \examples{
 fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
