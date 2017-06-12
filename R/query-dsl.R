@@ -119,7 +119,9 @@ qry_funs <- c(
 #'
 #' This function evaluates whatever code you pass to it in the environment of
 #' the \code{\link{qry_funs}} list. This allows you to cut down on typing when
-#' writing your queries.
+#' writing your queries. If you want to cut down on typing even more, you can
+#' try assigning the \code{\link{qry_funs}} list into your global environment
+#' with: \code{list2env(qry_funs, envir = globalenv())}.
 #'
 #' @param code Code to evaluate. See example.
 #'
