@@ -218,7 +218,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; total_assignee_count = 467</span></code></pre></div>
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Which entity your query is aplied to.</strong> For the first call shown above, the API searched for <em>patents</em> that have at least one inventor on them with the last name of “chambers.” For the second call, the API searched for <em>assignees</em> that were assigned a patent that has at least one inventor on it with the last name of “chambers.”</p></li>
+<li><p><strong>Which entity your query is applied to.</strong> For the first call shown above, the API searched for <em>patents</em> that have at least one inventor on them with the last name of “chambers.” For the second call, the API searched for <em>assignees</em> that were assigned a patent that has at least one inventor on it with the last name of “chambers.”</p></li>
 <li><p><strong>The structure of the data frame that is returned.</strong> The first call (which was to the patents endpoint) gave us a data frame on the <em>patent level</em>, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned in list columns, named after the subentity that the field belongs to (e.g., the <code>inventors</code> subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the <em>assignee level</em>, meaning that each row corresponded to a different assignee. Note, you can unnest the data frames that are stored in the list columns using with <code>unnest_pv_data</code> (see FAQs below).</p></li>
 </ol>
 </div>
@@ -392,9 +392,7 @@ res$data
 <span class="co">#&gt;   ..$ applications                  :List of 25</span>
 <span class="co">#&gt;   ..$ gov_interests                 :List of 25</span></code></pre></div>
 <p>The <code>res$data</code> data frame has assignee-level vector columns (e.g., the vector <code>res$data$assignees$assignee_first_seen_date</code>) and subentity-level list columns (e.g., the list <code>res$data$assignees$applications</code>). The list columns have data frames nested inside them, which we can extract using <code>unnest_pv_data</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_data &lt;-<span class="st"> </span><span class="kw">unnest_pv_data</span>(<span class="dt">data =</span> res$data, <span class="dt">pk =</span> <span class="st">&quot;assignee_id&quot;</span>)
-
-new_data
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unnest_pv_data</span>(<span class="dt">data =</span> res$data, <span class="dt">pk =</span> <span class="st">&quot;assignee_id&quot;</span>)
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ applications :'data.frame':   124 obs. of  5 variables:</span>
 <span class="co">#&gt;   ..$ assignee_id: chr [1:124] &quot;00043de7382082391622e725605f37b5&quot; ...</span>

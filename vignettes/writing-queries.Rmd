@@ -87,7 +87,7 @@ jsonlite::toJSON(query_v_3, auto_unbox = TRUE)
 
 #### 1. Query validation 
 
-`search_pv` will check your query and throw a helpful error message if your provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API's error messages for guidance...`search_pv` will check list queries for the following:
+`search_pv` will check your query and throw a helpful error message if you provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API's error messages for guidance...`search_pv` will check list queries for the following:
 
 * The fields included in your query are _queryable_ fields for the endpoint (i.e., the field can be used in the user query). For example, it would make sure that `assingee_country` can be used in the query argument if you sent the above query to the patents endpoint.
 * Your query fields are compatible with the comparison operators you used. For example, it would confirm that the `text_all` operator was used with fields whose type was "full text" (`patent_title` above).

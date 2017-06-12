@@ -135,7 +135,7 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <p>…So why would you ever want to use method 3 over methods 1 and 2? There are two main reasons:</p>
 <div id="query-validation" class="section level4">
 <h4>1. Query validation</h4>
-<p><code>search_pv</code> will check your query and throw a helpful error message if your provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API’s error messages for guidance…<code>search_pv</code> will check list queries for the following:</p>
+<p><code>search_pv</code> will check your query and throw a helpful error message if you provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API’s error messages for guidance…<code>search_pv</code> will check list queries for the following:</p>
 <ul>
 <li>The fields included in your query are <em>queryable</em> fields for the endpoint (i.e., the field can be used in the user query). For example, it would make sure that <code>assingee_country</code> can be used in the query argument if you sent the above query to the patents endpoint.</li>
 <li>Your query fields are compatible with the comparison operators you used. For example, it would confirm that the <code>text_all</code> operator was used with fields whose type was “full text” (<code>patent_title</code> above).</li>
