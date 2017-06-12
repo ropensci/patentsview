@@ -98,7 +98,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 100,000</span></code></pre></div>
-<p>This call to <code>search_pv</code> sends our query to the “patents” endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a>, though we could have used pure R functions (described in the <a href="https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd">writing queries vignette</a>) instead.</p>
+<p>This call to <code>search_pv</code> sends our query to the “patents” endpoint. The PatentsView API has 7 different endpoints, corresponding to 7 different entity types. The 7 entity types include assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes.<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a> which uses JSON, though we could have used pure R functions (described in the <a href="https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd">writing queries vignette</a>) instead.</p>
 </div>
 <div id="fields" class="section level2">
 <h2>Fields</h2>
