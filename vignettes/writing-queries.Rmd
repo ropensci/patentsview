@@ -16,44 +16,46 @@ knitr::opts_chunk$set(
 
 ## Three ways to write the same query
 
-There are three different ways that you can create a query to pass to `search_pv`. For example, let's say you want to find all patents published in the last 10 years that have the word "dog" in their titles or abstracts, and whose assignees reside in either the US or Canada. Here are the three options for how you could write such a query: 
+There are three different ways that you can create a query to pass to `search_pv()`. For example, let's say you want to find all patents published in the last 10 years that have the word "dog" in their titles or abstracts, and whose assignees are located in either the US or Canada. Here are the three options for how you could write such a query: 
 
 1. Use a raw character/JSON vector:
 
 ```{r}
-'{"_and":[
-        {"_gte":{"patent_date":"2007-03-01"}},
-        {"_or":[
-          {"_text_all":{"patent_title":"dog"}},
-          {"_text_all":{"patent_abstract":"dog"}}
-        ]},
-        {"_or":[
-          {"_eq":{"assingee_country":"US"}},
-          {"_eq":{"assingee_country":"CA"}}
-        ]}
-]}' -> query_v_1
+query_v_1 <-
+  '{"_and":[
+          {"_gte":{"patent_date":"2007-03-01"}},
+          {"_or":[
+            {"_text_all":{"patent_title":"dog"}},
+            {"_text_all":{"patent_abstract":"dog"}}
+          ]},
+          {"_or":[
+            {"_eq":{"assingee_country":"US"}},
+            {"_eq":{"assingee_country":"CA"}}
+          ]}
+  ]}'
 ```
 
-2. Use a list (which will be converted to JSON by `search_pv`):
+2. Use a list (which will be converted to JSON by `search_pv()`):
 
 ```{r}
-list("_and" = 
-     list(
-        list("_gte" = list(patent_date = "2007-03-01")),
-        list("_or" = 
-               list(
-                 list("_text_all" = list(patent_title = "dog")),
-                 list("_text_all" = list(patent_abstract = "dog"))
-                 )
-             ),
-        list("_or" = 
-               list(
-                 list("_eq" = list(assingee_country = "US")),
-                 list("_eq" = list(assingee_country = "CA"))
-                 )
-             )
-    )
-) -> query_v_2
+query_v_2 <- 
+  list("_and" = 
+       list(
+          list("_gte" = list(patent_date = "2007-03-01")),
+          list("_or" = 
+                 list(
+                   list("_text_all" = list(patent_title = "dog")),
+                   list("_text_all" = list(patent_abstract = "dog"))
+                   )
+               ),
+          list("_or" = 
+                 list(
+                   list("_eq" = list(assingee_country = "US")),
+                   list("_eq" = list(assingee_country = "CA"))
+                   )
+               )
+      )
+  )
 ```
 
 3. Use the domain specific language (DSL) provided in `patentsview` to create an object of class `pv_query` (which is also a list): 
@@ -61,16 +63,17 @@ list("_and" =
 ```{r}
 library(patentsview)
 
-with_qfuns(
-  and(
-    gte(patent_date = "2007-03-01"),
-    or(
-      text_all(patent_title = "dog"),
-      text_all(patent_abstract = "dog")
-    ),
-    eq(assingee_country = c("US", "CA"))
+query_v_3 <- 
+  with_qfuns(
+    and(
+      gte(patent_date = "2007-03-01"),
+      or(
+        text_all(patent_title = "dog"),
+        text_all(patent_abstract = "dog")
+      ),
+      eq(assingee_country = c("US", "CA"))
+    )
   )
-) -> query_v_3
 ```
 
 ## Why use the DSL (method 3)?
@@ -87,7 +90,7 @@ jsonlite::toJSON(query_v_3, auto_unbox = TRUE)
 
 #### 1. Query validation 
 
-`search_pv` will check your query and throw a helpful error message if you provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API's error messages for guidance...`search_pv` will check list queries for the following:
+`search_pv()` will check your query for errors if you use methods 2 or 3. This is not the case for method 1, were you would have to rely on the API's error messages for guidance if your query is invalid...`search_pv()` checks queries for the following:
 
 * The fields included in your query are _queryable_ fields for the endpoint (i.e., the field can be used in the user query). For example, it would make sure that `assingee_country` can be used in the query argument if you sent the above query to the patents endpoint.
 * Your query fields are compatible with the comparison operators you used. For example, it would confirm that the `text_all` operator was used with fields whose type was "full text" (`patent_title` above).
@@ -95,17 +98,17 @@ jsonlite::toJSON(query_v_3, auto_unbox = TRUE)
 
 #### 2. Concise, easy to use syntax for complex queries
 
-Methods 1 and 3 shown above are both much shorter than method 2, making them quicker. It's also a lot easier to get the JSON syntax correct when using method 3 compared to method 1, because you don't have to write any JSON at all using the DSL...This is important because the API is fairly picky about the JSON syntax, so it's not trivial to get it right. For example, the API will throw an error if you use a box in your JSON when is not absolutely necessary, even if your query is still valid JSON (e.g., `query = {"_gte":{"patent_date":["2007-03-01"]}}` will throw an error). 
+Methods 1 and 3 shown above are both shorter than method 2, making them quicker. It's also a lot easier to get the JSON syntax correct when using method 3 compared to method 1, because you don't have to write any JSON at all using the DSL...This is important because the API is fairly picky about the query syntax, so it's not trivial to get it correct. For example, the API will throw an error if you use a box in your JSON when is not absolutely necessary, even if your query is still valid JSON (e.g., `query = {"_gte":{"patent_date":["2007-03-01"]}}` will throw an error). 
 
-Compared to method 1, method 3 will correctly<sup><a href="#fn1" id="ref1">1</a></sup> "or" together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for `assingee_country` (`c("US", "CA")`). This safely converted the single "equals" statement in the third element of the query (`eq(assingee_country = c("US", "CA"))`) to two separate equals statements that are or'd together. 
+Compared to method 1, method 3 will correctly "or" together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for `assingee_country` (`c("US", "CA")`). This safely converted the single "equals" statement in the third element of the query (`eq(assingee_country = c("US", "CA"))`) to two separate equals statements that are or'd together.<sup><a href="#fn1" id="ref1">1</a></sup>  
 
 ## Basics of the DSL
 
-All of the functions that comprise the DSL are found in the `qry_funs` list (e.g., `qry_funs$eq()`). You can evaluate code in the context of this list using the function `with_qfuns()`. See  `?with_qfuns()` for an example that demonstrates how using this function saves you typing. There are three types of functions in `qry_funs`:
+All of the functions that make up the DSL are found in the `qry_funs` list (e.g., `qry_funs$eq()`). You can evaluate code in the context of this list using the function `with_qfuns()`. See  `?with_qfuns()` for an example that demonstrates how using this function saves you typing. There are three types of functions in `qry_funs`:
 
-1. **Comparison operator functions** (`eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `begins`, `contains`, `text_all`, `text_any`, `text_phrase`). These functions are used to compare a field to a value. For example, using the "less than or equal to" function (`lte`), we can make sure that the publication date of the patent is less than or equal to some date (e.g., `query = qry_funs$lte(patent_date = "2001-01-05")`). See the "comparison operators" section of the API's [query language page](http://www.patentsview.org/api/query-language.html) for a description of the 11 comparison operators, noting that the `patentsview` function equivalent of the operator just drops the leading "\_". One important thing to keep in mind is that certain comparison operators only work with certain data types. For example, you can't use the `begins` function on patent abstract because patent abstract is of data type "full text" and `begins` only works with fields of data type "string." 
-2. **Array functions** (`and` and `or`). You can use these functions to logically combine the calls to the comparison operators. For example, we can require that the patent date is less than or equal to 2001-01-05 _and_ that the inventor's last name is "Ihaka" (`query = with_qfuns(and(lte(patent_date = "2001-01-05"), eq(inventor_last_name = "Ihaka")))`).
-3. **not function** (`not`). This function negates a comparison instead of making a comparison. In other words, the `not` function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don't have the word "hi" in their titles like this: `qry_funs$not(qry_funs$text_phrase(patent_title = "hi"))`.
+1. **Comparison operator functions** (`eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `begins`, `contains`, `text_all`, `text_any`, `text_phrase`). These functions are used to compare a field to a value. For example, using the "less than or equal to" function (`lte`), we can filter out publications published after some date (e.g., `query = qry_funs$lte(patent_date = "2001-01-05")`). See the "comparison operators" section of the API's [query language page](http://www.patentsview.org/api/query-language.html) for a description of the 11 comparison operators, noting that the `patentsview` function equivalent of the operator just drops the leading "\_". One important thing to keep in mind is that certain comparison operators only work with certain data types. For example, you can't use the `begins` function on `patent_abstract` because `patent_abstract` is of data type "full text" and `begins` only works with fields of data type "string." 
+2. **Array functions** (`and` and `or`). You can use these functions to logically combine the calls to the various comparison operators. For example, we can require that the patent date is less than or equal to 2001-01-05 _and_ the inventor's last name is "Ihaka" (`query = with_qfuns(and(lte(patent_date = "2001-01-05"), eq(inventor_last_name = "Ihaka")))`).
+3. **not function** (`not`). This function negates a comparison. In other words, the `not` function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don't have the word "hi" in their titles like this: `qry_funs$not(qry_funs$text_phrase(patent_title = "hi"))`.
 
 ## Query examples (for patents endpoint)
 
@@ -135,7 +138,7 @@ with_qfuns(
 )
 ```
 
-Patents with an inventor whose disambiguated last name is “Smith” and with “cotton gin” in the patent title, or with an inventor whose disambiguated last name is “Hopper” and with “COBOL” in the patent title (Adapted from a [PatentsView example](http://www.patentsview.org/api/query-language.html)):
+Patents with an inventor whose disambiguated last name is “Smith” and with “cotton gin” in the patent title, or with an inventor whose disambiguated last name is “Hopper” and with “COBOL” in the patent title:
 
 ```{r}
 with_qfuns(
@@ -153,6 +156,6 @@ with_qfuns(
 ```
 
 *** 
-<sup id="fn1">1</sup> One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot "or" together values using arrays. Thus, the query DSL in `patentsview` never relies on value arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup>
+<sup id="fn1">1</sup> One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot "or" together values using arrays. Thus, the query DSL in `patentsview` never relies on arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup>
 
 <sup id="fn2">2</sup> PatentsView gets the names of the CPC hierarchy wrong. For example, a "CPC subsection" according to PatentsView is actually a CPC class.<sup><a href="#ref2">back</a></sup>

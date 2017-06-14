@@ -72,56 +72,59 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="three-ways-to-write-the-same-query" class="section level2">
 <h2>Three ways to write the same query</h2>
-<p>There are three different ways that you can create a query to pass to <code>search_pv</code>. For example, let’s say you want to find all patents published in the last 10 years that have the word “dog” in their titles or abstracts, and whose assignees reside in either the US or Canada. Here are the three options for how you could write such a query:</p>
+<p>There are three different ways that you can create a query to pass to <code>search_pv()</code>. For example, let’s say you want to find all patents published in the last 10 years that have the word “dog” in their titles or abstracts, and whose assignees are located in either the US or Canada. Here are the three options for how you could write such a query:</p>
 <ol style="list-style-type: decimal">
 <li>Use a raw character/JSON vector:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">'{&quot;_and&quot;:[</span>
-<span class="st">        {&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-03-01&quot;}},</span>
-<span class="st">        {&quot;_or&quot;:[</span>
-<span class="st">          {&quot;_text_all&quot;:{&quot;patent_title&quot;:&quot;dog&quot;}},</span>
-<span class="st">          {&quot;_text_all&quot;:{&quot;patent_abstract&quot;:&quot;dog&quot;}}</span>
-<span class="st">        ]},</span>
-<span class="st">        {&quot;_or&quot;:[</span>
-<span class="st">          {&quot;_eq&quot;:{&quot;assingee_country&quot;:&quot;US&quot;}},</span>
-<span class="st">          {&quot;_eq&quot;:{&quot;assingee_country&quot;:&quot;CA&quot;}}</span>
-<span class="st">        ]}</span>
-<span class="st">]}'</span> -&gt;<span class="st"> </span>query_v_1</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_1 &lt;-
+<span class="st">  '{&quot;_and&quot;:[</span>
+<span class="st">          {&quot;_gte&quot;:{&quot;patent_date&quot;:&quot;2007-03-01&quot;}},</span>
+<span class="st">          {&quot;_or&quot;:[</span>
+<span class="st">            {&quot;_text_all&quot;:{&quot;patent_title&quot;:&quot;dog&quot;}},</span>
+<span class="st">            {&quot;_text_all&quot;:{&quot;patent_abstract&quot;:&quot;dog&quot;}}</span>
+<span class="st">          ]},</span>
+<span class="st">          {&quot;_or&quot;:[</span>
+<span class="st">            {&quot;_eq&quot;:{&quot;assingee_country&quot;:&quot;US&quot;}},</span>
+<span class="st">            {&quot;_eq&quot;:{&quot;assingee_country&quot;:&quot;CA&quot;}}</span>
+<span class="st">          ]}</span>
+<span class="st">  ]}'</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Use a list (which will be converted to JSON by <code>search_pv</code>):</li>
+<li>Use a list (which will be converted to JSON by <code>search_pv()</code>):</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list</span>(<span class="st">&quot;_and&quot;</span> =<span class="st"> </span>
-<span class="st">     </span><span class="kw">list</span>(
-        <span class="kw">list</span>(<span class="st">&quot;_gte&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2007-03-01&quot;</span>)),
-        <span class="kw">list</span>(<span class="st">&quot;_or&quot;</span> =<span class="st"> </span>
-<span class="st">               </span><span class="kw">list</span>(
-                 <span class="kw">list</span>(<span class="st">&quot;_text_all&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_title =</span> <span class="st">&quot;dog&quot;</span>)),
-                 <span class="kw">list</span>(<span class="st">&quot;_text_all&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_abstract =</span> <span class="st">&quot;dog&quot;</span>))
-                 )
-             ),
-        <span class="kw">list</span>(<span class="st">&quot;_or&quot;</span> =<span class="st"> </span>
-<span class="st">               </span><span class="kw">list</span>(
-                 <span class="kw">list</span>(<span class="st">&quot;_eq&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">assingee_country =</span> <span class="st">&quot;US&quot;</span>)),
-                 <span class="kw">list</span>(<span class="st">&quot;_eq&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">assingee_country =</span> <span class="st">&quot;CA&quot;</span>))
-                 )
-             )
-    )
-) -&gt;<span class="st"> </span>query_v_2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">list</span>(<span class="st">&quot;_and&quot;</span> =<span class="st"> </span>
+<span class="st">       </span><span class="kw">list</span>(
+          <span class="kw">list</span>(<span class="st">&quot;_gte&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2007-03-01&quot;</span>)),
+          <span class="kw">list</span>(<span class="st">&quot;_or&quot;</span> =<span class="st"> </span>
+<span class="st">                 </span><span class="kw">list</span>(
+                   <span class="kw">list</span>(<span class="st">&quot;_text_all&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_title =</span> <span class="st">&quot;dog&quot;</span>)),
+                   <span class="kw">list</span>(<span class="st">&quot;_text_all&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_abstract =</span> <span class="st">&quot;dog&quot;</span>))
+                   )
+               ),
+          <span class="kw">list</span>(<span class="st">&quot;_or&quot;</span> =<span class="st"> </span>
+<span class="st">                 </span><span class="kw">list</span>(
+                   <span class="kw">list</span>(<span class="st">&quot;_eq&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">assingee_country =</span> <span class="st">&quot;US&quot;</span>)),
+                   <span class="kw">list</span>(<span class="st">&quot;_eq&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">assingee_country =</span> <span class="st">&quot;CA&quot;</span>))
+                   )
+               )
+      )
+  )</code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Use the domain specific language (DSL) provided in <code>patentsview</code> to create an object of class <code>pv_query</code> (which is also a list):</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
-<span class="kw">with_qfuns</span>(
-  <span class="kw">and</span>(
-    <span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2007-03-01&quot;</span>),
-    <span class="kw">or</span>(
-      <span class="kw">text_all</span>(<span class="dt">patent_title =</span> <span class="st">&quot;dog&quot;</span>),
-      <span class="kw">text_all</span>(<span class="dt">patent_abstract =</span> <span class="st">&quot;dog&quot;</span>)
-    ),
-    <span class="kw">eq</span>(<span class="dt">assingee_country =</span> <span class="kw">c</span>(<span class="st">&quot;US&quot;</span>, <span class="st">&quot;CA&quot;</span>))
-  )
-) -&gt;<span class="st"> </span>query_v_3</code></pre></div>
+query_v_3 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">with_qfuns</span>(
+    <span class="kw">and</span>(
+      <span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">&quot;2007-03-01&quot;</span>),
+      <span class="kw">or</span>(
+        <span class="kw">text_all</span>(<span class="dt">patent_title =</span> <span class="st">&quot;dog&quot;</span>),
+        <span class="kw">text_all</span>(<span class="dt">patent_abstract =</span> <span class="st">&quot;dog&quot;</span>)
+      ),
+      <span class="kw">eq</span>(<span class="dt">assingee_country =</span> <span class="kw">c</span>(<span class="st">&quot;US&quot;</span>, <span class="st">&quot;CA&quot;</span>))
+    )
+  )</code></pre></div>
 </div>
 <div id="why-use-the-dsl-method-3" class="section level2">
 <h2>Why use the DSL (method 3)?</h2>
@@ -135,7 +138,7 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <p>…So why would you ever want to use method 3 over methods 1 and 2? There are two main reasons:</p>
 <div id="query-validation" class="section level4">
 <h4>1. Query validation</h4>
-<p><code>search_pv</code> will check your query and throw a helpful error message if you provide your query as a list (methods 2 or 3). This is not the case for method 1, were you would have to rely on the API’s error messages for guidance…<code>search_pv</code> will check list queries for the following:</p>
+<p><code>search_pv()</code> will check your query for errors if you use methods 2 or 3. This is not the case for method 1, were you would have to rely on the API’s error messages for guidance if your query is invalid…<code>search_pv()</code> checks queries for the following:</p>
 <ul>
 <li>The fields included in your query are <em>queryable</em> fields for the endpoint (i.e., the field can be used in the user query). For example, it would make sure that <code>assingee_country</code> can be used in the query argument if you sent the above query to the patents endpoint.</li>
 <li>Your query fields are compatible with the comparison operators you used. For example, it would confirm that the <code>text_all</code> operator was used with fields whose type was “full text” (<code>patent_title</code> above).</li>
@@ -144,17 +147,17 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 </div>
 <div id="concise-easy-to-use-syntax-for-complex-queries" class="section level4">
 <h4>2. Concise, easy to use syntax for complex queries</h4>
-<p>Methods 1 and 3 shown above are both much shorter than method 2, making them quicker. It’s also a lot easier to get the JSON syntax correct when using method 3 compared to method 1, because you don’t have to write any JSON at all using the DSL…This is important because the API is fairly picky about the JSON syntax, so it’s not trivial to get it right. For example, the API will throw an error if you use a box in your JSON when is not absolutely necessary, even if your query is still valid JSON (e.g., <code>query = {&quot;_gte&quot;:{&quot;patent_date&quot;:[&quot;2007-03-01&quot;]}}</code> will throw an error).</p>
-<p>Compared to method 1, method 3 will correctly<sup><a href="#fn1" id="ref1">1</a></sup> “or” together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for <code>assingee_country</code> (<code>c(&quot;US&quot;, &quot;CA&quot;)</code>). This safely converted the single “equals” statement in the third element of the query (<code>eq(assingee_country = c(&quot;US&quot;, &quot;CA&quot;))</code>) to two separate equals statements that are or’d together.</p>
+<p>Methods 1 and 3 shown above are both shorter than method 2, making them quicker. It’s also a lot easier to get the JSON syntax correct when using method 3 compared to method 1, because you don’t have to write any JSON at all using the DSL…This is important because the API is fairly picky about the query syntax, so it’s not trivial to get it correct. For example, the API will throw an error if you use a box in your JSON when is not absolutely necessary, even if your query is still valid JSON (e.g., <code>query = {&quot;_gte&quot;:{&quot;patent_date&quot;:[&quot;2007-03-01&quot;]}}</code> will throw an error).</p>
+<p>Compared to method 1, method 3 will correctly “or” together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for <code>assingee_country</code> (<code>c(&quot;US&quot;, &quot;CA&quot;)</code>). This safely converted the single “equals” statement in the third element of the query (<code>eq(assingee_country = c(&quot;US&quot;, &quot;CA&quot;))</code>) to two separate equals statements that are or’d together.<sup><a href="#fn1" id="ref1">1</a></sup></p>
 </div>
 </div>
 <div id="basics-of-the-dsl" class="section level2">
 <h2>Basics of the DSL</h2>
-<p>All of the functions that comprise the DSL are found in the <code>qry_funs</code> list (e.g., <code>qry_funs$eq()</code>). You can evaluate code in the context of this list using the function <code>with_qfuns()</code>. See <code>?with_qfuns()</code> for an example that demonstrates how using this function saves you typing. There are three types of functions in <code>qry_funs</code>:</p>
+<p>All of the functions that make up the DSL are found in the <code>qry_funs</code> list (e.g., <code>qry_funs$eq()</code>). You can evaluate code in the context of this list using the function <code>with_qfuns()</code>. See <code>?with_qfuns()</code> for an example that demonstrates how using this function saves you typing. There are three types of functions in <code>qry_funs</code>:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Comparison operator functions</strong> (<code>eq</code>, <code>neq</code>, <code>gt</code>, <code>gte</code>, <code>lt</code>, <code>lte</code>, <code>begins</code>, <code>contains</code>, <code>text_all</code>, <code>text_any</code>, <code>text_phrase</code>). These functions are used to compare a field to a value. For example, using the “less than or equal to” function (<code>lte</code>), we can make sure that the publication date of the patent is less than or equal to some date (e.g., <code>query = qry_funs$lte(patent_date = &quot;2001-01-05&quot;)</code>). See the “comparison operators” section of the API’s <a href="http://www.patentsview.org/api/query-language.html">query language page</a> for a description of the 11 comparison operators, noting that the <code>patentsview</code> function equivalent of the operator just drops the leading “_”. One important thing to keep in mind is that certain comparison operators only work with certain data types. For example, you can’t use the <code>begins</code> function on patent abstract because patent abstract is of data type “full text” and <code>begins</code> only works with fields of data type “string.”</li>
-<li><strong>Array functions</strong> (<code>and</code> and <code>or</code>). You can use these functions to logically combine the calls to the comparison operators. For example, we can require that the patent date is less than or equal to 2001-01-05 <em>and</em> that the inventor’s last name is “Ihaka” (<code>query = with_qfuns(and(lte(patent_date = &quot;2001-01-05&quot;), eq(inventor_last_name = &quot;Ihaka&quot;)))</code>).</li>
-<li><strong>not function</strong> (<code>not</code>). This function negates a comparison instead of making a comparison. In other words, the <code>not</code> function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don’t have the word “hi” in their titles like this: <code>qry_funs$not(qry_funs$text_phrase(patent_title = &quot;hi&quot;))</code>.</li>
+<li><strong>Comparison operator functions</strong> (<code>eq</code>, <code>neq</code>, <code>gt</code>, <code>gte</code>, <code>lt</code>, <code>lte</code>, <code>begins</code>, <code>contains</code>, <code>text_all</code>, <code>text_any</code>, <code>text_phrase</code>). These functions are used to compare a field to a value. For example, using the “less than or equal to” function (<code>lte</code>), we can filter out publications published after some date (e.g., <code>query = qry_funs$lte(patent_date = &quot;2001-01-05&quot;)</code>). See the “comparison operators” section of the API’s <a href="http://www.patentsview.org/api/query-language.html">query language page</a> for a description of the 11 comparison operators, noting that the <code>patentsview</code> function equivalent of the operator just drops the leading “_”. One important thing to keep in mind is that certain comparison operators only work with certain data types. For example, you can’t use the <code>begins</code> function on <code>patent_abstract</code> because <code>patent_abstract</code> is of data type “full text” and <code>begins</code> only works with fields of data type “string.”</li>
+<li><strong>Array functions</strong> (<code>and</code> and <code>or</code>). You can use these functions to logically combine the calls to the various comparison operators. For example, we can require that the patent date is less than or equal to 2001-01-05 <em>and</em> the inventor’s last name is “Ihaka” (<code>query = with_qfuns(and(lte(patent_date = &quot;2001-01-05&quot;), eq(inventor_last_name = &quot;Ihaka&quot;)))</code>).</li>
+<li><strong>not function</strong> (<code>not</code>). This function negates a comparison. In other words, the <code>not</code> function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don’t have the word “hi” in their titles like this: <code>qry_funs$not(qry_funs$text_phrase(patent_title = &quot;hi&quot;))</code>.</li>
 </ol>
 </div>
 <div id="query-examples-for-patents-endpoint" class="section level2">
@@ -176,7 +179,7 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
   )
 )
 <span class="co">#&gt; {&quot;_and&quot;:[{&quot;_contains&quot;:{&quot;rawinventor_first_name&quot;:&quot;joh&quot;}},{&quot;_or&quot;:[{&quot;_text_phrase&quot;:{&quot;patent_abstract&quot;:&quot;dog bark&quot;}},{&quot;_text_phrase&quot;:{&quot;patent_abstract&quot;:&quot;cat meow&quot;}}]},{&quot;_not&quot;:{&quot;_text_phrase&quot;:{&quot;patent_abstract&quot;:&quot;dog chain&quot;}}}]}</span></code></pre></div>
-<p>Patents with an inventor whose disambiguated last name is “Smith” and with “cotton gin” in the patent title, or with an inventor whose disambiguated last name is “Hopper” and with “COBOL” in the patent title (Adapted from a <a href="http://www.patentsview.org/api/query-language.html">PatentsView example</a>):</p>
+<p>Patents with an inventor whose disambiguated last name is “Smith” and with “cotton gin” in the patent title, or with an inventor whose disambiguated last name is “Hopper” and with “COBOL” in the patent title:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with_qfuns</span>(
   <span class="kw">or</span>(
     <span class="kw">and</span>(
@@ -191,7 +194,7 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 )
 <span class="co">#&gt; {&quot;_or&quot;:[{&quot;_and&quot;:[{&quot;_eq&quot;:{&quot;inventor_last_name&quot;:&quot;smith&quot;}},{&quot;_text_phrase&quot;:{&quot;patent_title&quot;:&quot;cotton gin&quot;}}]},{&quot;_and&quot;:[{&quot;_eq&quot;:{&quot;inventor_last_name&quot;:&quot;hopper&quot;}},{&quot;_text_phrase&quot;:{&quot;patent_title&quot;:&quot;COBOL&quot;}}]}]}</span></code></pre></div>
 <hr />
-<p><sup id="fn1">1</sup> One may note that using “value arrays” is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: <code>'{&quot;inventor_last_name&quot;:[&quot;Whitney&quot;,&quot;Hopper&quot;]}'</code>. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot “or” together values using arrays. Thus, the query DSL in <code>patentsview</code> never relies on value arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup></p>
+<p><sup id="fn1">1</sup> One may note that using “value arrays” is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: <code>'{&quot;inventor_last_name&quot;:[&quot;Whitney&quot;,&quot;Hopper&quot;]}'</code>. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot “or” together values using arrays. Thus, the query DSL in <code>patentsview</code> never relies on arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup></p>
 <p><sup id="fn2">2</sup> PatentsView gets the names of the CPC hierarchy wrong. For example, a “CPC subsection” according to PatentsView is actually a CPC class.<sup><a href="#ref2">back</a></sup></p>
 </div>
 

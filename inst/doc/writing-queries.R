@@ -5,50 +5,53 @@ knitr::opts_chunk$set(
 )
 
 ## ------------------------------------------------------------------------
-'{"_and":[
-        {"_gte":{"patent_date":"2007-03-01"}},
-        {"_or":[
-          {"_text_all":{"patent_title":"dog"}},
-          {"_text_all":{"patent_abstract":"dog"}}
-        ]},
-        {"_or":[
-          {"_eq":{"assingee_country":"US"}},
-          {"_eq":{"assingee_country":"CA"}}
-        ]}
-]}' -> query_v_1
+query_v_1 <-
+  '{"_and":[
+          {"_gte":{"patent_date":"2007-03-01"}},
+          {"_or":[
+            {"_text_all":{"patent_title":"dog"}},
+            {"_text_all":{"patent_abstract":"dog"}}
+          ]},
+          {"_or":[
+            {"_eq":{"assingee_country":"US"}},
+            {"_eq":{"assingee_country":"CA"}}
+          ]}
+  ]}'
 
 ## ------------------------------------------------------------------------
-list("_and" = 
-     list(
-        list("_gte" = list(patent_date = "2007-03-01")),
-        list("_or" = 
-               list(
-                 list("_text_all" = list(patent_title = "dog")),
-                 list("_text_all" = list(patent_abstract = "dog"))
-                 )
-             ),
-        list("_or" = 
-               list(
-                 list("_eq" = list(assingee_country = "US")),
-                 list("_eq" = list(assingee_country = "CA"))
-                 )
-             )
-    )
-) -> query_v_2
+query_v_2 <- 
+  list("_and" = 
+       list(
+          list("_gte" = list(patent_date = "2007-03-01")),
+          list("_or" = 
+                 list(
+                   list("_text_all" = list(patent_title = "dog")),
+                   list("_text_all" = list(patent_abstract = "dog"))
+                   )
+               ),
+          list("_or" = 
+                 list(
+                   list("_eq" = list(assingee_country = "US")),
+                   list("_eq" = list(assingee_country = "CA"))
+                   )
+               )
+      )
+  )
 
 ## ------------------------------------------------------------------------
 library(patentsview)
 
-with_qfuns(
-  and(
-    gte(patent_date = "2007-03-01"),
-    or(
-      text_all(patent_title = "dog"),
-      text_all(patent_abstract = "dog")
-    ),
-    eq(assingee_country = c("US", "CA"))
+query_v_3 <- 
+  with_qfuns(
+    and(
+      gte(patent_date = "2007-03-01"),
+      or(
+        text_all(patent_title = "dog"),
+        text_all(patent_abstract = "dog")
+      ),
+      eq(assingee_country = c("US", "CA"))
+    )
   )
-) -> query_v_3
 
 ## ------------------------------------------------------------------------
 jsonlite::minify(query_v_1)
