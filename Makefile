@@ -9,6 +9,7 @@ data-raw/fields.csv: data-raw/fieldsdf.R
 README.md: vignettes/patentsview.Rmd
 	Rscript -e "rmarkdown::render('vignettes/patentsview.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE, params = list(eval_all = TRUE))"
 	Rscript -e "file.remove('README.html')"
+	echo "[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
 
 # Document package
 doc:

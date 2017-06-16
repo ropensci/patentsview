@@ -447,3 +447,4 @@ Now we are left with a series of flat data frames, instead of a single data fram
 <sup id="fn2">2</sup> This webpage includes some details that are not relevant to the `query` argument in `search_pv`, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup>
 
 <sup id="fn3">3</sup> You can unnest the data frames that are stored in the list columns using `unnest_pv_data()`. See the FAQs for details.<sup><a href="#ref3">back</a></sup>
+[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
