@@ -13,11 +13,10 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 \item{query}{The query that the API will use to filter records. \code{query}
  can come in any one of the following forms:
  \itemize{
-   \item A character or JSON element with valid JSON syntax\cr
-   E.g.,\code{'{"_gte":{"patent_date":"2007-01-04"}}'}
+   \item A character string with valid JSON syntax\cr
+   E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
 
-   \item A list which will be converted to JSON syntax by \code{search_pv}
-   via \code{\link[jsonlite]{toJSON}}\cr
+   \item A list which will be converted to JSON by \code{search_pv}\cr
    E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
 
    \item An object of class \code{pv_query}, which you create by calling one
@@ -70,10 +69,10 @@ be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
 You must include any fields that you wish to sort by in \code{fields}.}
 
 \item{method}{The HTTP method that you want to use to send the request.
-Possible values include "GET" or "POST". \strong{Use the POST method when
-your query is very long (say, over 2,000 characters in length)}.}
+Possible values include "GET" or "POST". Use the POST method when
+your query is very long (say, over 2,000 characters in length).}
 
-\item{error_browser}{The program used to view the HTML containing any error
+\item{error_browser}{The program used to view the HTML error
  messages sent by the API. This should be one of the following:
  \itemize{
    \item The string "false" (the default), which turns error browsing off.
@@ -85,7 +84,7 @@ your query is very long (say, over 2,000 characters in length)}.}
    (e.g., \code{error_browser = "chrome"}). Otherwise, include the full
    path to the program.
 
-   \item An R function to be called to invoke the browser (e.g.,
+   \item An R function to be called to invoke the browser (e.g.,\cr
    \code{error_browser = rstudioapi::viewer})
 
    \item Under Windows, a value of \code{NULL} is allowed and implies that
@@ -101,10 +100,10 @@ A list with the following three elements:
  \describe{
    \item{data}{A list with one element - a named data frame containing the
    data returned by the server. Each row in the data frame corresponds to a
-   single primary entity. For example, if you search the assignee endpoint,
-   then the data frame will be on the assignee-level, where each row
-   corresponds to a single assignee. Fields that are not on the
-   assignee-level would be returned in a list column.}
+   single value for the primary entity. For example, if you search the
+   assignees endpoint, then the data frame will be on the assignee-level,
+   where each row corresponds to a single assignee. Fields that are not on
+   the assignee-level would be returned in list columns.}
 
    \item{query_results}{Entity counts across all pages of output (not just
    the page returned to you). If you set \code{subent_cnts = TRUE}, you will
@@ -113,7 +112,7 @@ A list with the following three elements:
    \item{request}{Details of the HTTP request that was sent to the server.
    When you set \code{all_pages = TRUE}, you will only get a sample request.
    In other words, you will not be given multiple requests for the multiple
-   calls made to the server (one for each page of results).}
+   calls that were made to the server (one for each page of results).}
  }
 }
 \description{

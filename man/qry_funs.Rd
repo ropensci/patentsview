@@ -21,8 +21,8 @@ queries vignette} for further details.
 \details{
 \strong{1. Comparison operator functions} \cr
 
-There are 6 comparison operators that work with fields of type integer,
-float, date, or string:
+There are 6 comparison operator functions that work with fields of type
+integer, float, date, or string:
 \itemize{
    \item \code{eq} - Equal to
    \item \code{neq} - Not equal to
@@ -32,17 +32,22 @@ float, date, or string:
    \item \code{lte} - Less than or equal to
  }
 
-There are 2 comparison operators that only work with fields of type string:
+There are 2 comparison operator functions that only work with fields of type
+string:
 \itemize{
    \item \code{begins} - The string begins with the value string
    \item \code{contains} - The string contains the value string
  }
 
-There are 3 comparison operators that only work with fields of type full text:
+There are 3 comparison operator functions that only work with fields of type
+fulltext:
 \itemize{
-   \item \code{text_all} - The text contains all the words in the value string
-   \item \code{text_any} - The text contains any of the words in the value string
-   \item \code{text_phrase} - The text contains the exact phrase of the value string
+   \item \code{text_all} - The text contains all the words in the value
+   string
+   \item \code{text_any} - The text contains any of the words in the value
+   string
+   \item \code{text_phrase} - The text contains the exact phrase of the value
+   string
  }
 
 \strong{2. Array functions} \cr

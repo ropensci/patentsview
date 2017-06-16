@@ -9,7 +9,7 @@
 #' @param endpoint The endpoint which you would like to know a potential primary
 #'   key for.
 #'
-#' @return The name of the primary key (\code{pk}) that you could pass to
+#' @return The name of a primary key (\code{pk}) that you could pass to
 #'   \code{\link{unnest_pv_data}}.
 #'
 #' @examples
@@ -29,13 +29,13 @@ get_ok_pk <- function(endpoint) {
 #' Unnest PatentsView Data
 #'
 #' This function converts a single data frame that has subentity-level list
-#' columns in it into multiple data frames, one for each entity/subentity type.
+#' columns in it into multiple data frames, one for each entity/subentity.
 #' The multiple data frames can be merged together using the primary key
 #' variable specified by the user (see the
-#' \href{http://r4ds.had.co.nz/relational-data.html}{Relational data} chapter
+#' \href{http://r4ds.had.co.nz/relational-data.html}{relational data} chapter
 #' in "R for Data Science" for an in-depth introduction to joining tabular data).
 #'
-#' @param data The data returned \code{\link{search_pv}}. This is the first
+#' @param data The data returned by \code{\link{search_pv}}. This is the first
 #'   element of the three-element result object you got back from
 #'   \code{search_pv}. It should be a list of length 1, with one data frame
 #'   inside it. See examples.
@@ -47,9 +47,9 @@ get_ok_pk <- function(endpoint) {
 #'   vector when you called \code{search_pv}}. You can use
 #'   \code{\link{get_ok_pk}} to suggest a potential primary key for your data.
 #'
-#' @return A list with multiple data frames, one for each entity/subentity type.
+#' @return A list with multiple data frames, one for each entity/subentity.
 #'   Each data frame will have the \code{pk} column in it, so you can link the
-#'   tables back together.
+#'   tables together as needed.
 #'
 #' @examples
 #' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")

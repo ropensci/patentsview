@@ -1,13 +1,13 @@
 #' Get field list
 #'
-#' This function returns a vector of fields that a given API endpoint will
-#' return (i.e., the fields you can pass to the \code{fields} argument in
+#' This function returns a vector of fields that you can retrieve from a given
+#' API endpoint (i.e., the fields you can pass to the \code{fields} argument in
 #' \code{\link{search_pv}}). You can limit these fields to only cover certain
 #' entity group(s) as well (which is recommended, given the large number of
 #' possible fields for each endpoint).
 #'
 #' @param endpoint The API endpoint whose field list you want to get. See
-#'   \code{\link{get_endpoints}} for the list of the 7 endpoints.
+#'   \code{\link{get_endpoints}} for a list of the 7 endpoints.
 #' @param groups A character vector giving the group(s) whose fields you want
 #'   returned. A value of \code{NULL} indicates that you want all of the
 #'   endpoint's fields (i.e., do not filter the field list based on group
@@ -33,7 +33,8 @@
 #'           fields = fields, endpoint = "patents")
 #'
 #' # Get all patent and assignee-level fields for the patents endpoint:
-#' fields <- get_fields(endpoint = "patents", groups = "assignees")
+#' fields <- get_fields(endpoint = "patents",
+#'                      groups = c("assignees", "patents"))
 #'
 #' #...Then pass to search_pv:
 #' search_pv(query = '{"_gte":{"patent_date":"2007-01-04"}}',
@@ -52,7 +53,9 @@ get_fields <- function(endpoint, groups = NULL) {
 
 #' Get endpoints
 #'
-#' This function reminds the user what the 7 possible PatentsView API endpoints are. Those endpoints are:
+#' This function reminds the user what the 7 possible PatentsView API endpoints
+#' are. Those endpoints are:
+#'
 #' \itemize{
 #'    \item assignees
 #'    \item cpc_subsections
