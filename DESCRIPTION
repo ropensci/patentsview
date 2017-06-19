@@ -9,8 +9,8 @@ Description: Provides functions to simplify the PatentsView API
     (http://www.patentsview.org/api/doc.html) query language,
     send GET and POST requests to the API's seven endpoints, and parse the data
     that comes back.
-URL: https://github.com/crew102/patentsview
-BugReports: https://github.com/crew102/patentsview/issues
+URL: https://github.com/ropensci/patentsview
+BugReports: https://github.com/ropensci/patentsview/issues
 License: GPL-2
 LazyData: TRUE
 Depends:
