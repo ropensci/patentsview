@@ -3,13 +3,13 @@ patentsview
 
 > An R Client to the PatentsView API
 
-[![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview)
+[![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![Build status](https://ci.appveyor.com/api/projects/status/ri4lrakyrw2117mi?svg=true)](https://ci.appveyor.com/project/ropensci/patentsview)
 
 Installation
 ------------
 
 ``` r
-devtools::install_github("crew102/patentsview")
+devtools::install_github("ropensci/patentsview")
 ```
 
 Basic usage
@@ -37,7 +37,7 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
 #> total_patent_count = 100,000
 ```
 
-This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions (described in the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd)) instead.
+This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions (described in the [writing queries vignette](https://github.com/ropensci/patentsview/blob/master/vignettes/writing-queries.Rmd)) instead.
 
 Fields
 ------
@@ -76,7 +76,7 @@ You can see an endpoint's list of queryable and retrievable fields by viewing th
 Writing queries
 ---------------
 
-The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
+The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why. Check out the [writing queries vignette](https://github.com/ropensci/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
 
 ``` r
 qry_funs$gte(patent_date = "2007-01-01")
@@ -331,7 +331,7 @@ FAQ
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) has more details on this.
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://github.com/ropensci/patentsview/blob/master/vignettes/writing-queries.Rmd) has more details on this.
 
 #### Does the API have any rate limiting/throttling controls?
 
