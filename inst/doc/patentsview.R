@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 )
 
 ## ----eval = FALSE--------------------------------------------------------
-#  devtools::install_github("crew102/patentsview")
+#  devtools::install_github("ropensci/patentsview")
 
 ## ------------------------------------------------------------------------
 library(patentsview)
