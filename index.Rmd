@@ -1,0 +1,46 @@
+---
+title: ""
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{patentsview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+params:
+  eval_all: TRUE
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# patentsview
+
+> An R Client to the PatentsView API
+
+## Installation
+
+```{r eval = FALSE}
+devtools::install_github("ropensci/patentsview")
+```
+
+## Basic usage
+
+The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an interface to a disambiguated version of USPTO. The `patentsview` R package provides one main function, `search_pv()`, to make it easy to interact with that API:
+
+```{r}
+library(patentsview)
+
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
+          endpoint = "patents")
+```
+
+## Learning more
+
+Check out the:
+
+* [Getting started vignette](articles/writing-queries.html) if you are a first-time user.
+* In-depth tutorial on [writing queries](articles/writing-queries.html).
+* List of [examples](articles/writing-queries.html).

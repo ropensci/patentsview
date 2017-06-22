@@ -1,0 +1,41 @@
+title: patentsview
+
+template:
+  params:
+    bootswatch: united
+
+reference:
+  - title: The API client
+    contents:
+    - search_pv
+  - title: Convenience objects for search_pv
+    contents:
+    - get_endpoints
+    - get_fields
+    - fieldsdf
+  - title: Writing queries with the DSL
+    contents:
+    - qry_funs
+    - with_qfuns
+  - title: Unnesting patentsview data
+    contents:
+    - unnest_pv_data
+    - get_ok_pk
+
+navbar:
+  title: patentsview
+  type: default
+  left:
+  - text: Vignettes
+    menu:
+      - text: "Getting started"
+      - href: articles/getting-started.html
+      - text: "Writing queries"
+      - href: articles/writing-queries.html
+      - text: "Examples"
+      - href: articles/examples.html
+  - text: Functions
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/ropensci/patentsview

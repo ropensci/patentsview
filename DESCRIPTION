@@ -6,7 +6,7 @@ Authors@R: person("Christopher", "Baker", email = "chriscrewbaker@gmail.com",
     role = c("aut", "cre"))
 Encoding: UTF-8
 Description: Provides functions to simplify the PatentsView API
-    (http://www.patentsview.org/api/doc.html) query language,
+    <http://www.patentsview.org/api/doc.html> query language,
     send GET and POST requests to the API's seven endpoints, and parse the data
     that comes back.
 URL: https://github.com/crew102/patentsview

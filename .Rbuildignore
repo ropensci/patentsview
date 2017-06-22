@@ -9,3 +9,5 @@ inst/dev.R
 ^Makefile$
 ^data-raw$
 ^cran-comments\.md$
+^docs$
+^_pkgdown\.yml$

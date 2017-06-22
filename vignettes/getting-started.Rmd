@@ -1,5 +1,5 @@
 ---
-title: "patentsview"
+title: "Getting started"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{patentsview}
@@ -16,20 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-> An R Client to the PatentsView API
+## A basic example 
 
-[![Linux Build Status](https://travis-ci.org/crew102/patentsview.svg?branch=master)](https://travis-ci.org/crew102/patentsview)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/crew102/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/crew102/patentsview)
-
-## Installation
-
-```{r eval = FALSE}
-devtools::install_github("crew102/patentsview")
-```
-
-## Basic usage
-
-The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an interface to a disambiguated version of USPTO. The `patentsview` R package provides one main function, `search_pv()`, to make it easy to interact with that API. Let's take a look:
+Let's start with a basic example of how to use the package's primary function, `search_pv()`:
 
 ```{r}
 library(patentsview)
@@ -38,30 +27,11 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
           endpoint = "patents")
 ```
 
-This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions (described in the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd)) instead.
-
-## Fields
-
-Each endpoint has a different set of _queryable_ and _retrievable_ fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown above). Retrievable fields are those that you can get data on. In the above query we didn't specify which fields we wanted to retrieve, so we were given a default set of fields. You can specify which fields you want to retrieve using the `fields` argument:
-
-```{r}
-search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          endpoint = "patents", 
-          fields = c("patent_number", "patent_title"))
-```
-
-To list all of the retrievable fields for a given endpoint, use `get_fields`:
-
-```{r}
-retrvble_flds <- get_fields(endpoint = "patents")
-head(retrvble_flds)
-```
-
-You can see an endpoint's list of queryable and retrievable fields by viewing the endpoint's online field list (e.g., the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). A list of all of the queryable and retrievable fields are also listed in the `fieldsdf` data frame, which you can load using `data("fieldsdf")` or `View(patentsview::fieldsdf)`.
+This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions instead. We briefly touch on how to use those functions in the next section, reserving their in-depth description for the [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html).
 
 ## Writing queries
 
-The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why. Check out the [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) for more details...We can rewrite our query using this DSL as:
+The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).<sup><a href="#fn2" id="ref2">2</a></sup> It can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using the functions in this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why...We use these functions to rewrite the query from the basic example:
 
 ```{r}
 qry_funs$gte(patent_date = "2007-01-01")
@@ -77,6 +47,27 @@ with_qfuns(
   )
 )
 ```
+
+Check out the [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) for more details on using the DSL.
+
+## Fields
+
+Each endpoint has a different set of _queryable_ and _retrievable_ fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown in the basic example). Retrievable fields are those that you can get data on. In the basic example, we didn't specify which fields we wanted to retrieve, so we were given a default set of fields. You can specify which fields you want to retrieve using the `fields` argument:
+
+```{r}
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
+          endpoint = "patents", 
+          fields = c("patent_number", "patent_title"))
+```
+
+To list all of the retrievable fields for a given endpoint, use `get_fields`:
+
+```{r}
+retrvble_flds <- get_fields(endpoint = "patents")
+head(retrvble_flds)
+```
+
+You can see an endpoint's list of queryable and retrievable fields by viewing the endpoint's online field list (e.g., the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which lets you know whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). A list of all of the queryable and retrievable fields are also listed in the `fieldsdf` data frame, which you can load using `data("fieldsdf")` or `View(patentsview::fieldsdf)`.
 
 ## Paginated responses
 
@@ -126,62 +117,11 @@ Your choice of endpoint determines two things:
 
 2. **The structure of the data frame that is returned.** The first call (which was to the patents endpoint) gave us a data frame on the *patent level*, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned to us in list columns, named after the subentity that the field belongs to (e.g., the `inventors` subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the *assignee level*, meaning that each row corresponded to a different assignee.
 
-## Examples
-
-Which patents have been cited by more than 500 US patents?
-
-```{r eval = params$eval_all}
-search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
-```
-
-How many distinct inventors (disambiguated) are represented by these highly-cited patents?
-
-```{r eval = params$eval_all}
-# Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
-# are subentities for the patents endpoint, this means we will get their counts.
-search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
-          fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
-```
-
-What patents has Microsoft (disambiguated) published since 2010?
-
-```{r eval = params$eval_all}
-query <- with_qfuns(
-  and(
-    gte(patent_date = "2010-01-01"),
-    contains(assignee_organization = "microsoft")
-  )
-)
-search_pv(query = query)
-```
-
-Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
-
-```{r eval = params$eval_all}
-# Get all possible retrievable assignee-level and patent-level fields for 
-# the assignees endpoint:
-asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
-
-# Ask the PatentsView API for these fields:
-search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
-          endpoint = "assignees", fields = asgn_pat_flds)
-```
-
-What are the top ten CPC subsections for patents funded by the DOE?
-
-```{r eval = params$eval_all}
-search_pv(query = qry_funs$contains(govint_org_name = "department of energy"), 
-          endpoint = "cpc_subsections", 
-          fields =  "cpc_total_num_patents",
-          sort = c("cpc_total_num_patents" = "desc"), 
-          per_page = 10)
-```
-
 ## FAQ
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd) has more details on this. 
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) has more details on this. 
 
 #### Does the API have any rate limiting/throttling controls?
 
