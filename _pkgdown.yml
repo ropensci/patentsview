@@ -26,15 +26,13 @@ navbar:
   title: patentsview
   type: default
   left:
-  - text: Vignettes
-    menu:
-      - text: "Getting started"
-      - href: articles/getting-started.html
-      - text: "Writing queries"
-      - href: articles/writing-queries.html
-      - text: "Examples"
-      - href: articles/examples.html
-  - text: Functions
+  - text: "Getting started"
+  - href: articles/getting-started.html
+  - text: "Writing queries"
+  - href: articles/writing-queries.html
+  - text: "Examples"
+  - href: articles/examples.html
+  - text: "Functions"
     href: reference/index.html
   right:
   - icon: fa-github fa-lg
