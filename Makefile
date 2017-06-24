@@ -7,7 +7,7 @@ data-raw/fields.csv: data-raw/fieldsdf.R
 
 # Compile patentsview vignette into README.md
 README.md: README.Rmd
-	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE, params = list(eval_all = TRUE))"
+	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE)"
 	Rscript -e "file.remove('README.html')"
 	echo "[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
 
