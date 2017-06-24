@@ -1,0 +1,68 @@
+---
+title: "Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{patentsview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+params:
+  eval_all: TRUE
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Which patents have been cited by more than 500 US patents?
+
+```{r eval = params$eval_all}
+library(patentsview)
+
+search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
+```
+
+How many distinct inventors (disambiguated) are represented by these highly-cited patents?
+
+```{r eval = params$eval_all}
+# Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
+# are subentities for the patents endpoint, this means we will get their counts.
+search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
+          fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
+```
+
+What patents has Microsoft (disambiguated) published since 2010?
+
+```{r eval = params$eval_all}
+query <- with_qfuns(
+  and(
+    gte(patent_date = "2010-01-01"),
+    contains(assignee_organization = "microsoft")
+  )
+)
+search_pv(query = query)
+```
+
+Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
+
+```{r eval = params$eval_all}
+# Get all possible retrievable assignee-level and patent-level fields for 
+# the assignees endpoint:
+asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
+
+# Ask the PatentsView API for these fields:
+search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
+          endpoint = "assignees", fields = asgn_pat_flds)
+```
+
+What are the top ten CPC subsections for patents funded by the DOE?
+
+```{r eval = params$eval_all}
+search_pv(query = qry_funs$contains(govint_org_name = "department of energy"), 
+          endpoint = "cpc_subsections", 
+          fields =  "cpc_total_num_patents",
+          sort = c("cpc_total_num_patents" = "desc"), 
+          per_page = 10)
+```

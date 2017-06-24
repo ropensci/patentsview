@@ -53,7 +53,7 @@ create_not_fun <- function(fun) {
 #'
 #' A list of functions that make it easy to write PatentsView queries. See the
 #' details section below for a list of the 14 functions, as well as the
-#' \href{https://github.com/ropensci/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing
+#' \href{http://ropensci.github.io/patentsview/articles/writing-queries.html}{writing
 #' queries vignette} for further details.
 #'
 #' @details

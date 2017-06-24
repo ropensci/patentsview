@@ -4,8 +4,11 @@
 ^codecov\.yml$
 ^README\.Rmd$
 ^README-.*\.png$
-inst/dev.R
+inst/dev\.R
 ^appveyor\.yml$
 ^Makefile$
 ^data-raw$
 ^cran-comments\.md$
+^docs$
+^_pkgdown\.yml$
+^index\.Rmd$
