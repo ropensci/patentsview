@@ -90,7 +90,7 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   out_sub_ent_reord <- lapply(out_sub_ent, function(x) {
     coln <- colnames(x)
-    x[, c(pk, coln[!(pk == coln)])]
+    x[, c(pk, coln[!(pk == coln)]), drop = FALSE]
   })
 
   structure(
