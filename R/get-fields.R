@@ -54,7 +54,9 @@ get_fields <- function(endpoint, groups = NULL) {
 #' Get endpoints
 #'
 #' This function reminds the user what the 7 possible PatentsView API endpoints
-#' are. Those endpoints are:
+#' are.
+#'
+#' @return A character vector with the names of the 7 endpoints. Those endpoints are:
 #'
 #' \itemize{
 #'    \item assignees
@@ -65,8 +67,6 @@ get_fields <- function(endpoint, groups = NULL) {
 #'    \item patents
 #'    \item uspc_mainclasses
 #'  }
-#'
-#' @return A character vector with the names of the 7 endpoints.
 #'
 #' @examples
 #' get_endpoints()

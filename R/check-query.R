@@ -16,14 +16,14 @@ is_date <- function(x)
 one_check <- function(operator, field, value, f1) {
 
   if (nrow(f1) == 0)
-    paste0_msg(field, " is not a valid field to query")
+    paste0_stop(field, " is not a valid field to query for your endpoint")
   if (f1$data_type == "date" && !is_date(value))
-    paste0_msg("Bad date: ", value,
-               ". Date must be in the format of yyyy-mm-dd")
+    paste0_stop("Bad date: ", value,
+                ". Date must be in the format of yyyy-mm-dd")
   if (f1$data_type %in% c("string", "fulltext") && !is.character(value))
-    paste0_msg(value, " must be of type character")
+    paste0_stop(value, " must be of type character")
   if (f1$data_type == "integer" && !is_int(value))
-    paste0_msg(value, " must be an integer")
+    paste0_stop(value, " must be an integer")
 
   if (
       (
@@ -37,8 +37,8 @@ one_check <- function(operator, field, value, f1) {
         f1$data_type %in% c("string", "fulltext") &&
         operator %in% c("_gt", "_gte", "_lt", "_lte")
       )
-    ) paste0_msg("You cannot use the operator ", operator,
-                 " with field ", field)
+    ) paste0_stop("You cannot use the operator ", operator,
+                  " with field ", field)
 }
 
 #' @noRd
