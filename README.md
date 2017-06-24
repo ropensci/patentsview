@@ -42,8 +42,7 @@ Learning more
 
 Head over to the package's [webpage](https://crew102.github.io/patentsview/index.html) for more info, including:
 
--   A [getting started vignette](http://crew102.github.io/patentsview/articles/getting-started.html) for first-time users.
--   An in-depth tutorial on [writing queries](http://crew102.github.io/patentsview/articles/writing-queries.html).
--   A list of [examples](http://crew102.github.io/patentsview/articles/examples.html).
-
+-   A [getting started vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) for first-time users
+-   An in-depth tutorial on [writing queries](http://crew102.github.io/patentsview/articles/writing-queries.html)
+-   A list of [examples](http://crew102.github.io/patentsview/articles/examples.html)
 [![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
