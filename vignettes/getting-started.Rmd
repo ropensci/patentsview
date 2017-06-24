@@ -27,7 +27,7 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
           endpoint = "patents")
 ```
 
-This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) goes into much more depth.
+This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) goes into much more depth.
 
 ## Writing queries
 
@@ -48,7 +48,7 @@ with_qfuns(
 )
 ```
 
-Check out the [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) for more details on using the DSL.
+Check out the [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) for more details on using the DSL.
 
 ## Fields
 
@@ -121,7 +121,7 @@ Your choice of endpoint determines two things:
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) has more details on this. 
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) has more details on this. 
 
 #### Does the API have any rate limiting/throttling controls?
 

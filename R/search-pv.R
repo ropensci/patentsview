@@ -51,7 +51,7 @@ get_post_body <- function(query, arg_list) {
 
 #' @noRd
 one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
-  ua <- httr::user_agent("https://github.com/crew102/patentsview")
+  ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
     get_url <- get_get_url(query = query, base_url = base_url,
@@ -103,7 +103,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'
 #'    \item An object of class \code{pv_query}, which you create by calling one
 #'    of the functions found in the \code{\link{qry_funs}} list...See the
-#'    \href{https://github.com/crew102/patentsview/blob/master/vignettes/writing-queries.Rmd}{writing
+#'    \href{http://ropensci.github.io/patentsview/articles/writing-queries.html}{writing
 #'    queries vignette} for details.\cr
 #'    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 #'  }

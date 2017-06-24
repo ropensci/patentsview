@@ -40,8 +40,8 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
 
 ## Learning more
 
-Head over to the package's [webpage](https://crew102.github.io/patentsview/index.html) for more info, including:
+Head over to the package's [webpage](https://ropensci.github.io/patentsview/index.html) for more info, including:
 
-* A [getting started vignette](http://crew102.github.io/patentsview/articles/writing-queries.html) for first-time users
-* An in-depth tutorial on [writing queries](http://crew102.github.io/patentsview/articles/writing-queries.html)
-* A list of [examples](http://crew102.github.io/patentsview/articles/examples.html)
+* A [getting started vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) for first-time users
+* An in-depth tutorial on [writing queries](http://ropensci.github.io/patentsview/articles/writing-queries.html)
+* A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)

@@ -88,7 +88,7 @@
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 100,000</span></code></pre></div>
-<p>This call to <code><a href="../reference/search_pv.html">search_pv()</a></code> sends our query to the “patents” API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a> which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the <a href="http://crew102.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> goes into much more depth.</p>
+<p>This call to <code><a href="../reference/search_pv.html">search_pv()</a></code> sends our query to the “patents” API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a> which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the <a href="http://ropensci.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> goes into much more depth.</p>
 </div>
 <div id="writing-queries" class="section level2">
 <h2 class="hasAnchor">
@@ -104,7 +104,7 @@
   )
 )
 <span class="co">#&gt; {"_and":[{"_gte":{"patent_date":"2007-01-01"}},{"_or":[{"_text_phrase":{"patent_abstract":"computer program"}},{"_text_phrase":{"patent_abstract":"dog leash"}}]}]}</span></code></pre></div>
-<p>Check out the <a href="http://crew102.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> for more details on using the DSL.</p>
+<p>Check out the <a href="http://ropensci.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> for more details on using the DSL.</p>
 </div>
 <div id="fields" class="section level2">
 <h2 class="hasAnchor">
@@ -226,7 +226,7 @@
 <div id="im-sure-my-query-is-well-formatted-and-correct-but-i-keep-getting-an-error--whats-the-deal" class="section level4">
 <h4 class="hasAnchor">
 <a href="#im-sure-my-query-is-well-formatted-and-correct-but-i-keep-getting-an-error--whats-the-deal" class="anchor"></a>I’m sure my query is well formatted and correct but I keep getting an error. What’s the deal?</h4>
-<p>The API query syntax guidelines do not cover all of the API’s behavior. Specifically, there are several things that you cannot do which are not documented on the API’s webpage. The <a href="http://crew102.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> has more details on this.</p>
+<p>The API query syntax guidelines do not cover all of the API’s behavior. Specifically, there are several things that you cannot do which are not documented on the API’s webpage. The <a href="http://ropensci.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> has more details on this.</p>
 </div>
 <div id="does-the-api-have-any-rate-limitingthrottling-controls" class="section level4">
 <h4 class="hasAnchor">
