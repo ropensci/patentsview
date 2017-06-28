@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -52,16 +52,50 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/getting-started.html">Getting started</a>
+  <a href="../articles/getting-started.html">
+    <span class="fa fa-play"></span>
+     
+    Getting started
+  </a>
 </li>
 <li>
-  <a href="../articles/writing-queries.html">Writing queries</a>
+  <a href="../articles/writing-queries.html">
+    <span class="fa fa-pencil"></span>
+     
+    Writing queries
+  </a>
 </li>
 <li>
-  <a href="../articles/examples.html">Examples</a>
+  <a href="../articles/examples.html">
+    <span class="fa fa-code"></span>
+     
+    Examples
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Applications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/assignees.html">
+        <span class="fa fa-university"></span>
+         
+        Assignees
+      </a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../reference/index.html">Functions</a>
+  <a href="../reference/index.html">
+    <span class="fa fa-info-circle"></span>
+     
+    Reference
+  </a>
 </li>
       </ul>
       
@@ -259,28 +293,28 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; 
 #&gt; List of 1
 #&gt;  $ assignees:'data.frame':	25 obs. of  17 variables:
-#&gt;   ..$ assignee_first_name           : chr [1:25] NA ...
-#&gt;   ..$ assignee_first_seen_date      : chr [1:25] "2000-10-17" ...
-#&gt;   ..$ assignee_id                   : chr [1:25] "00043de7382082391622e725605f37b5" ...
-#&gt;   ..$ assignee_key_id               : chr [1:25] "20" ...
-#&gt;   ..$ assignee_last_name            : chr [1:25] NA ...
-#&gt;   ..$ assignee_last_seen_date       : chr [1:25] "2013-03-19" ...
-#&gt;   ..$ assignee_lastknown_city       : chr [1:25] "Bend" ...
-#&gt;   ..$ assignee_lastknown_country    : chr [1:25] "US" ...
-#&gt;   ..$ assignee_lastknown_latitude   : chr [1:25] "44.0582" ...
-#&gt;   ..$ assignee_lastknown_location_id: chr [1:25] "44.0581728|-121.3153096" ...
-#&gt;   ..$ assignee_lastknown_longitude  : chr [1:25] "-121.315" ...
-#&gt;   ..$ assignee_lastknown_state      : chr [1:25] "OR" ...
-#&gt;   ..$ assignee_organization         : chr [1:25] "UltraCard, Inc." ...
+#&gt;   ..$ assignee_first_name           : logi [1:25] NA ...
+#&gt;   ..$ assignee_first_seen_date      : chr [1:25] "1976-03-09" ...
+#&gt;   ..$ assignee_id                   : chr [1:25] "000fd451e3903862279995c8f7946893" ...
+#&gt;   ..$ assignee_key_id               : chr [1:25] "85" ...
+#&gt;   ..$ assignee_last_name            : logi [1:25] NA ...
+#&gt;   ..$ assignee_last_seen_date       : chr [1:25] "1981-01-06" ...
+#&gt;   ..$ assignee_lastknown_city       : chr [1:25] "Mississauga" ...
+#&gt;   ..$ assignee_lastknown_country    : chr [1:25] "CA" ...
+#&gt;   ..$ assignee_lastknown_latitude   : chr [1:25] "43.15" ...
+#&gt;   ..$ assignee_lastknown_location_id: chr [1:25] "43.15|-79.5" ...
+#&gt;   ..$ assignee_lastknown_longitude  : chr [1:25] "-79.5" ...
+#&gt;   ..$ assignee_lastknown_state      : chr [1:25] "Ontario" ...
+#&gt;   ..$ assignee_organization         : chr [1:25] "Ferranti-Packard Limited" ...
 #&gt;   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...
-#&gt;   ..$ assignee_total_num_patents    : chr [1:25] "15" ...
-#&gt;   ..$ assignee_type                 : chr [1:25] "2" ...
+#&gt;   ..$ assignee_total_num_patents    : chr [1:25] "11" ...
+#&gt;   ..$ assignee_type                 : chr [1:25] "3" ...
 #&gt;   ..$ patents                       :List of 25
 #&gt; 
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_assignee_count = 9,188</div><div class='input'>
+#&gt; total_assignee_count = 8,648</div><div class='input'>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
           <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>))</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame on the patent data level:
@@ -294,7 +328,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 49,306</div><div class='input'>
+#&gt; total_patent_count = 50,079</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Will view error message in RStudio's viewer pane:</span>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'><a href='with_qfuns.html'>with_qfuns</a></span>(<span class='fu'>not</span>(<span class='fu'>text_any</span>(<span class='kw'>patent_title</span> <span class='kw'>=</span> <span class='st'>"hi"</span>))),
