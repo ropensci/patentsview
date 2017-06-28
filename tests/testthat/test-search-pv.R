@@ -68,13 +68,15 @@ test_that("search_pv can return subent_cnts", {
 test_that("Sort option works as expected", {
   skip_on_cran()
 
-  fields <- get_fields("assignees", c("assignees"))
+  fields <- get_fields("inventors", c("inventors"))
   query <- qry_funs$gt(patent_date = "2015-01-01")
 
   out_spv <- search_pv(query = query, fields = fields,
-                       endpoint = "assignees",
-                       sort = c("assignee_last_name" = "desc"))
+                       endpoint = "inventors",
+                       sort = c("inventor_lastknown_latitude" = "desc"),
+                       per_page = 100)
 
-  f_char <- substr(out_spv$data$assignees$assignee_last_name, 1, 1)
-  expect_gt(sum(f_char == "Z"), 20)
+  lat <- as.numeric(out_spv$data$inventors$inventor_lastknown_latitude)
+
+  expect_true(lat[1] >= lat[100])
 })
