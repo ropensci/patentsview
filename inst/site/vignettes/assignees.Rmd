@@ -113,7 +113,7 @@ hchart(asng_p_dat, "scatter", hcaes(x = db_pats, y = mean_perc, size = frac_db_p
                                     group = assignee_organization, color = color)) %>%
   hc_xAxis(title = list(text = "DB patents"), type = "logarithmic",
            allowDecimals = FALSE) %>%
-  hc_yAxis(title = list(text = "Mean citation percentile")) %>%
+  hc_yAxis(title = list(text = "Mean cite perc.")) %>%
   hc_title(text = "Top assignees in 'databases'") %>%
   hc_add_theme(hc_theme_flatdark()) %>%
   hc_tooltip(useHTML = TRUE, pointFormat = tooltip_table(
