@@ -32,7 +32,7 @@ navbar:
     href: articles/writing-queries.html
   - text: "Examples"
     href: articles/examples.html
-  - text: "Functions"
+  - text: "Reference"
     href: reference/index.html
   right:
   - icon: fa-github fa-lg
