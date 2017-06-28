@@ -3,3 +3,4 @@ data/* binary
 data-raw/* binary
 src/* text=lf
 R/* text=lf
+docs/* linguist-documentation
