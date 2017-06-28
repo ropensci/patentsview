@@ -1,4 +1,4 @@
-all: data-raw/fieldsdf.csv doc README.md vig test site
+all: data-raw/fieldsdf.csv doc README.md vig test
 .PHONY: clean
 
 # Pull endpoint fields from PatentsView website
@@ -24,9 +24,9 @@ test:
 	Rscript -e "library(testthat); library(patentsview); \
 	devtools::test(); test_examples('man')"
 
-site: _pkgdown.yml
-	Rscript -e "source('inst/build-site.R'); build_site()"
+site: _pkgdown.yml inst/site/*
+	Rscript -e "source('inst/site/build-site.R'); build_site()"
 
 # Clean
 clean:
-	rm -R README.md inst/doc
+	rm -R README.md inst/doc docs

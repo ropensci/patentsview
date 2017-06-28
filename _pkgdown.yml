@@ -35,6 +35,12 @@ navbar:
   - text: "Examples"
     icon: fa-code
     href: articles/examples.html
+  - text: "Applications"
+    icon: fa-bar-chart
+    menu:
+      - text: "Assignees"
+        icon: fa-university
+        href: articles/assignees.html
   - text: "Reference"
     icon: fa-info-circle
     href: reference/index.html
