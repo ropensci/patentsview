@@ -71,14 +71,14 @@ You can see an endpoint's list of queryable and retrievable fields by viewing th
 
 By default, `search_pv()` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` argument to download up to 10,000 records per page. You can also choose which page of results you want with the `page` argument:
 
-```{r eval = params$eval_all}
+```{r}
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
           page = 2, per_page = 150) # gets records 150 - 300
 ```
 
 You can download all pages of output in one call by setting `all_pages = TRUE`. This will set `per_page` equal to 10,000 and loop over all pages of output (downloading up to 10 pages, or 100,000 records total):
 
-```{r eval = params$eval_all}
+```{r}
 search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
           all_pages = TRUE)
 ```
