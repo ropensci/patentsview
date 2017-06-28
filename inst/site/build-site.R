@@ -14,6 +14,10 @@ fix_fun_index <- function() {
 }
 
 build_site <- function() {
+  extra_vigs <- list.files("inst/site/vignettes", full.names = TRUE, pattern = "\\.Rmd")
+  to <- gsub("inst/site/vignettes", "vignettes/", extra_vigs)
+  on.exit(try(unlink(x = to, force = TRUE)))
+  file.copy(extra_vigs, to = to)
   pkgdown::build_site()
   fix_fun_index()
 }

@@ -12,3 +12,4 @@ inst/dev\.R
 ^docs$
 ^_pkgdown\.yml$
 ^index\.Rmd$
+^inst/site$
