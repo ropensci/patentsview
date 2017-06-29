@@ -60,8 +60,13 @@ check_query <- function(query, endpoint) {
       f1 <- flds_flt[flds_flt$field == names(x[[1]]), ]
       one_check(operator = names(x), field = names(x[[1]]),
                 value = unlist(x[[1]]), f1 = f1)
+    } else if (names(x) %in% flds_flt$field) {
+      # warning("The _eq operator is a safer alternative to using ",
+      #            "field:value pairs or value arrays in queries.",
+      #         call. = FALSE, immediate. = T)
     } else {
-      paste0_msg("Bad opeartor: ", names(x))
+      paste0_stop(names(x), " is not a valid operator or queryable field ",
+                 "for this endpoint.")
     }
   }
 
