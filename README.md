@@ -45,6 +45,6 @@ Head over to the package's [webpage](https://ropensci.github.io/patentsview/inde
 -   A [getting started vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) for first-time users
 -   An in-depth tutorial on [writing queries](http://ropensci.github.io/patentsview/articles/writing-queries.html)
 -   A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)
--   Sample applications (e.g., finding [top assignees](articles/assignees.html))
+-   Sample applications (e.g., finding [top assignees](http://ropensci.github.io/patentsview/articles/assignees.html))
 
 [![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)

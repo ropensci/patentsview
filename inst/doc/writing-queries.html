@@ -160,8 +160,8 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <li><strong>not function</strong> (<code>not</code>). This function negates a comparison. In other words, the <code>not</code> function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don’t have the word “hi” in their titles like this: <code>qry_funs$not(qry_funs$text_phrase(patent_title = &quot;hi&quot;))</code>.</li>
 </ol>
 </div>
-<div id="query-examples-for-patents-endpoint" class="section level2">
-<h2>Query examples (for patents endpoint)</h2>
+<div id="query-examples-for-the-patents-endpoint" class="section level2">
+<h2>Query examples (for the patents endpoint)</h2>
 <p>Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
 <span class="co">#&gt; {&quot;_lte&quot;:{&quot;assignee_total_num_inventors&quot;:10}}</span></code></pre></div>
