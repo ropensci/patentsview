@@ -1,10 +1,8 @@
 #' @noRd
-validate_args <- function(query, fields, endpoint, method, subent_cnts,
-                          mtchd_subent_only, page, per_page, sort) {
+validate_misc_args <- function(query, fields, endpoint, method, subent_cnts,
+                               mtchd_subent_only, page, per_page, sort) {
 
   ok_meth <- c("GET", "POST")
-
-  validate_endpoint(endpoint = endpoint)
   asrt(all(method %in% ok_meth, length(method) == 1),
        "method must be either 'GET' or 'POST'")
 
