@@ -64,7 +64,8 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
   df <- data[[1]]
 
   asrt(pk %in% colnames(df),
-       pk, " not in primary entity data frame")
+       pk, " not in primary entity data frame...Did you include it in your ",
+       "fields list?")
 
   prim_ent_var <- !vapply(df, is.list, logical(1))
 
