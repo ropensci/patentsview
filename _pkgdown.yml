@@ -41,9 +41,9 @@ navbar:
       - text: "Assignees"
         icon: fa-university
         href: articles/assignees.html
+  right:
   - text: "Reference"
     icon: fa-info-circle
     href: reference/index.html
-  right:
   - icon: fa-github fa-lg
     href: https://github.com/ropensci/patentsview

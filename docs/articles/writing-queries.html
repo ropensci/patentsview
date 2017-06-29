@@ -68,6 +68,8 @@
     </li>
   </ul>
 </li>
+      </ul>
+<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../reference/index.html">
     <span class="fa fa-info-circle"></span>
@@ -75,8 +77,6 @@
     Reference
   </a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/ropensci/patentsview">
     <span class="fa fa-github fa-lg"></span>
@@ -200,9 +200,9 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <strong>not function</strong> (<code>not</code>). This function negates a comparison. In other words, the <code>not</code> function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don’t have the word “hi” in their titles like this: <code>qry_funs$not(qry_funs$text_phrase(patent_title = "hi"))</code>.</li>
 </ol>
 </div>
-<div id="query-examples-for-patents-endpoint" class="section level2">
+<div id="query-examples-for-the-patents-endpoint" class="section level2">
 <h2 class="hasAnchor">
-<a href="#query-examples-for-patents-endpoint" class="anchor"></a>Query examples (for patents endpoint)</h2>
+<a href="#query-examples-for-the-patents-endpoint" class="anchor"></a>Query examples (for the patents endpoint)</h2>
 <p>Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
 <span class="co">#&gt; {"_lte":{"assignee_total_num_inventors":10}}</span></code></pre></div>
@@ -249,7 +249,7 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <li><a href="#three-ways-to-write-the-same-query">Three ways to write the same query</a></li>
       <li><a href="#why-use-the-dsl-method-3">Why use the DSL (method 3)?</a></li>
       <li><a href="#basics-of-the-dsl">Basics of the DSL</a></li>
-      <li><a href="#query-examples-for-patents-endpoint">Query examples (for patents endpoint)</a></li>
+      <li><a href="#query-examples-for-the-patents-endpoint">Query examples (for the patents endpoint)</a></li>
       </ul>
 </div>
       </div>
