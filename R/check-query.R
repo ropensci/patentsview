@@ -38,7 +38,7 @@ one_check <- function(operator, field, value, f1) {
         operator %in% c("_gt", "_gte", "_lt", "_lte")
       )
     ) paste0_stop("You cannot use the operator ", operator,
-                  " with field ", field)
+                  " with the field ", field)
 }
 
 #' @noRd
@@ -61,12 +61,11 @@ check_query <- function(query, endpoint) {
       one_check(operator = names(x), field = names(x[[1]]),
                 value = unlist(x[[1]]), f1 = f1)
     } else if (names(x) %in% flds_flt$field) {
-      # warning("The _eq operator is a safer alternative to using ",
-      #            "field:value pairs or value arrays in queries.",
-      #         call. = FALSE, immediate. = T)
+      paste0_msg("The _eq operator is a safer alternative to using ",
+                 "field:value pairs or value arrays in your query")
     } else {
-      paste0_stop(names(x), " is not a valid operator or queryable field ",
-                 "for this endpoint.")
+      paste0_stop(names(x), " is either not a valid operator or not a ",
+                  "queryable field for this endpoint")
     }
   }
 

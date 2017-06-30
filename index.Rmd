@@ -42,4 +42,4 @@ Check out the:
 * [Getting started vignette](articles/getting-started.html) if you are a first-time user
 * In-depth tutorial on [writing queries](articles/writing-queries.html)
 * List of [examples](articles/examples.html)
-* Sample applications (e.g., [finding top assignees](articles/assignees.html))
+* WIP: Applications of the data (e.g., finding [top assignees](articles/assignees.html))

@@ -159,9 +159,9 @@ query_v_3 &lt;-<span class="st"> </span>
     )
   )</code></pre></div>
 </div>
-<div id="why-use-the-dsl-method-3" class="section level2">
+<div id="why-use-the-dsl" class="section level2">
 <h2 class="hasAnchor">
-<a href="#why-use-the-dsl-method-3" class="anchor"></a>Why use the DSL (method 3)?</h2>
+<a href="#why-use-the-dsl" class="anchor"></a>Why use the DSL?</h2>
 <p>We can see that all three versions of the query shown above are equivalent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jsonlite::<span class="kw">minify</span>(query_v_1)
 <span class="co">#&gt; {"_and":[{"_gte":{"patent_date":"2007-03-01"}},{"_or":[{"_text_all":{"patent_title":"dog"}},{"_text_all":{"patent_abstract":"dog"}}]},{"_or":[{"_eq":{"assingee_country":"US"}},{"_eq":{"assingee_country":"CA"}}]}]}</span>
@@ -187,9 +187,9 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <p>Compared to method 1, method 3 will correctly “or” together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for <code>assingee_country</code> (<code>c("US", "CA")</code>). This safely converted the single “equals” statement in the third element of the query (<code>eq(assingee_country = c("US", "CA"))</code>) to two separate equals statements that are or’d together.<sup><a href="#fn1" id="ref1">1</a></sup></p>
 </div>
 </div>
-<div id="basics-of-the-dsl" class="section level2">
+<div id="basics-of-the-language" class="section level2">
 <h2 class="hasAnchor">
-<a href="#basics-of-the-dsl" class="anchor"></a>Basics of the DSL</h2>
+<a href="#basics-of-the-language" class="anchor"></a>Basics of the language</h2>
 <p>All of the functions that make up the DSL are found in the <code>qry_funs</code> list (e.g., <code>qry_funs$eq()</code>). You can evaluate code in the context of this list using the function <code><a href="../reference/with_qfuns.html">with_qfuns()</a></code>. See <code>?with_qfuns()</code> for an example that demonstrates how using this function saves you typing. There are three types of functions in <code>qry_funs</code>:</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -200,9 +200,10 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <strong>not function</strong> (<code>not</code>). This function negates a comparison. In other words, the <code>not</code> function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don’t have the word “hi” in their titles like this: <code>qry_funs$not(qry_funs$text_phrase(patent_title = "hi"))</code>.</li>
 </ol>
 </div>
-<div id="query-examples-for-the-patents-endpoint" class="section level2">
+<div id="query-examples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#query-examples-for-the-patents-endpoint" class="anchor"></a>Query examples (for the patents endpoint)</h2>
+<a href="#query-examples" class="anchor"></a>Query examples</h2>
+<p><em>The following queries are intended for the patents endpoint</em></p>
 <p>Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
 <span class="co">#&gt; {"_lte":{"assignee_total_num_inventors":10}}</span></code></pre></div>
@@ -247,9 +248,9 @@ jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox 
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#three-ways-to-write-the-same-query">Three ways to write the same query</a></li>
-      <li><a href="#why-use-the-dsl-method-3">Why use the DSL (method 3)?</a></li>
-      <li><a href="#basics-of-the-dsl">Basics of the DSL</a></li>
-      <li><a href="#query-examples-for-the-patents-endpoint">Query examples (for the patents endpoint)</a></li>
+      <li><a href="#why-use-the-dsl">Why use the DSL?</a></li>
+      <li><a href="#basics-of-the-language">Basics of the language</a></li>
+      <li><a href="#query-examples">Query examples</a></li>
       </ul>
 </div>
       </div>

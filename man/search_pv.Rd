@@ -13,7 +13,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 \item{query}{The query that the API will use to filter records. \code{query}
  can come in any one of the following forms:
  \itemize{
-   \item A character string with valid JSON syntax\cr
+   \item A character string with valid JSON\cr
    E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
 
    \item A list which will be converted to JSON by \code{search_pv}\cr

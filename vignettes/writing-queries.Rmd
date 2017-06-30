@@ -76,7 +76,7 @@ query_v_3 <-
   )
 ```
 
-## Why use the DSL (method 3)?
+## Why use the DSL?
 
 We can see that all three versions of the query shown above are equivalent:
 
@@ -102,7 +102,7 @@ Methods 1 and 3 shown above are both shorter than method 2, making them quicker.
 
 Compared to method 1, method 3 will correctly "or" together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for `assingee_country` (`c("US", "CA")`). This safely converted the single "equals" statement in the third element of the query (`eq(assingee_country = c("US", "CA"))`) to two separate equals statements that are or'd together.<sup><a href="#fn1" id="ref1">1</a></sup>  
 
-## Basics of the DSL
+## Basics of the language
 
 All of the functions that make up the DSL are found in the `qry_funs` list (e.g., `qry_funs$eq()`). You can evaluate code in the context of this list using the function `with_qfuns()`. See  `?with_qfuns()` for an example that demonstrates how using this function saves you typing. There are three types of functions in `qry_funs`:
 
@@ -110,7 +110,9 @@ All of the functions that make up the DSL are found in the `qry_funs` list (e.g.
 2. **Array functions** (`and` and `or`). You can use these functions to logically combine the calls to the various comparison operators. For example, we can require that the patent date is less than or equal to 2001-01-05 _and_ the inventor's last name is "Ihaka" (`query = with_qfuns(and(lte(patent_date = "2001-01-05"), eq(inventor_last_name = "Ihaka")))`).
 3. **not function** (`not`). This function negates a comparison. In other words, the `not` function basically says that the comparison is not true, instead of is true. For example, we could search for patents that don't have the word "hi" in their titles like this: `qry_funs$not(qry_funs$text_phrase(patent_title = "hi"))`.
 
-## Query examples (for the patents endpoint)
+## Query examples 
+
+*The following queries are intended for the patents endpoint*
 
 Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:
 

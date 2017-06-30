@@ -22,7 +22,7 @@ validate_misc_args <- function(query, fields, endpoint, method, subent_cnts,
          "sort has to be a named character vector and each name has to be ",
          "specified in the field argument. See examples")
 
-  asrt(jsonlite::validate(query), "query is not valid json.")
+  asrt(jsonlite::validate(query), "query must be valid json")
 
   flds <- patentsview::fieldsdf
   flds_flt <- flds[flds$endpoint == endpoint, "field"]
