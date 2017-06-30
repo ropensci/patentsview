@@ -4,7 +4,6 @@
 ^codecov\.yml$
 ^README\.Rmd$
 ^README-.*\.png$
-inst/dev\.R
 ^appveyor\.yml$
 ^Makefile$
 ^data-raw$
@@ -13,4 +12,8 @@ inst/dev\.R
 ^_pkgdown\.yml$
 ^index\.Rmd$
 ^inst/site$
+inst/dev\.R$
 ^pkgdown$
+^\.Rhistory$
+^NEWS\.md$
+^\.gitattributes$

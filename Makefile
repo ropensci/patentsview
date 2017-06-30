@@ -9,7 +9,11 @@ data-raw/fields.csv: data-raw/fieldsdf.R
 README.md: README.Rmd
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE)"
 	Rscript -e "file.remove('README.html')"
-	echo "[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
+ifeq ($(CRAN),true)
+
+else
+	echo -e "\n[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
+endif
 
 # Document package
 doc:
@@ -24,6 +28,7 @@ test:
 	Rscript -e "library(testthat); library(patentsview); \
 	devtools::test(); test_examples('man')"
 
+# Build site (not part of all)
 site: _pkgdown.yml inst/site/*
 	Rscript -e "source('inst/site/build-site.R'); build_site()"
 
