@@ -48,6 +48,7 @@ fieldsdf <-
   ) %>%
     rbind(fields) %>%
     arrange(endpoint, field) %>%
+    mutate(description = iconv(description, from = "UTF-8", to = "ASCII")) %>%
     distinct()
 
 write.csv(fieldsdf, "data-raw/fieldsdf.csv", row.names = FALSE)
