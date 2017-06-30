@@ -21,5 +21,3 @@ build_site <- function() {
   pkgdown::build_site()
   fix_fun_index()
 }
-
-# need to put fotter in: <p><a href="http://ropensci.org"><img src="http://ropensci.org/public_images/github_footer.png" alt="ropensci_footer"></a></p>
