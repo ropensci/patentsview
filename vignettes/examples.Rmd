@@ -22,7 +22,7 @@ library(patentsview)
 search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
 ```
 
-How many distinct inventors (disambiguated) are represented by these highly-cited patents?
+How many distinct inventors are represented by these highly-cited patents?
 
 ```{r}
 # Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
@@ -31,36 +31,40 @@ search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
           fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
 ```
 
-What patents has Microsoft (disambiguated) published since 2010?
+Where geographically have Microsoft inventors been coming from over the past 20 years?
 
 ```{r}
+# Write the query
 query <- with_qfuns(
   and(
-    gte(patent_date = "2010-01-01"),
+    gte(patent_date = "2007-07-25"), # Dates are in yyyy-mm-dd format 
     contains(assignee_organization = "microsoft")
   )
 )
-search_pv(query = query)
+
+# Create a field list
+inv_fields <- get_fields(endpoint = "patents", groups = "inventors")
+fields <- c(inv_fields, "patent_number")
+
+# Pull the data
+pv_out <- search_pv(query = query, fields = fields, all_pages = TRUE)
+
+# Unnest the inventor list column
+unnest_pv_data(data = pv_out$data, pk = "patent_number")
 ```
 
-Which assignees have an inventor whose last name contains "smith" (e.g., "smith", "johnson-smith")? Also, give me the patent data where those "smiths" occur.
+How many patents were published in each NBER subcategory during the years 1991, 2001, and 2011?
 
 ```{r}
-# Get all possible retrievable assignee-level and patent-level fields for 
-# the assignees endpoint:
-asgn_pat_flds <- get_fields("assignees", c("assignees", "patents"))
-
-# Ask the PatentsView API for these fields:
-search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
-          endpoint = "assignees", fields = asgn_pat_flds)
+search_pv(query = qry_funs$eq(year_id = c(1991, 2001, 2011)),
+          endpoint = "nber_subcategories", all_pages = TRUE,
+          fields = c("year_id", "nber_subcategory_id", "nber_subcategory_title",
+                     "year_num_patents_for_nber_subcategory"))
 ```
 
-What are the top ten CPC subsections for patents funded by the DOE?
+Which assignees have an interest in beer?
 
 ```{r}
-search_pv(query = qry_funs$contains(govint_org_name = "department of energy"), 
-          endpoint = "cpc_subsections", 
-          fields =  "cpc_total_num_patents",
-          sort = c("cpc_total_num_patents" = "desc"), 
-          per_page = 10)
+search_pv(query = qry_funs$text_phrase(patent_title = "beer"), 
+          endpoint = "assignees")
 ```
