@@ -102,6 +102,9 @@
     
     
 <div class="contents">
+<div id="patents-endpoint" class="section level2">
+<h2 class="hasAnchor">
+<a href="#patents-endpoint" class="anchor"></a>Patents endpoint</h2>
 <p>Which patents have been cited by more than 500 US patents?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
@@ -178,24 +181,28 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <span class="co">#&gt;   ..$ inventor_total_num_patents    : chr [1:99505] "94" ...</span>
 <span class="co">#&gt;  $ patents  :'data.frame':   27635 obs. of  1 variable:</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:27635] "7249856" ...</span></code></pre></div>
-<p>How many patents were published in each NBER subcategory during the years 1991, 2001, and 2011?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">eq</span>(<span class="dt">year_id =</span> <span class="kw">c</span>(<span class="dv">1991</span>, <span class="dv">2001</span>, <span class="dv">2011</span>)),
-          <span class="dt">endpoint =</span> <span class="st">"nber_subcategories"</span>, <span class="dt">all_pages =</span> <span class="ot">TRUE</span>,
-          <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"year_id"</span>, <span class="st">"nber_subcategory_id"</span>, <span class="st">"nber_subcategory_title"</span>,
-                     <span class="st">"year_num_patents_for_nber_subcategory"</span>))
+</div>
+<div id="inventors-endpoint" class="section level2">
+<h2 class="hasAnchor">
+<a href="#inventors-endpoint" class="anchor"></a>Inventors endpoint</h2>
+<p>Return patent numbers and titles with at least one inventor whose location was Chicago, IL.<sup><a href="#fn1" id="ref1">1</a></sup></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}'</span>,
+          <span class="dt">endpoint =</span> <span class="st">"inventors"</span>, <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"patent_title"</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the NBER subcategory data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the inventor data level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ nber_subcategories:'data.frame':  38 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ nber_subcategory_id   : chr [1:38] "11" ...</span>
-<span class="co">#&gt;   ..$ nber_subcategory_title: chr [1:38] "Agriculture,Food,Textiles" ...</span>
-<span class="co">#&gt;   ..$ years                 :List of 38</span>
+<span class="co">#&gt;  $ inventors:'data.frame':   25 obs. of  1 variable:</span>
+<span class="co">#&gt;   ..$ patents:List of 25</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_nber_subcategory_count = 38</span></code></pre></div>
+<span class="co">#&gt; total_inventor_count = 12,489</span></code></pre></div>
+</div>
+<div id="assignees-endpoint" class="section level2">
+<h2 class="hasAnchor">
+<a href="#assignees-endpoint" class="anchor"></a>Assignees endpoint</h2>
 <p>Which assignees have an interest in beer?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">text_phrase</span>(<span class="dt">patent_title =</span> <span class="st">"beer"</span>), 
           <span class="dt">endpoint =</span> <span class="st">"assignees"</span>)
@@ -213,10 +220,22 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_assignee_count = 179</span></code></pre></div>
+<hr>
+<p><sup id="fn1">1</sup> Example taken from <a href="http://www.patentsview.org/api/inventor.html" class="uri">http://www.patentsview.org/api/inventor.html</a><sup><a href="#ref1">back</a></sup></p>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#patents-endpoint">Patents endpoint</a></li>
+      <li><a href="#inventors-endpoint">Inventors endpoint</a></li>
+      <li><a href="#assignees-endpoint">Assignees endpoint</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Patents endpoint
+
 Which patents have been cited by more than 500 US patents?
 
 ```{r}
@@ -53,14 +55,16 @@ pv_out <- search_pv(query = query, fields = fields, all_pages = TRUE)
 unnest_pv_data(data = pv_out$data, pk = "patent_number")
 ```
 
-How many patents were published in each NBER subcategory during the years 1991, 2001, and 2011?
+## Inventors endpoint
+
+Return patent numbers and titles with at least one inventor whose location was Chicago, IL.<sup><a href="#fn1" id="ref1">1</a></sup>
 
 ```{r}
-search_pv(query = qry_funs$eq(year_id = c(1991, 2001, 2011)),
-          endpoint = "nber_subcategories", all_pages = TRUE,
-          fields = c("year_id", "nber_subcategory_id", "nber_subcategory_title",
-                     "year_num_patents_for_nber_subcategory"))
+search_pv(query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
+          endpoint = "inventors", fields = c("patent_number", "patent_title"))
 ```
+
+## Assignees endpoint
 
 Which assignees have an interest in beer?
 
@@ -68,3 +72,6 @@ Which assignees have an interest in beer?
 search_pv(query = qry_funs$text_phrase(patent_title = "beer"), 
           endpoint = "assignees")
 ```
+
+*** 
+<sup id="fn1">1</sup> Example taken from http://www.patentsview.org/api/inventor.html<sup><a href="#ref1">back</a></sup>
