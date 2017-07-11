@@ -186,15 +186,20 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'  }
 #'
 #' @examples
-#' search_pv(query = qry_funs$gt(patent_year = 2010))
+#' search_pv(query = '{"_gt":{"patent_year":2010}}')
 #'
-#' search_pv(query = '{"_gt":{"patent_year":2010}}',
+#' search_pv(query = qry_funs$gt(patent_year = 2010),
+#'           fields = get_fields("patents", c("patents", "assignees")))
+#'
+#' search_pv(query = qry_funs$gt(patent_year = 2010),
 #'           method = "POST", fields = "patent_number",
 #'           sort = c("patent_number" = "asc"))
 #'
+#' search_pv(query = qry_funs$eq(inventor_last_name = "crew"),
+#'           all_pages = TRUE)
+#'
 #' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
-#'           endpoint = "assignees",
-#'           fields = get_fields("assignees", c("assignees", "patents")))
+#'           endpoint = "assignees")
 #'
 #' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
 #'           config = httr::timeout(40))
