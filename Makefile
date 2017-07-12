@@ -12,7 +12,7 @@ README.md: README.Rmd
 ifeq ($(CRAN),true)
 
 else
-	echo -e "\n[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
+	echo "[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
 endif
 
 # Document package
