@@ -8,7 +8,18 @@ patentsview
 Installation
 ------------
 
+You can get the stable version from CRAN:
+
 ``` r
+install.packages("patentsview")
+```
+
+Or the development version from GitHub:
+
+``` r
+if (!("devtools" %in% installed.packages()[,1]))
+  install.packages("devtools")
+
 devtools::install_github("ropensci/patentsview")
 ```
 
