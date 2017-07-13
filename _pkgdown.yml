@@ -41,6 +41,9 @@ navbar:
       - text: "Assignees"
         icon: fa-university
         href: articles/assignees.html
+      - text: "Citations"
+        icon: fa-long-arrow-left
+        href: articles/citations.html
   right:
   - text: "Reference"
     icon: fa-info-circle

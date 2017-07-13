@@ -66,6 +66,13 @@
         Assignees
       </a>
     </li>
+    <li>
+      <a href="articles/citations.html">
+        <span class="fa fa-long-arrow-left"></span>
+         
+        Citations
+      </a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -105,11 +112,13 @@
 <blockquote>
 <p>An R Client to the PatentsView API</p>
 </blockquote>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"ropensci/patentsview"</span>)</code></pre></div>
-</div>
+<p>You can get the stable version from CRAN:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"patentsview"</span>)</code></pre></div>
+<p>Or the development version from GitHub:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!(<span class="st">"devtools"</span> %in%<span class="st"> </span><span class="kw">installed.packages</span>()[,<span class="dv">1</span>]))
+  <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
+
+devtools::<span class="kw">install_github</span>(<span class="st">"ropensci/patentsview"</span>)</code></pre></div>
 <div id="basic-usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-usage" class="anchor"></a>Basic usage</h2>
@@ -154,6 +163,8 @@
     <h2 class="hasAnchor">
 <a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRANhttps://cran.r-project.org/package=patentsview at <br><a href="https://cran.r-project.org/package=patentsview">https://​cran.r-project.org/​package=patentsview</a>
+</li>
 <li>Browse source code at <br><a href="https://ropensci.github.io/patentsview/index.html">https://​ropensci.github.io/​patentsview/​index.html</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/ropensci/patentsview/issues">https://​github.com/​ropensci/​patentsview/​issues</a>
