@@ -1,5 +1,5 @@
 ---
-title: "Assignees"
+title: "Top assignees"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Assignees}
@@ -12,6 +12,10 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", warning = FALSE,
                       message = FALSE)
 ```
 
+The following is a brief analysis of the top organizations patenting in the field of databases. 
+
+1. The first step is to download the relevant data fields from the PatentsView API:
+
 ```{r}
 library(patentsview)
 library(dplyr)
@@ -19,6 +23,7 @@ library(highcharter)
 library(DT)
 library(knitr)
 
+# Our query will look for "database" in either the patent title or abstract... This isn't a terribly good query, but it will work for the purpose of demonstration. Users who are interested in writing higher-recall queries could consult the large body of research that has been done re: patent document retrievable.
 query <- with_qfuns(
   or(
     text_phrase(patent_abstract = "database"),
@@ -28,21 +33,26 @@ query <- with_qfuns(
 
 query
 
+# The fields we'll need for the analysis:
 fields <- c("patent_number", "assignee_organization",
             "patent_num_cited_by_us_patents", "app_date", "patent_date",
             "assignee_total_num_patents")
 
+# Download data from the API:
 pv_out <- search_pv(query = query, fields = fields,
                     endpoint = "patents", all_pages = TRUE)
-
-dl <- unnest_pv_data(data = pv_out$data, pk = "patent_number")
-dl
 ```
 
+2. Now let's identify who the top assignees are based on how many patents they have in our data set (`db_pats`). We'll also calculate how many total patents these assignees have (`ttl_pats`) and what fraction of their total patents relate to databases (`frac_db_pats`).
+
 ```{r}
+# Unnest the data frames that are stored in the assignee list column:
+dl <- unnest_pv_data(data = pv_out$data, pk = "patent_number")
+dl
+
 top_asgns <-
   dl$assignees %>%
-    filter(!is.na(assignee_organization)) %>% # some patents are not assigned to an org
+    filter(!is.na(assignee_organization)) %>% # some patents are not assigned to an org (only an inventor)
     mutate(ttl_pats = as.numeric(assignee_total_num_patents)) %>%
     group_by(assignee_organization, ttl_pats) %>% # group by ttl_pats so we can retain ttl_pats
     summarise(db_pats = n()) %>% 
@@ -67,6 +77,10 @@ datatable(
 
 <br>
 
+IBM is far and away the biggest player in the field. However, we can see that Oracle and Salesforce.com, Inc. are relatively more interested in this area, as indicated by the percentage of their patents that relate to databases.
+
+3. Let's see how these assignees' level of investment in databases has changed have changed over time.
+
 ```{r}
 top_asgns %>%
   select(-contains("pats")) %>%
@@ -84,6 +98,10 @@ top_asgns %>%
   hc_title(text = "Top five assignees in 'databases'") %>%
   hc_subtitle(text = "Yearly patent applications over time")
 ```
+
+It's hard to see any clear trends in this graph. What is clear is that the top assignees have all been patenting in the field for many years.
+
+4. Finally, let's see how these organizations compare across several metrics at once, including their average citation rate. First, we'll need to normalize the raw citation counts by publication year, so that older patents don't have an unfair advantage over younger patents (i.e., b/c they have had a longer time to accrue citations).
 
 ```{r}
 percent_rank2 <- function(x)
@@ -107,13 +125,16 @@ asng_p_dat <-
 kable(head(asng_p_dat), row.names = FALSE)
 ```
 
-Adapted from http://jkunst.com/highcharter/showcase.html
+Then, we can create a scatter plot to visualize the data. Each assignee will be represented by a point/bubble. The x-value of the assignee will represent the total number of patents it has in the field of databases (on a log scale), while the y-value will represent the assignee's average normalized citation rate. The size of the bubble we be proportional to the fraction of the assignee's patents that relate to databases.
 
 ```{r}
+# Graph adapted from Adapted from http://jkunst.com/highcharter/showcase.html
+
+
 hchart(asng_p_dat, "scatter", hcaes(x = db_pats, y = mean_perc, size = frac_db_pats,
                                     group = assignee_organization, color = color)) %>%
   hc_xAxis(title = list(text = "DB patents"), type = "logarithmic",
-           allowDecimals = FALSE) %>%
+           allowDecimals = FALSE, endOnTick = TRUE) %>%
   hc_yAxis(title = list(text = "Mean cite perc.")) %>%
   hc_title(text = "Top assignees in 'databases'") %>%
   hc_add_theme(hc_theme_flatdark()) %>%
