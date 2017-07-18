@@ -8,7 +8,6 @@ matrix:
   - r: release
   - r: devel
   - os: osx
-    r: release
 
 branches:
   except:
