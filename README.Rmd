@@ -1,10 +1,6 @@
 ---
+output: github_document
 title: "patentsview"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{patentsview}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, echo = FALSE, message = FALSE}

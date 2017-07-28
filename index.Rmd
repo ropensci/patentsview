@@ -1,10 +1,6 @@
 ---
-title: ""
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{patentsview}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: github_document
+title: "patentsview"
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -13,8 +9,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-# patentsview
 
 > An R Client to the PatentsView API
 
