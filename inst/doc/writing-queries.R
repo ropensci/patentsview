@@ -62,7 +62,7 @@ jsonlite::toJSON(query_v_3, auto_unbox = TRUE)
 qry_funs$lte(assignee_total_num_inventors = 10)
 
 ## ------------------------------------------------------------------------
-qry_funs$lte(cpc_subsection_id = "G12")
+qry_funs$eq(cpc_subsection_id = "G12")
 
 ## ------------------------------------------------------------------------
 with_qfuns(
