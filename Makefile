@@ -1,11 +1,10 @@
 all: data-raw/fieldsdf.csv doc README.md vig test
-.PHONY: clean
 
 # Pull endpoint fields from PatentsView website
 data-raw/fields.csv: data-raw/fieldsdf.R
 	Rscript -e "source('data-raw/fieldsdf.R')"
 
-# Compile patentsview vignette into README.md
+# Render README.Rmd to README.md
 README.md: README.Rmd
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE)"
 	Rscript -e "file.remove('README.html')"
