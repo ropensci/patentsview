@@ -1,6 +1,6 @@
 ---
-output: github_document
 title: "patentsview"
+output: github_document
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -51,5 +51,4 @@ Head over to the package's [webpage](https://ropensci.github.io/patentsview/inde
 * A [getting started vignette](http://ropensci.github.io/patentsview/articles/getting-started.html) for first-time users
 * An in-depth tutorial on [writing queries](http://ropensci.github.io/patentsview/articles/writing-queries.html)
 * A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)
-
-* WIP: Data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/assignees.html) in the field of databases)
+* WIP: Data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/top-assignees.html) in the field of databases)

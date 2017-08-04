@@ -58,4 +58,3 @@ Head over to the package's [webpage](https://ropensci.github.io/patentsview/inde
 -   A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)
 -   WIP: Data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/assignees.html) in the field of databases)
 
-[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
