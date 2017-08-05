@@ -158,6 +158,6 @@ with_qfuns(
 ```
 
 *** 
-<sup id="fn1">1</sup> One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot "or" together values using arrays. Thus, the query DSL in `patentsview` never relies on arrays when constructing the JSON.<sup><a href="#ref1">back</a></sup>
+<sup id="fn1">1</sup> One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot "or" together values using arrays. Thus, the DSL in `patentsview` never relies on arrays when creating queries.<sup><a href="#ref1">back</a></sup>
 
 <sup id="fn2">2</sup> PatentsView gets the names of the CPC hierarchy wrong. For example, a "CPC subsection" according to PatentsView is actually a CPC class.<sup><a href="#ref2">back</a></sup>

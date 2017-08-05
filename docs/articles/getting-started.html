@@ -301,35 +301,100 @@ query_1b &lt;-<span class="st"> </span><span class="kw"><a href="../reference/wi
 <div id="how-do-i-access-the-data-frames-inside-of-the-subentity-list-columns" class="section level4">
 <h4 class="hasAnchor">
 <a href="#how-do-i-access-the-data-frames-inside-of-the-subentity-list-columns" class="anchor"></a>How do I access the data frames inside of the subentity list columns?</h4>
-<p>You can unnest the data frames from the list columns using <code><a href="../reference/unnest_pv_data.html">unnest_pv_data()</a></code>. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and “government interest statements”:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">contains</span>(<span class="dt">inventor_last_name =</span> <span class="st">"smith"</span>), 
-                 <span class="dt">endpoint =</span> <span class="st">"assignees"</span>, 
-                 <span class="dt">fields =</span> <span class="kw"><a href="../reference/get_fields.html">get_fields</a></span>(<span class="st">"assignees"</span>, <span class="kw">c</span>(<span class="st">"assignees"</span>,<span class="st">"applications"</span>, 
-                                                    <span class="st">"gov_interests"</span>)))
+<p>Let’s consider the following data, in which assignees are the primary entity while applications and “government interest statements” are the subentities:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create field list</span>
+asgn_flds &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"assignee_id"</span>, <span class="st">"assignee_organization"</span>)
+subent_flds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_fields.html">get_fields</a></span>(<span class="st">"assignees"</span>, <span class="kw">c</span>(<span class="st">"applications"</span>, <span class="st">"gov_interests"</span>))
+fields &lt;-<span class="st"> </span><span class="kw">c</span>(asgn_flds, subent_flds)
+
+<span class="co"># Pull data</span>
+res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">contains</span>(<span class="dt">inventor_last_name =</span> <span class="st">"smith"</span>), 
+                 <span class="dt">endpoint =</span> <span class="st">"assignees"</span>, <span class="dt">fields =</span> fields)
 res$data
 <span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the assignee data level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  18 variables:</span>
-<span class="co">#&gt;   ..$ assignee_first_name           : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ assignee_first_seen_date      : chr [1:25] "1976-03-09" ...</span>
-<span class="co">#&gt;   ..$ assignee_id                   : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
-<span class="co">#&gt;   ..$ assignee_key_id               : chr [1:25] "85" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_city       : chr [1:25] "Mississauga" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_country    : chr [1:25] "CA" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_latitude   : chr [1:25] "43.15" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_location_id: chr [1:25] "43.15|-79.5" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_longitude  : chr [1:25] "-79.5" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_state      : chr [1:25] "Ontario" ...</span>
-<span class="co">#&gt;   ..$ assignee_last_name            : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ assignee_last_seen_date       : chr [1:25] "1981-01-06" ...</span>
-<span class="co">#&gt;   ..$ assignee_organization         : chr [1:25] "Ferranti-Packard Limited" ...</span>
-<span class="co">#&gt;   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...</span>
-<span class="co">#&gt;   ..$ assignee_total_num_patents    : chr [1:25] "11" ...</span>
-<span class="co">#&gt;   ..$ assignee_type                 : chr [1:25] "3" ...</span>
-<span class="co">#&gt;   ..$ applications                  :List of 25</span>
-<span class="co">#&gt;   ..$ gov_interests                 :List of 25</span></code></pre></div>
-<p>The <code>res$data</code> data frame has assignee-level vector columns (e.g., the vector <code>res$data$assignees$assignee_first_seen_date</code>) and subentity-level list columns (e.g., the list <code>res$data$assignees$applications</code>). The list columns have data frames nested inside them, which we can extract using <code><a href="../reference/unnest_pv_data.html">unnest_pv_data()</a></code>:</p>
+<span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  4 variables:</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...</span>
+<span class="co">#&gt;   ..$ applications         :List of 25</span>
+<span class="co">#&gt;   ..$ gov_interests        :List of 25</span></code></pre></div>
+<p><code>res$data</code> has assignee-level columns that are vectors (e.g., <code>res$data$assignees$assignee_id</code>) and subentity-level columns that are lists (e.g., <code>res$data$assignees$applications</code>). You have two good ways to get at data frames nested inside the subentity lists:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Use tidyr::unnest.</strong> (This is probably the easier choice of the two).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+
+<span class="co"># Get assignee/application data:</span>
+res$data$assignees %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(applications) %&gt;%
+<span class="st">  </span><span class="kw">head</span>()
+<span class="co">#&gt;                        assignee_id              assignee_organization</span>
+<span class="co">#&gt; 1 000fd451e3903862279995c8f7946893           Ferranti-Packard Limited</span>
+<span class="co">#&gt; 2 000fd451e3903862279995c8f7946893           Ferranti-Packard Limited</span>
+<span class="co">#&gt; 3 0014741cba71f79c56703ad2f13adaf4 Scientific Operating Systems, Inc.</span>
+<span class="co">#&gt; 4 0014741cba71f79c56703ad2f13adaf4 Scientific Operating Systems, Inc.</span>
+<span class="co">#&gt; 5 0014741cba71f79c56703ad2f13adaf4 Scientific Operating Systems, Inc.</span>
+<span class="co">#&gt; 6 00172a3f29e660fdb2288e3ff35b7b26        KINGPIN TATTOO SUPPLY, INC.</span>
+<span class="co">#&gt;   app_country   app_date app_number app_type</span>
+<span class="co">#&gt; 1          US 1974-12-23   05536925       05</span>
+<span class="co">#&gt; 2          US 1975-08-18   05605303       05</span>
+<span class="co">#&gt; 3          US 1998-12-11   09209876       09</span>
+<span class="co">#&gt; 4          US 2000-04-26   09558501       09</span>
+<span class="co">#&gt; 5          US 1998-07-15   09091326       09</span>
+<span class="co">#&gt; 6          US 2014-04-25   29488968       29</span>
+
+<span class="co"># Get assignee/gov_interest data:</span>
+res$data$assignees %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(gov_interests) %&gt;%
+<span class="st">  </span><span class="kw">head</span>()
+<span class="co">#&gt;                        assignee_id</span>
+<span class="co">#&gt; 1 000fd451e3903862279995c8f7946893</span>
+<span class="co">#&gt; 2 0014741cba71f79c56703ad2f13adaf4</span>
+<span class="co">#&gt; 3 00172a3f29e660fdb2288e3ff35b7b26</span>
+<span class="co">#&gt; 4 001763141777df50570fcd8174fd4a24</span>
+<span class="co">#&gt; 5 00315c84989f006866aafd09cc634d41</span>
+<span class="co">#&gt; 6 003383e4a375c16e2af590613e9c623c</span>
+<span class="co">#&gt;                             assignee_organization</span>
+<span class="co">#&gt; 1                        Ferranti-Packard Limited</span>
+<span class="co">#&gt; 2              Scientific Operating Systems, Inc.</span>
+<span class="co">#&gt; 3                     KINGPIN TATTOO SUPPLY, INC.</span>
+<span class="co">#&gt; 4                       Highland Industries, Inc.</span>
+<span class="co">#&gt; 5 Idea Development, Engineering and Service, Inc.</span>
+<span class="co">#&gt; 6             Siemens Industrial Automation, Inc.</span>
+<span class="co">#&gt;                                                                               applications</span>
+<span class="co">#&gt; 1                               US, US, 1974-12-23, 1975-08-18, 05536925, 05605303, 05, 05</span>
+<span class="co">#&gt; 2 US, US, US, 1998-12-11, 2000-04-26, 1998-07-15, 09209876, 09558501, 09091326, 09, 09, 09</span>
+<span class="co">#&gt; 3                               US, US, 2014-04-25, 2014-08-11, 29488968, 29498979, 29, 29</span>
+<span class="co">#&gt; 4                                                             US, 2000-02-16, 09504737, 09</span>
+<span class="co">#&gt; 5                               US, US, 1995-08-14, 1997-06-20, 08514660, 08879174, 08, 08</span>
+<span class="co">#&gt; 6                                                             US, 1993-08-10, 08104311, 08</span>
+<span class="co">#&gt;   govint_contract_award_number govint_org_id govint_org_level_one</span>
+<span class="co">#&gt; 1                           NA            NA                   NA</span>
+<span class="co">#&gt; 2                           NA            NA                   NA</span>
+<span class="co">#&gt; 3                           NA            NA                   NA</span>
+<span class="co">#&gt; 4                           NA            NA                   NA</span>
+<span class="co">#&gt; 5                           NA            NA                   NA</span>
+<span class="co">#&gt; 6                           NA            NA                   NA</span>
+<span class="co">#&gt;   govint_org_level_three govint_org_level_two govint_org_name</span>
+<span class="co">#&gt; 1                     NA                   NA              NA</span>
+<span class="co">#&gt; 2                     NA                   NA              NA</span>
+<span class="co">#&gt; 3                     NA                   NA              NA</span>
+<span class="co">#&gt; 4                     NA                   NA              NA</span>
+<span class="co">#&gt; 5                     NA                   NA              NA</span>
+<span class="co">#&gt; 6                     NA                   NA              NA</span>
+<span class="co">#&gt;   govint_raw_statement</span>
+<span class="co">#&gt; 1                   NA</span>
+<span class="co">#&gt; 2                   NA</span>
+<span class="co">#&gt; 3                   NA</span>
+<span class="co">#&gt; 4                   NA</span>
+<span class="co">#&gt; 5                   NA</span>
+<span class="co">#&gt; 6                   NA</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<strong>Use patentsview::unnest_pv_data.</strong> <code><a href="../reference/unnest_pv_data.html">unnest_pv_data()</a></code> creates a series of data frames (one for each entity/subentity level) that are like tables in a relational database. You provide it with the data that <code><a href="../reference/search_pv.html">search_pv()</a></code> returned to you, as well as a field that can act as a unique identifier for the primary entities:</li>
+</ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> res$data, <span class="dt">pk =</span> <span class="st">"assignee_id"</span>)
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ applications :'data.frame':   68 obs. of  5 variables:</span>
@@ -347,24 +412,10 @@ res$data
 <span class="co">#&gt;   ..$ govint_org_level_two        : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_name             : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_raw_statement        : logi [1:25] NA ...</span>
-<span class="co">#&gt;  $ assignees    :'data.frame':   25 obs. of  16 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id                   : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
-<span class="co">#&gt;   ..$ assignee_first_name           : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ assignee_first_seen_date      : chr [1:25] "1976-03-09" ...</span>
-<span class="co">#&gt;   ..$ assignee_key_id               : chr [1:25] "85" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_city       : chr [1:25] "Mississauga" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_country    : chr [1:25] "CA" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_latitude   : chr [1:25] "43.15" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_location_id: chr [1:25] "43.15|-79.5" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_longitude  : chr [1:25] "-79.5" ...</span>
-<span class="co">#&gt;   ..$ assignee_lastknown_state      : chr [1:25] "Ontario" ...</span>
-<span class="co">#&gt;   ..$ assignee_last_name            : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ assignee_last_seen_date       : chr [1:25] "1981-01-06" ...</span>
-<span class="co">#&gt;   ..$ assignee_organization         : chr [1:25] "Ferranti-Packard Limited" ...</span>
-<span class="co">#&gt;   ..$ assignee_total_num_inventors  : chr [1:25] "5" ...</span>
-<span class="co">#&gt;   ..$ assignee_total_num_patents    : chr [1:25] "11" ...</span>
-<span class="co">#&gt;   ..$ assignee_type                 : chr [1:25] "3" ...</span></code></pre></div>
-<p>Now we are left with a series of flat data frames, instead of a single data frame with data frames nested inside. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
+<span class="co">#&gt;  $ assignees    :'data.frame':   25 obs. of  2 variables:</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...</span></code></pre></div>
+<p>Now we are left with a series of flat data frames instead of having a single data frame with other data frames nested inside of it. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
 <hr>
 <p><sup id="fn1">1</sup> You can use <code><a href="../reference/get_endpoints.html">get_endpoints()</a></code> to list the endpoint names as the API expects them to appear (e.g., <code>assignees</code>, <code>cpc_subsections</code>, <code>inventors</code>, <code>locations</code>, <code>nber_subcategories</code>, <code>patents</code>, and <code>uspc_mainclasses</code>)<sup><a href="#ref1">back</a></sup></p>
 <p><sup id="fn2">2</sup> This webpage includes some details that are not relevant to the <code>query</code> argument in <code>search_pv</code>, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup></p>
