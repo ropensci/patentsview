@@ -2,7 +2,7 @@
 title: "Examples"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{patentsview}
+  %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
