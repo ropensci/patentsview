@@ -38,12 +38,12 @@ navbar:
   - text: "Applications"
     icon: fa-bar-chart
     menu:
-      - text: "Assignees"
+      - text: "Top assignees"
         icon: fa-university
-        href: articles/assignees.html
-      - text: "Citations"
+        href: articles/top-assignees.html
+      - text: "Citation networks"
         icon: fa-long-arrow-left
-        href: articles/citations.html
+        href: articles/citation-networks.html
   right:
   - text: "Reference"
     icon: fa-info-circle
