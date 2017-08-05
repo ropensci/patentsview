@@ -157,23 +157,45 @@ query_1b <- with_qfuns(
 
 #### How do I access the data frames inside of the subentity list columns?
 
-You can unnest the data frames from the list columns using `unnest_pv_data()`. This function creates a series of data frames that are like tables in a relational database. The data frames can be linked together using the primary key that you specify. For example, in this call our primary entity is the assignee, and the subentities include applications and "government interest statements":
+Let's consider the following data, in which assignees are the primary entity while applications and "government interest statements" are the subentities:
 
 ```{r}
+# Create field list
+asgn_flds <- c("assignee_id", "assignee_organization")
+subent_flds <- get_fields("assignees", c("applications", "gov_interests"))
+fields <- c(asgn_flds, subent_flds)
+
+# Pull data
 res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
-                 endpoint = "assignees", 
-                 fields = get_fields("assignees", c("assignees","applications", 
-                                                    "gov_interests")))
+                 endpoint = "assignees", fields = fields)
 res$data
 ```
 
-The `res$data` data frame has assignee-level vector columns (e.g., the vector `res$data$assignees$assignee_first_seen_date`) and subentity-level list columns (e.g., the list `res$data$assignees$applications`). The list columns have data frames nested inside them, which we can extract using `unnest_pv_data()`:
+`res$data` has assignee-level columns that are vectors (e.g., `res$data$assignees$assignee_id`) and subentity-level columns that are lists (e.g., `res$data$assignees$applications`). You have two good ways to get at data frames nested inside the subentity lists: 
+
+1. **Use tidyr::unnest.** (This is probably the easier choice of the two). 
+
+```{r}
+library(tidyr)
+
+# Get assignee/application data:
+res$data$assignees %>% 
+  unnest(applications) %>%
+  head()
+
+# Get assignee/gov_interest data:
+res$data$assignees %>% 
+  unnest(gov_interests) %>%
+  head()
+```
+
+2. **Use patentsview::unnest_pv_data.** `unnest_pv_data()` creates a series of data frames (one for each entity/subentity level) that are like tables in a relational database. You provide it with the data that `search_pv()` returned to you, as well as a field that can act as a unique identifier for the primary entities:
 
 ```{r}
 unnest_pv_data(data = res$data, pk = "assignee_id")
 ```
 
-Now we are left with a series of flat data frames, instead of a single data frame with data frames nested inside. These flat data frames can be joined together as needed via the primary key (`assignee_id`).
+Now we are left with a series of flat data frames instead of having a single data frame with other data frames nested inside of it. These flat data frames can be joined together as needed via the primary key (`assignee_id`).
 
 *** 
 <sup id="fn1">1</sup> You can use `get_endpoints()` to list the endpoint names as the API expects them to appear (e.g., `assignees`, `cpc_subsections`, `inventors`, `locations`, `nber_subcategories`, `patents`, and `uspc_mainclasses`)<sup><a href="#ref1">back</a></sup>
