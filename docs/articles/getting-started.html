@@ -60,17 +60,17 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/assignees.html">
+      <a href="../articles/top-assignees.html">
         <span class="fa fa-university"></span>
          
-        Assignees
+        Top assignees
       </a>
     </li>
     <li>
-      <a href="../articles/citations.html">
+      <a href="../articles/citation-networks.html">
         <span class="fa fa-long-arrow-left"></span>
          
-        Citations
+        Citation networks
       </a>
     </li>
   </ul>
@@ -258,9 +258,10 @@
 <span class="co">#&gt; total_assignee_count = 449</span></code></pre></div>
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Which entity your query is applied to.</strong> For the first call shown above, the API searched for <em>patents</em> that have at least one inventor on them with the last name of “chambers.” For the second call, the API searched for <em>assignees</em> that were assigned a patent that has at least one inventor on it with the last name of “chambers.”</p></li>
-<li><p><strong>The structure of the data frame that is returned.</strong> The first call (which was to the patents endpoint) gave us a data frame on the <em>patent level</em>, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned to us in list columns, named after the subentity that the field belongs to (e.g., the <code>inventors</code> subentity).<sup><a href="#fn3" id="ref3">3</a></sup> The second call gave us a data frame on the <em>assignee level</em>, meaning that each row corresponded to a different assignee.</p></li>
+<li><p><strong>Which entity your query is applied to.</strong> The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor on them with the last name of “chambers.” The second call used the assignees endpoint, so the API searched for assignees that have at least one patent which has an inventor on it whose last name is “chambers.”</p></li>
+<li><p><strong>The structure of the data frame that is returned.</strong> The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned in list columns that are named after the subentity associated with the field (e.g., the <code>inventors</code> subentity).<sup><a href="#fn3" id="ref3">3</a></sup>…Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.</p></li>
 </ol>
+<p>Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search.</p>
 </div>
 <div id="faq" class="section level2">
 <h2 class="hasAnchor">

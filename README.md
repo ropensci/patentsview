@@ -3,7 +3,7 @@ patentsview
 
 > An R Client to the PatentsView API
 
-[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112) [![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/patentsview)
+[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112) [![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/patentsview) [![](http://cranlogs.r-pkg.org/badges/patentsview)](http://cran.rstudio.com/web/packages/patentsview/index.html)
 
 Installation
 ------------
@@ -56,5 +56,6 @@ Head over to the package's [webpage](https://ropensci.github.io/patentsview/inde
 -   A [getting started vignette](http://ropensci.github.io/patentsview/articles/getting-started.html) for first-time users
 -   An in-depth tutorial on [writing queries](http://ropensci.github.io/patentsview/articles/writing-queries.html)
 -   A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)
--   WIP: Data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/assignees.html) in the field of databases)
+-   WIP: Data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/top-assignees.html) in the field of databases)
 
+[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
