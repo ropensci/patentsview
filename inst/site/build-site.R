@@ -1,5 +1,6 @@
 fix_fun_index <- function() {
-  raw_html <- paste(readLines("docs/reference/index.html"), collapse = "")
+  file <- "docs/reference/index.html"
+  raw_html <- paste(readLines(file), collapse = "")
   html2 <- gsub(
     "<p></p> *(</td> *<td><p>Fields data)",
     '<p><code><a href="fieldsdf.html">fieldsdf</a></code> </p>\\1',
@@ -10,7 +11,15 @@ fix_fun_index <- function() {
     '<p><code><a href="qry_funs.html">qry_funs</a></code> </p>\\1',
     html2
   )
-  writeLines(html3, "docs/reference/index.html")
+  writeLines(html3, file)
+}
+
+remove_cran_href <- function() {
+  file <- "docs/index.html"
+  raw_html <- readLines(file)
+  dl_line <- grepl("Download from CRAN", raw_html)
+  raw_html[dl_line] <- "<li>Download from CRAN at <br><a href=\"https://cran.r-project.org/package=patentsview\">https://cran.r-project.org/package=patentsview</a>"
+  writeLines(raw_html, file)
 }
 
 build_site <- function() {
@@ -20,4 +29,5 @@ build_site <- function() {
   file.copy(extra_vigs, to = to)
   pkgdown::build_site()
   fix_fun_index()
+  remove_cran_href()
 }
