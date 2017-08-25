@@ -49,7 +49,7 @@ create_not_fun <- function(fun) {
   }
 }
 
-#' Query function list
+#' List of query functions
 #'
 #' A list of functions that make it easy to write PatentsView queries. See the
 #' details section below for a list of the 14 functions, as well as the
@@ -120,7 +120,7 @@ qry_funs <- c(
   sapply("not", create_not_fun, USE.NAMES = TRUE, simplify = FALSE)
 )
 
-#' With Query Functions
+#' With qry_funs
 #'
 #' This function evaluates whatever code you pass to it in the environment of
 #' the \code{\link{qry_funs}} list. This allows you to cut down on typing when

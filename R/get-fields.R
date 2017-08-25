@@ -1,4 +1,4 @@
-#' Get field list
+#' Get list of retrievable fields
 #'
 #' This function returns a vector of fields that you can retrieve from a given
 #' API endpoint (i.e., the fields you can pass to the \code{fields} argument in

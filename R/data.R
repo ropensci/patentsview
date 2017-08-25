@@ -1,4 +1,4 @@
-#' Fields data
+#' Fields data frame
 #'
 #' A data frame containing the names of retrievable and queryable fields for
 #' each of the 7 API endpoints. A yes/no flag (\code{can_query}) indicates

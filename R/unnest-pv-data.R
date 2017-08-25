@@ -26,7 +26,7 @@ get_ok_pk <- function(endpoint) {
   )
 }
 
-#' Unnest PatentsView Data
+#' Unnest PatentsView data
 #'
 #' This function converts a single data frame that has subentity-level list
 #' columns in it into multiple data frames, one for each entity/subentity.
