@@ -4,13 +4,15 @@ output: rmarkdown::html_vignette
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", warning = FALSE,
-                      message = FALSE)
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  comment = "#>", 
+  warning = FALSE,
+  message = FALSE
+)
 ```
 
-__WORK IN PROGRESS__
-
-The following is a brief foray into patent citation networks. The analysis is done on 3 patents that involve patent citation analysis (PCA). 
+The following is a brief foray into patent citation networks. The analysis is done on 3 patents that describe patent citation analysis (PCA) themselves. 
 
 The first step is to download the relevant data from the PatentsView API. We can use the CPC code of  [Y10S707/933](https://worldwide.espacenet.com/classification#!/CPC=Y10S707/933) to pull PCA patents. 
 
@@ -22,16 +24,21 @@ library(visNetwork)
 library(magrittr)
 library(stringr)
 
+# Write a query to get the patents that are assigned a CPC code of "Y10S707/933": 
 query <- qry_funs$begins(cpc_subgroup_id = "Y10S707/933")
 
-fields <- c("cited_patent_number", "citedby_patent_number", "patent_number",
-            "patent_title")
+# Create a list of fields to pull from the API:
+fields <- c(
+  "patent_number", 
+  "patent_title",
+  "cited_patent_number", # Which patents do they cite?
+  "citedby_patent_number" # Which patents cite them?
+)
 
-# This query will give us the patent numbers that are assigned to the CPC
-# code of "Y10S707/933"  (i.e., all PCA patents), along with their titles, 
-# the patents they are cited, and the patents which cite them.
+# Send a request to the API:
 res <- search_pv(query = query, fields = fields, all_pages = TRUE)
 
+# Unnest the data found in the list columns:
 res_lst <- unnest_pv_data(res$data, pk = "patent_number")
 res_lst
 ```
@@ -41,7 +48,7 @@ There are only `r nrow(res_lst$patents)` PCA patents. These patents cite `r nrow
 ```{r}
 pat_title <- function(title, number) {
   temp_title <- str_wrap(title)
-  gsub("\\n", "<br>", temp_title) -> i
+  i <- gsub("\\n", "<br>", temp_title)
   paste0('<a href="https://patents.google.com/patent/US', number, '">', i, '</a>')
 }
 
@@ -125,7 +132,7 @@ hist(full_network$cosine_sim, main = "Similarity scores between patents relevant
      xlab = "Cosine similarity", ylab = "Number of patent pairs")
 ```
 
-There appears to be a smallish group of patent pairs that are very similar to each other (`cosine_sim` > 0.8), which makes it tempting to choose 0.8 as a cutoff point. However, patent pairs that have reference lists that are that similar to each other are probably just patents that belong to the same family. Let's choose 0.1 as a cutoff point instead, as there doesn't appear to be all that many pairs above this point.[^2] 
+There appears to be a smallish group of patent pairs that are very similar to each other (`cosine_sim` > 0.8), which makes it tempting to choose 0.8 as a cutoff point. However, patent pairs that have reference lists that are this similar to each other are probably just patents in the same family. Let's choose 0.1 as a cutoff point instead, as there doesn't appear to be all that many pairs above this point.[^2] 
 
 ```{r}
 edges <- 
@@ -151,4 +158,4 @@ visNetwork(nodes = nodes, edges = edges, height = "700px", width = "100%",
 ```
 
 [^1]: A patent family is a group of related patents, usually all authored by the same inventor and relating to the same technology.
-[^2]: This is still a pretty arbitrary choice. Take a look at algorithms like the [disparity filter](http://www.pnas.org/content/106/16/6483.full.pdf) for a more systematic approach to edge filtering. 
+[^2]: This is still a pretty arbitrary choice. Take a look at algorithms like the [disparity filter](http://www.pnas.org/content/106/16/6483.full.pdf) for a more systematic way to filter edges.

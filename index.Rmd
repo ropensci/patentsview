@@ -21,8 +21,7 @@ install.packages("patentsview")
 Or the development version from GitHub:
 
 ```{r eval = FALSE}
-if (!("devtools" %in% installed.packages()[,1]))
-  install.packages("devtools")
+if (!require(devtools)) install.packages("devtools")
 
 devtools::install_github("ropensci/patentsview")
 ```
@@ -34,8 +33,7 @@ The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an inter
 ```{r}
 library(patentsview)
 
-search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          endpoint = "patents")
+search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}')
 ```
 
 ## Learning more
@@ -45,4 +43,4 @@ Check out the:
 * [Getting started vignette](articles/getting-started.html) if you are a first-time user
 * In-depth tutorial on [writing queries](articles/writing-queries.html)
 * List of [examples](articles/examples.html)
-* Data appliations (e.g., finding [top assignees](articles/top-assignees.html))
+* Two examples of data applications (e.g., discovering the [top assignees](articles/top-assignees.html) in the field of databases)
