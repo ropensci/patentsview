@@ -2,7 +2,7 @@
 % Please edit documentation in R/query-dsl.R
 \name{with_qfuns}
 \alias{with_qfuns}
-\title{With Query Functions}
+\title{With qry_funs}
 \usage{
 with_qfuns(code)
 }

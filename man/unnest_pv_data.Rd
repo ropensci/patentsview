@@ -2,7 +2,7 @@
 % Please edit documentation in R/unnest-pv-data.R
 \name{unnest_pv_data}
 \alias{unnest_pv_data}
-\title{Unnest PatentsView Data}
+\title{Unnest PatentsView data}
 \usage{
 unnest_pv_data(data, pk = get_ok_pk(names(data)))
 }

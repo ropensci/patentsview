@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-fields.R
 \name{get_fields}
 \alias{get_fields}
-\title{Get field list}
+\title{Get list of retrievable fields}
 \usage{
 get_fields(endpoint, groups = NULL)
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{fieldsdf}
 \alias{fieldsdf}
-\title{Fields data}
+\title{Fields data frame}
 \format{A data frame with 992 rows and 7 variables:
 \describe{
   \item{endpoint}{The endpoint that this field record is for}
