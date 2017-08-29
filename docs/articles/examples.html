@@ -115,7 +115,7 @@
 <p>Which patents have been cited by more than 500 US patents?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
-<span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>))
+<span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>))
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
 <span class="co">#&gt; </span>
@@ -132,7 +132,7 @@
 <p>How many distinct inventors are represented by these highly-cited patents?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setting subent_cnts = TRUE will give us the subentity counts. Since inventors </span>
 <span class="co"># are subentities for the patents endpoint, this means we will get their counts.</span>
-<span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>),
+<span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>),
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_id"</span>), <span class="dt">subent_cnts =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the patent data level:</span>
@@ -163,7 +163,7 @@ fields &lt;-<span class="st"> </span><span class="kw">c</span>(inv_fields, <span
 pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> query, <span class="dt">fields =</span> fields, <span class="dt">all_pages =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># Unnest the inventor list column</span>
-<span class="kw"><a href="../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> pv_out$data, <span class="dt">pk =</span> <span class="st">"patent_number"</span>)
+<span class="kw"><a href="../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> pv_out<span class="op">$</span>data, <span class="dt">pk =</span> <span class="st">"patent_number"</span>)
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ inventors:'data.frame':   99505 obs. of  20 variables:</span>
 <span class="co">#&gt;   ..$ patent_number                 : chr [1:99505] "7249856" ...</span>
@@ -211,7 +211,7 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <h2 class="hasAnchor">
 <a href="#assignees-endpoint" class="anchor"></a>Assignees endpoint</h2>
 <p>Which assignees have an interest in beer?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs$<span class="kw">text_phrase</span>(<span class="dt">patent_title =</span> <span class="st">"beer"</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">text_phrase</span>(<span class="dt">patent_title =</span> <span class="st">"beer"</span>), 
           <span class="dt">endpoint =</span> <span class="st">"assignees"</span>)
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on the assignee data level:</span>

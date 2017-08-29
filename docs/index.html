@@ -112,10 +112,9 @@
 <p>You can get the stable version from CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"patentsview"</span>)</code></pre></div>
 <p>Or the development version from GitHub:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!(<span class="st">"devtools"</span> %in%<span class="st"> </span><span class="kw">installed.packages</span>()[,<span class="dv">1</span>]))
-  <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 
-devtools::<span class="kw">install_github</span>(<span class="st">"ropensci/patentsview"</span>)</code></pre></div>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"ropensci/patentsview"</span>)</code></pre></div>
 </div>
 <div id="basic-usage" class="section level2">
 <h2 class="hasAnchor">
@@ -123,8 +122,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"ropensci/pate
 <p>The <a href="http://www.patentsview.org/api/doc.html">PatentsView API</a> provides an interface to a disambiguated version of USPTO. The <code>patentsview</code> R package provides one main function, <code><a href="reference/search_pv.html">search_pv()</a></code>, to make it easy to interact with that API:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
-<span class="kw"><a href="reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_gte":{"patent_date":"2007-01-01"}}'</span>,
-          <span class="dt">endpoint =</span> <span class="st">"patents"</span>)
+<span class="kw"><a href="reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_gte":{"patent_date":"2007-01-01"}}'</span>)
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
 <span class="co">#&gt; </span>
@@ -150,7 +148,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"ropensci/pate
 </li>
 <li>List of <a href="articles/examples.html">examples</a>
 </li>
-<li>WIP: Data appliations (e.g., finding <a href="articles/top-assignees.html">top assignees</a>)</li>
+<li>Two examples of data applications (e.g., discovering the <a href="articles/top-assignees.html">top assignees</a> in the field of databases)</li>
 </ul>
 </div>
 </div>
