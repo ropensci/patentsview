@@ -57,7 +57,7 @@ unnest_pv_data(data = pv_out$data, pk = "patent_number")
 
 ## Inventors endpoint
 
-Return patent numbers and titles with at least one inventor whose location was Chicago, IL.<sup><a href="#fn1" id="ref1">1</a></sup>
+Return patent numbers and titles with at least one inventor whose location was Chicago, IL.[^1]
 
 ```{r}
 search_pv(query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
@@ -74,4 +74,4 @@ search_pv(query = qry_funs$text_phrase(patent_title = "beer"),
 ```
 
 *** 
-<sup id="fn1">1</sup> Example taken from http://www.patentsview.org/api/inventor.html<sup><a href="#ref1">back</a></sup>
+[^1]: Example taken from http://www.patentsview.org/api/inventor.html.
