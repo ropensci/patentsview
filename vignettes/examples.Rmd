@@ -73,5 +73,4 @@ search_pv(query = qry_funs$text_phrase(patent_title = "beer"),
           endpoint = "assignees")
 ```
 
-*** 
 [^1]: Example taken from http://www.patentsview.org/api/inventor.html.

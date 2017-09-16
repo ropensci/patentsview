@@ -161,7 +161,6 @@ visNetwork(nodes = nodes, edges = edges, height = "700px", width = "100%",
 
 The 3 patents of interest are represented by blue nodes, while their citing and cited patents are represented by yellow nodes. One can see the small clusters of patents in this network, as well as how they relate to another. 
 
-*** 
 [^1]: A patent family is a group of related patents, usually all authored by the same inventor and relating to the same technology.
 [^2]: Defining the network of patents relevant to PCA as those that cite or are cited by the 3 patents of interest is fairly restrictive (i.e., it doesn't adequately capture all of the patents related to PCA). There are likely patents out there that aren't cited by nor cite any of the 3, but are still relevant to PCA.One would need to measure the similarity between all the patents that are in the general area of PCA (versus just those that cite or are cited by the 3 we chose) to get a more complete picture of the patents in this area. This is a much harder problem, though, and would require more analysis than can fit in a single vignette.
 [^3]: This is still a pretty arbitrary choice. Take a look at algorithms like the [disparity filter](http://www.pnas.org/content/106/16/6483.full.pdf) for a more systematic way to filter edges.

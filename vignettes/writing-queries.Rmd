@@ -157,6 +157,5 @@ with_qfuns(
 )
 ```
 
-*** 
 [^1]: One may note that using "value arrays" is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: `'{"inventor_last_name":["Whitney","Hopper"]}'`. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot "or" together values using arrays. Thus, the DSL in `patentsview` never relies on arrays when creating queries.
 [^2]: PatentsView gets the names of the CPC hierarchy wrong. For example, a "CPC subsection" according to PatentsView is actually a CPC class.
