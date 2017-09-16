@@ -154,4 +154,6 @@ hchart(asng_p_dat, "scatter", hcaes(x = db_pats, y = mean_perc, size = frac_db_p
   hc_legend(enabled = FALSE)
 ```
 
-It looks like Microsoft has relatively high values across the three metrics (average citation percentile, number of database patents, and percent of total patents that are related to databases). IBM has more patents than Microsoft, but a slightly lower average citation percentile. 
+<br>
+
+It looks like Microsoft has relatively high values across the three metrics (average citation percentile, number of database patents, and percent of total patents that are related to databases). IBM has more patents than Microsoft, but a slightly lower average citation percentile.
