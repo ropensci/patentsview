@@ -7,7 +7,7 @@ fix_fun_index <- function() {
     raw_html
   )
   html3 <- gsub(
-    "<p></p> *(</td> *<td><p>Query function list)",
+    "<p></p> *(</td> *<td><p>List of query functions)",
     '<p><code><a href="qry_funs.html">qry_funs</a></code> </p>\\1',
     html2
   )
