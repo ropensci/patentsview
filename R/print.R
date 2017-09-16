@@ -23,8 +23,8 @@ print.pv_data_result <- function(x, ...) {
   lst <- ifelse("list" %in% k, " (with list column(s) inside) ", " ")
 
   cat(
-    "#### A list with a single data frame", lst, "on the ",
-    dat_level[[names(x)[1]]], " data level:\n\n",
+    "#### A list with a single data frame", lst, "on an ",
+    dat_level[[names(x)[1]]], " level:\n\n",
     sep = ""
   )
 
