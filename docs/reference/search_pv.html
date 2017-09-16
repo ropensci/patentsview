@@ -144,9 +144,9 @@ the user's query.</p>
       <th>query</th>
       <td><p>The query that the API will use to filter records. <code>query</code>
  can come in any one of the following forms:</p><ul>
-<li><p>A character string with valid JSON
+<li><p>A character string with valid JSON. 
    E.g., <code>'{"_gte":{"patent_date":"2007-01-04"}}'</code></p></li>
-<li><p>A list which will be converted to JSON by <code>search_pv</code>
+<li><p>A list which will be converted to JSON by <code>search_pv</code>. 
    E.g., <code>list("_gte" = list("patent_date" = "2007-01-04"))</code></p></li>
 <li><p>An object of class <code>pv_query</code>, which you create by calling one
    of the functions found in the <code><a href='qry_funs.html'>qry_funs</a></code> list...See the
@@ -230,7 +230,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
    the name of the program is on your PATH, just specify the program name
    (e.g., <code>error_browser = "chrome"</code>). Otherwise, include the full
    path to the program.</p></li>
-<li><p>An R function to be called to invoke the browser (e.g.,
+<li><p>An R function to be called to invoke the browser (e.g., 
    <code>error_browser = rstudioapi::viewer</code>)</p></li>
 <li><p>Under Windows, a value of <code>NULL</code> is allowed and implies that
    the file association mechanism will be used to determine which browser is
@@ -268,7 +268,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gt":{"patent_year":2010}}'</span>)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on the patent data level:
+#&gt; #### A list with a single data frame on an patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  3 variables:
@@ -282,7 +282,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; total_patent_count = 100,000</div><div class='input'>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
           <span class='kw'>fields</span> <span class='kw'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span>(<span class='st'>"patents"</span>, <span class='fu'>c</span>(<span class='st'>"patents"</span>, <span class='st'>"assignees"</span>)))</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame (with list column(s) inside) on the patent data level:
+#&gt; #### A list with a single data frame (with list column(s) inside) on an patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  31 variables:
@@ -325,7 +325,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
           <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POST"</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>,
           <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"patent_number"</span> <span class='kw'>=</span> <span class='st'>"asc"</span>))</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on the patent data level:
+#&gt; #### A list with a single data frame on an patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  1 variable:
@@ -337,7 +337,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; total_patent_count = 100,000</div><div class='input'>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>eq</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"crew"</span>),
           <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on the patent data level:
+#&gt; #### A list with a single data frame on an patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	97 obs. of  3 variables:
@@ -351,7 +351,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; total_patent_count = 97</div><div class='input'>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
           <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on the assignee data level:
+#&gt; #### A list with a single data frame on an assignee level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ assignees:'data.frame':	25 obs. of  4 variables:
@@ -366,7 +366,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; total_assignee_count = 8,648</div><div class='input'>
 <span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
           <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>))</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on the patent data level:
+#&gt; #### A list with a single data frame on an patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  3 variables:

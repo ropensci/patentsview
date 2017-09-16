@@ -130,12 +130,12 @@
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_patent_count = 100,000</span></code></pre></div>
-<p>This call to <code><a href="../reference/search_pv.html">search_pv()</a></code> sends our query to the “patents” API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<sup><a href="#fn1" id="ref1">1</a></sup> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a> which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the <a href="http://ropensci.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> goes into much more depth.</p>
+<p>This call to <code><a href="../reference/search_pv.html">search_pv()</a></code> sends our query to the “patents” API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> We filtered our results using the API’s <a href="http://www.patentsview.org/api/query-language.html">query language</a> which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the <a href="http://ropensci.github.io/patentsview/articles/writing-queries.html">writing queries vignette</a> goes into much more depth.</p>
 </div>
 <div id="writing-queries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#writing-queries" class="anchor"></a>Writing queries</h2>
-<p>The PatentsView query syntax is documented on their <a href="http://www.patentsview.org/api/query-language.html#query_string_format">query language page</a>.<sup><a href="#fn2" id="ref2">2</a></sup> However, it can be difficult to get your query right if you’re writing it by hand (i.e., just writing the query in a string like <code>'{"_gte":{"patent_date":"2007-01-01"}}'</code>). The <code>patentsview</code> package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using the functions in this DSL for all but the most basic queries, especially if you’re encountering errors and don’t understand why…Let’s rewrite the query from the basic example using one of those functions <code>qry_funs$gte()</code>:</p>
+<p>The PatentsView query syntax is documented on their <a href="http://www.patentsview.org/api/query-language.html#query_string_format">query language page</a>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> However, it can be difficult to get your query right if you’re writing it by hand (i.e., just writing the query in a string like <code>'{"_gte":{"patent_date":"2007-01-01"}}'</code>). The <code>patentsview</code> package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using the functions in this DSL for all but the most basic queries, especially if you’re encountering errors and don’t understand why…Let’s rewrite the query from the basic example using one of those functions <code>qry_funs$gte()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs<span class="op">$</span><span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">"2007-01-01"</span>)
 <span class="co">#&gt; {"_gte":{"patent_date":"2007-01-01"}}</span></code></pre></div>
 <p>More complex queries are also possible:</p>
@@ -259,13 +259,13 @@
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Which entity your query is applied to.</strong> The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor on them with the last name of “chambers.” The second call used the assignees endpoint, so the API searched for assignees that have at least one patent which has an inventor on it whose last name is “chambers.”</p></li>
-<li><p><strong>The structure of the data frame that is returned.</strong> The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned in list columns that are named after the subentity associated with the field (e.g., the <code>inventors</code> subentity).<sup><a href="#fn3" id="ref3">3</a></sup>…Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.</p></li>
+<li><p><strong>The structure of the data frame that is returned.</strong> The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned in list columns that are named after the subentity associated with the field (e.g., the <code>inventors</code> subentity).<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.</p></li>
 </ol>
 <p>Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search.</p>
 </div>
-<div id="faq" class="section level2">
+<div id="faqs" class="section level2">
 <h2 class="hasAnchor">
-<a href="#faq" class="anchor"></a>FAQ</h2>
+<a href="#faqs" class="anchor"></a>FAQs</h2>
 <div id="im-sure-my-query-is-well-formatted-and-correct-but-i-keep-getting-an-error--whats-the-deal" class="section level4">
 <h4 class="hasAnchor">
 <a href="#im-sure-my-query-is-well-formatted-and-correct-but-i-keep-getting-an-error--whats-the-deal" class="anchor"></a>I’m sure my query is well formatted and correct but I keep getting an error. What’s the deal?</h4>
@@ -416,11 +416,15 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
 <span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...</span></code></pre></div>
 <p>Now we are left with a series of flat data frames instead of having a single data frame with other data frames nested inside of it. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
-<hr>
-<p><sup id="fn1">1</sup> You can use <code><a href="../reference/get_endpoints.html">get_endpoints()</a></code> to list the endpoint names as the API expects them to appear (e.g., <code>assignees</code>, <code>cpc_subsections</code>, <code>inventors</code>, <code>locations</code>, <code>nber_subcategories</code>, <code>patents</code>, and <code>uspc_mainclasses</code>)<sup><a href="#ref1">back</a></sup></p>
-<p><sup id="fn2">2</sup> This webpage includes some details that are not relevant to the <code>query</code> argument in <code>search_pv</code>, such as the field list and sort parameter.<sup><a href="#ref2">back</a></sup></p>
-<p><sup id="fn3">3</sup> You can unnest the data frames that are stored in the list columns using <code><a href="../reference/unnest_pv_data.html">unnest_pv_data()</a></code>. See the FAQs for details.<sup><a href="#ref3">back</a></sup></p>
 </div>
+</div>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>You can use <code><a href="../reference/get_endpoints.html">get_endpoints()</a></code> to list the endpoint names as the API expects them to appear (e.g., <code>assignees</code>, <code>cpc_subsections</code>, <code>inventors</code>, <code>locations</code>, <code>nber_subcategories</code>, <code>patents</code>, and <code>uspc_mainclasses</code>).<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>This webpage includes some details that are not relevant to the <code>query</code> argument in <code>search_pv</code>, such as the field list and sort parameter.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>You can unnest the data frames that are stored in the list columns using <code><a href="../reference/unnest_pv_data.html">unnest_pv_data()</a></code>. See the FAQs for details.<a href="#fnref3">↩</a></p></li>
+</ol>
 </div>
 </div>
   </div>
@@ -436,7 +440,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
       <li><a href="#paginated-responses">Paginated responses</a></li>
       <li><a href="#entity-counts">Entity counts</a></li>
       <li><a href="#endpoints-for-7-entities">7 endpoints for 7 entities</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#faqs">FAQs</a></li>
       </ul>
 </div>
       </div>

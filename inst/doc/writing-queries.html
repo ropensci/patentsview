@@ -148,7 +148,7 @@ jsonlite<span class="op">::</span><span class="kw">toJSON</span>(query_v_<span c
 <div id="concise-easy-to-use-syntax-for-complex-queries" class="section level4">
 <h4>2. Concise, easy to use syntax for complex queries</h4>
 <p>Methods 1 and 3 shown above are both shorter than method 2, making them quicker. It’s also a lot easier to get the JSON syntax correct when using method 3 compared to method 1, because you don’t have to write any JSON at all using the DSL…This is important because the API is fairly picky about the query syntax, so it’s not trivial to get it correct. For example, the API will throw an error if you use a box in your JSON when is not absolutely necessary, even if your query is still valid JSON (e.g., <code>query = {&quot;_gte&quot;:{&quot;patent_date&quot;:[&quot;2007-03-01&quot;]}}</code> will throw an error).</p>
-<p>Compared to method 1, method 3 will correctly “or” together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for <code>assingee_country</code> (<code>c(&quot;US&quot;, &quot;CA&quot;)</code>). This safely converted the single “equals” statement in the third element of the query (<code>eq(assingee_country = c(&quot;US&quot;, &quot;CA&quot;))</code>) to two separate equals statements that are or’d together.<sup><a href="#fn1" id="ref1">1</a></sup></p>
+<p>Compared to method 1, method 3 will correctly “or” together values if you put them in a vector. For example, in the query shown above, a vector of two values was given for <code>assingee_country</code> (<code>c(&quot;US&quot;, &quot;CA&quot;)</code>). This safely converted the single “equals” statement in the third element of the query (<code>eq(assingee_country = c(&quot;US&quot;, &quot;CA&quot;))</code>) to two separate equals statements that are or’d together.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
 </div>
 </div>
 <div id="basics-of-the-language" class="section level2">
@@ -166,7 +166,7 @@ jsonlite<span class="op">::</span><span class="kw">toJSON</span>(query_v_<span c
 <p>Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs<span class="op">$</span><span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
 <span class="co">#&gt; {&quot;_lte&quot;:{&quot;assignee_total_num_inventors&quot;:10}}</span></code></pre></div>
-<p>Patents assigned to the “CPC subsection”<sup><a href="#fn2" id="ref2">2</a></sup> of G12 (physics instruments):</p>
+<p>Patents assigned to the “CPC subsection”<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> of G12 (physics instruments):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">cpc_subsection_id =</span> <span class="st">&quot;G12&quot;</span>)
 <span class="co">#&gt; {&quot;_eq&quot;:{&quot;cpc_subsection_id&quot;:&quot;G12&quot;}}</span></code></pre></div>
 <p>Patents that have an inventor listed on them whose first name contains “joh” and has an abstract with either the phrase “dog bark” or “cat meow,” but not the phrase “dog chain”:</p>
@@ -194,9 +194,13 @@ jsonlite<span class="op">::</span><span class="kw">toJSON</span>(query_v_<span c
   )
 )
 <span class="co">#&gt; {&quot;_or&quot;:[{&quot;_and&quot;:[{&quot;_eq&quot;:{&quot;inventor_last_name&quot;:&quot;smith&quot;}},{&quot;_text_phrase&quot;:{&quot;patent_title&quot;:&quot;cotton gin&quot;}}]},{&quot;_and&quot;:[{&quot;_eq&quot;:{&quot;inventor_last_name&quot;:&quot;hopper&quot;}},{&quot;_text_phrase&quot;:{&quot;patent_title&quot;:&quot;COBOL&quot;}}]}]}</span></code></pre></div>
+</div>
+<div class="footnotes">
 <hr />
-<p><sup id="fn1">1</sup> One may note that using “value arrays” is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: <code>'{&quot;inventor_last_name&quot;:[&quot;Whitney&quot;,&quot;Hopper&quot;]}'</code>. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot “or” together values using arrays. Thus, the DSL in <code>patentsview</code> never relies on arrays when creating queries.<sup><a href="#ref1">back</a></sup></p>
-<p><sup id="fn2">2</sup> PatentsView gets the names of the CPC hierarchy wrong. For example, a “CPC subsection” according to PatentsView is actually a CPC class.<sup><a href="#ref2">back</a></sup></p>
+<ol>
+<li id="fn1"><p>One may note that using “value arrays” is supposedly supported natively by the API. For example, the API documentation gives the following query as an example of their use: <code>'{&quot;inventor_last_name&quot;:[&quot;Whitney&quot;,&quot;Hopper&quot;]}'</code>. The problem with this is that the API is not consistent in its handling of value arrays. For many of the comparison operators, one cannot “or” together values using arrays. Thus, the DSL in <code>patentsview</code> never relies on arrays when creating queries.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>PatentsView gets the names of the CPC hierarchy wrong. For example, a “CPC subsection” according to PatentsView is actually a CPC class.<a href="#fnref2">↩</a></p></li>
+</ol>
 </div>
 
 

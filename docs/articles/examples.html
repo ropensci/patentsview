@@ -192,7 +192,7 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <div id="inventors-endpoint" class="section level2">
 <h2 class="hasAnchor">
 <a href="#inventors-endpoint" class="anchor"></a>Inventors endpoint</h2>
-<p>Return patent numbers and titles with at least one inventor whose location was Chicago, IL.<sup><a href="#fn1" id="ref1">1</a></sup></p>
+<p>Return patent numbers and titles with at least one inventor whose location was Chicago, IL.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}'</span>,
           <span class="dt">endpoint =</span> <span class="st">"inventors"</span>, <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"patent_title"</span>))
 <span class="co">#&gt; $data</span>
@@ -227,8 +227,12 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; total_assignee_count = 179</span></code></pre></div>
+</div>
+<div class="footnotes">
 <hr>
-<p><sup id="fn1">1</sup> Example taken from <a href="http://www.patentsview.org/api/inventor.html" class="uri">http://www.patentsview.org/api/inventor.html</a><sup><a href="#ref1">back</a></sup></p>
+<ol>
+<li id="fn1"><p>Example taken from <a href="http://www.patentsview.org/api/inventor.html" class="uri">http://www.patentsview.org/api/inventor.html</a>.<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
 </div>
   </div>
