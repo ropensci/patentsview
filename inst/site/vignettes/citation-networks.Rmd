@@ -93,10 +93,12 @@ rel_pats <-
     filter(!is.na(patent_number))
 
 # Look up which patents the relevant patents cite:
-rel_pats_res <- search_pv(query = list(patent_number = rel_pats$patent_number),
-                          fields =  c("cited_patent_number", "patent_number",
-                                      "patent_title"), all_pages = TRUE,
-                          method = "POST")
+rel_pats_res <- search_pv(
+  query = list(patent_number = rel_pats$patent_number),
+  fields =  c("cited_patent_number", "patent_number", "patent_title"), 
+  all_pages = TRUE,
+  method = "POST"
+)
 
 rel_pats_lst <- unnest_pv_data(rel_pats_res$data, pk = "patent_number")
 ```
@@ -112,7 +114,7 @@ full_network <-
   cited_pats %>%
     do({
       .$ind <- group_by(., patent_number) %>%  
-              group_indices()
+               group_indices()
       group_by(., patent_number) %>%  
               mutate(sqrt_num_cited = sqrt(n()))
     }) %>%
