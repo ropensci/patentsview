@@ -39,3 +39,9 @@ validate_groups <- function(groups) {
   asrt(all(groups %in% ok_grps),
        "group must be one of the following: ", paste(ok_grps, collapse = ", "))
 }
+
+#' @noRd
+validate_pv_data <- function(data) {
+  asrt("pv_data_result" %in% class(data),
+       "Wrong input type for data...See example for correct input type")
+}

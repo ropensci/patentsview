@@ -1,3 +1,10 @@
+# patentsview 0.2.0 (2017-10-01)
+
+#### New functions
+
+* `cast_pv_data` added to convert the data types of the fields returned by 
+  `search_pv`
+
 # patentsview 0.1.0 (2017-05-01)
 
 #### New functions

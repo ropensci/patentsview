@@ -58,8 +58,7 @@ get_ok_pk <- function(endpoint) {
 #' @export
 unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
-  asrt("pv_data_result" %in% class(data),
-       "Wrong input type for data...See example for correct input type")
+  validate_pv_data(data = data)
 
   df <- data[[1]]
 

@@ -115,7 +115,22 @@ Your choice of endpoint determines two things:
 
 2. **The structure of the data frame that is returned.** The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns that are named after the subentity associated with the field (e.g., the `inventors` subentity).[^3] Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.
 
-Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search. 
+Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search.
+
+## Converting the data returned by `search_pv()`
+
+The API always returns the data fields as strings, even if they could be better represented using a different data type (e.g., numeric). You can cast all of the fields in the data frame returned by `search_pv()` into their preferred types `cast_pv_data()`:
+
+```{r}
+res <- search_pv(query = "{\"patent_number\":\"5116621\"}", 
+                 fields = c("patent_date", "patent_title", "patent_year"))
+
+# Right now all of the data fields are stored as characters:
+res
+
+# Use more appropriate types:
+cast_pv_data(data = res$data)
+```
 
 ## FAQs
 
