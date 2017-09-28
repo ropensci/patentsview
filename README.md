@@ -32,13 +32,13 @@ library(patentsview)
 
 search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}')
 #> $data
-#> #### A list with a single data frame on the patent data level:
+#> #### A list with a single data frame on a patent level:
 #> 
 #> List of 1
 #>  $ patents:'data.frame': 25 obs. of  3 variables:
 #>   ..$ patent_id    : chr [1:25] "7155746" ...
 #>   ..$ patent_number: chr [1:25] "7155746" ...
-#>   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and methods of making and using same" ...
+#>   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and me"..
 #> 
 #> $query_results
 #> #### Distinct entity counts across all downloadable pages of output:
@@ -51,9 +51,9 @@ Learning more
 
 Head over to the package's [webpage](https://ropensci.github.io/patentsview/index.html) for more info, including:
 
--   A [getting started vignette](http://ropensci.github.io/patentsview/articles/getting-started.html) for first-time users
+-   A [getting started vignette](http://ropensci.github.io/patentsview/articles/getting-started.html) for first-time users. The package was also introduced in an [rOpenSci blog post](https://ropensci.org/blog/blog/2017/09/19/patentsview).
 -   An in-depth tutorial on [writing queries](http://ropensci.github.io/patentsview/articles/writing-queries.html)
 -   A list of [examples](http://ropensci.github.io/patentsview/articles/examples.html)
--   Two examples of data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/top-assignees.html) in the field of databases)
+-   Two data applications (e.g., discovering the [top assignees](http://ropensci.github.io/patentsview/articles/top-assignees.html) in the field of databases)
 
 [![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
