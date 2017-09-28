@@ -117,13 +117,13 @@
 
 <span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  3 variables:</span>
 <span class="co">#&gt;   ..$ patent_id    : chr [1:25] "3946398" ...</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:25] "3946398" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Method and apparatus for recording with writing fluids and drop projection means therefor" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Method and apparatus for recording with"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
@@ -135,7 +135,7 @@
 <span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>),
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_id"</span>), <span class="dt">subent_cnts =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  2 variables:</span>
@@ -175,13 +175,13 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <span class="co">#&gt;   ..$ inventor_lastknown_city       : chr [1:99505] "Kirkland" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_country    : chr [1:99505] "US" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_latitude   : chr [1:99505] "47.6769" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_location_id: chr [1:99505] "47.6768927|-122.2059833" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_location_id: chr [1:99505] "47.6768927|-122.205"..</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_longitude  : chr [1:99505] "-122.206" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_state      : chr [1:99505] "WA" ...</span>
 <span class="co">#&gt;   ..$ inventor_last_name            : chr [1:99505] "Sinclair" ...</span>
 <span class="co">#&gt;   ..$ inventor_last_seen_date       : chr [1:99505] "2016-11-22" ...</span>
 <span class="co">#&gt;   ..$ inventor_latitude             : chr [1:99505] "47.6769" ...</span>
-<span class="co">#&gt;   ..$ inventor_location_id          : chr [1:99505] "47.6768927|-122.2059833" ...</span>
+<span class="co">#&gt;   ..$ inventor_location_id          : chr [1:99505] "47.6768927|-122.205"..</span>
 <span class="co">#&gt;   ..$ inventor_longitude            : chr [1:99505] "-122.206" ...</span>
 <span class="co">#&gt;   ..$ inventor_sequence             : chr [1:99505] "0" ...</span>
 <span class="co">#&gt;   ..$ inventor_state                : chr [1:99505] "WA" ...</span>
@@ -196,7 +196,7 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}'</span>,
           <span class="dt">endpoint =</span> <span class="st">"inventors"</span>, <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"patent_title"</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the inventor data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an inventor level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ inventors:'data.frame':   25 obs. of  1 variable:</span>
@@ -214,11 +214,11 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">text_phrase</span>(<span class="dt">patent_title =</span> <span class="st">"beer"</span>), 
           <span class="dt">endpoint =</span> <span class="st">"assignees"</span>)
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the assignee data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on an assignee level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "00c135a7c52b5dd3e6e2c342490451f8" ...</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "00c135a7c52b5dd3e6e2c342490451f"..</span>
 <span class="co">#&gt;   ..$ assignee_first_name  : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ assignee_last_name   : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "PicoBrew, Inc." ...</span>

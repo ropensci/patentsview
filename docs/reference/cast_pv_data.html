@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unnest PatentsView data — unnest_pv_data â€¢ patentsview</title>
+<title>Cast PatentsView data — cast_pv_data â€¢ patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -124,19 +124,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Unnest PatentsView data</h1>
+    <h1>Cast PatentsView data</h1>
     </div>
 
     
-    <p>This function converts a single data frame that has subentity-level list
-columns in it into multiple data frames, one for each entity/subentity.
-The multiple data frames can be merged together using the primary key
-variable specified by the user (see the
-<a href='http://r4ds.had.co.nz/relational-data.html'>relational data</a> chapter
-in "R for Data Science" for an in-depth introduction to joining tabular data).</p>
+    <p>This will cast the data fields returned by <code><a href='search_pv.html'>search_pv</a></code> so that
+they have their most appropriate data types (e.g., date, numeric, etc.).</p>
     
 
-    <pre class="usage"><span class='fu'>unnest_pv_data</span>(<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='fu'><a href='get_ok_pk.html'>get_ok_pk</a></span>(<span class='fu'>names</span>(<span class='no'>data</span>)))</pre>
+    <pre class="usage"><span class='fu'>cast_pv_data</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -148,36 +144,23 @@ element of the three-element result object you got back from
 <code>search_pv</code>. It should be a list of length 1, with one data frame
 inside it. See examples.</p></td>
     </tr>
-    <tr>
-      <th>pk</th>
-      <td><p>The column/field name that will link the data frames together. This
-should be the unique identifier for the primary entity. For example, if you
-used the patents endpoint in your call to <code>search_pv</code>, you could
-specify <code>pk = "patent_id"</code> or <code>pk = "patent_number"</code>.
-<strong>This identifier has to have been included in your <code>fields</code>
-vector when you called <code>search_pv</code></strong>. You can use
-<code><a href='get_ok_pk.html'>get_ok_pk</a></code> to suggest a potential primary key for your data.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with multiple data frames, one for each entity/subentity.
-  Each data frame will have the <code>pk</code> column in it, so you can link the
-  tables together as needed.</p>
+    <p>The same type of object that you passed into <code>cast_pv_data</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_id"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"inventor_city"</span>, <span class='st'>"inventor_country"</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_year":2015}}'</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>)
-<span class='fu'>unnest_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='st'>"patent_id"</span>)</div><div class='output co'>#&gt; List of 2
-#&gt;  $ inventors:'data.frame':	54 obs. of  3 variables:
-#&gt;   ..$ patent_id       : chr [1:54] "8925112" ...
-#&gt;   ..$ inventor_city   : chr [1:54] "Thornton" ...
-#&gt;   ..$ inventor_country: chr [1:54] "AU" ...
-#&gt;  $ patents  :'data.frame':	25 obs. of  2 variables:
-#&gt;   ..$ patent_id   : chr [1:25] "8925112" ...
-#&gt;   ..$ patent_title: chr [1:25] "Aircrew ensembles" ...</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_date"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"patent_year"</span>)
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>"{\"patent_number\":\"5116621\"}"</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>)
+<span class='fu'>cast_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt; #### A list with a single data frame on a patent level:
+#&gt; 
+#&gt; List of 1
+#&gt;  $ patents:'data.frame':	1 obs. of  3 variables:
+#&gt;   ..$ patent_date : Date[1:1], format: "1992-05-26"
+#&gt;   ..$ patent_title: chr "Anti-inflammatory analgesic patch"
+#&gt;   ..$ patent_year : int 1992</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

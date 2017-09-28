@@ -118,13 +118,13 @@
 <span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">'{"_gte":{"patent_date":"2007-01-01"}}'</span>,
           <span class="dt">endpoint =</span> <span class="st">"patents"</span>)
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  3 variables:</span>
 <span class="co">#&gt;   ..$ patent_id    : chr [1:25] "7155746" ...</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:25] "7155746" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and methods of making and using same" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and me"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
@@ -156,12 +156,12 @@
           <span class="dt">endpoint =</span> <span class="st">"patents"</span>, 
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"patent_title"</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  2 variables:</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:25] "7155746" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and methods of making and using same" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:25] "Anti-wicking protective workwear and me"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
@@ -181,13 +181,13 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">inventor_last_name =</span> <span class="st">"chambers"</span>),
           <span class="dt">page =</span> <span class="dv">2</span>, <span class="dt">per_page =</span> <span class="dv">150</span>) <span class="co"># gets records 150 - 300</span>
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 150 obs. of  3 variables:</span>
 <span class="co">#&gt;   ..$ patent_id    : chr [1:150] "4425825" ...</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:150] "4425825" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:150] "Geared input mechanism for a torque converter" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:150] "Geared input mechanism for a torque co"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
@@ -197,13 +197,13 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">inventor_last_name =</span> <span class="st">"chambers"</span>),
           <span class="dt">all_pages =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 1817 obs. of  3 variables:</span>
 <span class="co">#&gt;   ..$ patent_id    : chr [1:1817] "3931611" ...</span>
 <span class="co">#&gt;   ..$ patent_number: chr [1:1817] "3931611" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:1817] "Program event recorder and data processing system" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:1817] "Program event recorder and data proce"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
@@ -226,7 +226,7 @@
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_last_name"</span>, 
                      <span class="st">"assignee_organization"</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the patent data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 25 obs. of  3 variables:</span>
@@ -244,11 +244,11 @@
           <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_last_name"</span>, 
                      <span class="st">"assignee_organization"</span>))
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the assignee data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an assignee level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Oregon Health Sciences University" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Oregon Health Sciences Universi"..</span>
 <span class="co">#&gt;   ..$ patents              :List of 25</span>
 <span class="co">#&gt;   ..$ inventors            :List of 25</span>
 <span class="co">#&gt; </span>
@@ -262,6 +262,39 @@
 <li><p><strong>The structure of the data frame that is returned.</strong> The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., <code>inventor_last_name</code>) were returned in list columns that are named after the subentity associated with the field (e.g., the <code>inventors</code> subentity).<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.</p></li>
 </ol>
 <p>Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search.</p>
+</div>
+<div id="casting-fields" class="section level2">
+<h2 class="hasAnchor">
+<a href="#casting-fields" class="anchor"></a>Casting fields</h2>
+<p>The API always returns the data fields as strings, even if they would be better stored using a different data type (e.g., numeric). You can cast all of the fields to their preferred type using <code><a href="../reference/cast_pv_data.html">cast_pv_data()</a></code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> <span class="st">"{</span><span class="ch">\"</span><span class="st">patent_number</span><span class="ch">\"</span><span class="st">:</span><span class="ch">\"</span><span class="st">5116621</span><span class="ch">\"</span><span class="st">}"</span>, 
+                 <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_date"</span>, <span class="st">"patent_title"</span>, <span class="st">"patent_year"</span>))
+
+<span class="co"># Right now all of the fields are stored as characters:</span>
+res
+<span class="co">#&gt; $data</span>
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; List of 1</span>
+<span class="co">#&gt;  $ patents:'data.frame': 1 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_date : chr "1992-05-26"</span>
+<span class="co">#&gt;   ..$ patent_title: chr "Anti-inflammatory analgesic patch"</span>
+<span class="co">#&gt;   ..$ patent_year : chr "1992"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $query_results</span>
+<span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; total_patent_count = 1</span>
+
+<span class="co"># Use more appropriate data types:</span>
+<span class="kw"><a href="../reference/cast_pv_data.html">cast_pv_data</a></span>(<span class="dt">data =</span> res<span class="op">$</span>data)
+<span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; List of 1</span>
+<span class="co">#&gt;  $ patents:'data.frame': 1 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_date : Date[1:1], format: "1992-05-26"</span>
+<span class="co">#&gt;   ..$ patent_title: chr "Anti-inflammatory analgesic patch"</span>
+<span class="co">#&gt;   ..$ patent_year : int 1992</span></code></pre></div>
 </div>
 <div id="faqs" class="section level2">
 <h2 class="hasAnchor">
@@ -311,11 +344,11 @@ fields &lt;-<span class="st"> </span><span class="kw">c</span>(asgn_flds, subent
 res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">contains</span>(<span class="dt">inventor_last_name =</span> <span class="st">"smith"</span>), 
                  <span class="dt">endpoint =</span> <span class="st">"assignees"</span>, <span class="dt">fields =</span> fields)
 res<span class="op">$</span>data
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on the assignee data level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an assignee level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f794689"..</span>
 <span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...</span>
 <span class="co">#&gt;   ..$ applications         :List of 25</span>
 <span class="co">#&gt;   ..$ gov_interests        :List of 25</span></code></pre></div>
@@ -328,7 +361,7 @@ res<span class="op">$</span>data
 
 <span class="co"># Get assignee/application data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(applications) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest</span>(applications) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>()
 <span class="co">#&gt;                        assignee_id              assignee_organization</span>
 <span class="co">#&gt; 1 000fd451e3903862279995c8f7946893           Ferranti-Packard Limited</span>
@@ -347,7 +380,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 
 <span class="co"># Get assignee/gov_interest data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(gov_interests) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest</span>(gov_interests) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>()
 <span class="co">#&gt;                        assignee_id</span>
 <span class="co">#&gt; 1 000fd451e3903862279995c8f7946893</span>
@@ -404,7 +437,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt;   ..$ app_number : chr [1:68] "05536925" ...</span>
 <span class="co">#&gt;   ..$ app_type   : chr [1:68] "05" ...</span>
 <span class="co">#&gt;  $ gov_interests:'data.frame':   25 obs. of  8 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id                 : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
+<span class="co">#&gt;   ..$ assignee_id                 : chr [1:25] "000fd451e3903862279995c8"..</span>
 <span class="co">#&gt;   ..$ govint_contract_award_number: logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_id               : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_level_one        : logi [1:25] NA ...</span>
@@ -413,7 +446,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt;   ..$ govint_org_name             : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_raw_statement        : logi [1:25] NA ...</span>
 <span class="co">#&gt;  $ assignees    :'data.frame':   25 obs. of  2 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f794689"..</span>
 <span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...</span></code></pre></div>
 <p>Now we are left with a series of flat data frames instead of having a single data frame with other data frames nested inside of it. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
 </div>
@@ -440,6 +473,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
       <li><a href="#paginated-responses">Paginated responses</a></li>
       <li><a href="#entity-counts">Entity counts</a></li>
       <li><a href="#endpoints-for-7-entities">7 endpoints for 7 entities</a></li>
+      <li><a href="#casting-fields">Casting fields</a></li>
       <li><a href="#faqs">FAQs</a></li>
       </ul>
 </div>
