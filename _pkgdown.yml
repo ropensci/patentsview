@@ -17,10 +17,11 @@ reference:
     contents:
     - qry_funs
     - with_qfuns
-  - title: Unnesting patentsview data
+  - title: Manipulating patentsview data
     contents:
     - unnest_pv_data
     - get_ok_pk
+    - cast_pv_data
 
 navbar:
   title: patentsview
