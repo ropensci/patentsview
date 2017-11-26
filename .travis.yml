@@ -8,6 +8,8 @@ matrix:
   - r: release
   - r: devel
   - os: osx
+  allow_failures:
+  - r: devel
 
 branches:
   except:
