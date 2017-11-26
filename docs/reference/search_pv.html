@@ -163,9 +163,8 @@ returned. Acceptable fields for a given endpoint can be found at the API's
 online documentation (e.g., check out the field list for the
 <a href='http://www.patentsview.org/api/patent.html#field_list'>patents
 endpoint</a>) or by viewing the <code>fieldsdf</code> data frame
-(<code>View(patentsview::fieldsdf)</code>). You can also use
-<code><a href='get_fields.html'>get_fields</a></code> to list out the fields available for a given
-endpoint.</p></td>
+(<code>View(fieldsdf)</code>). You can also use <code><a href='get_fields.html'>get_fields</a></code> to list
+out the fields available for a given endpoint.</p></td>
     </tr>
     <tr>
       <th>endpoint</th>
@@ -280,14 +279,16 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
 #&gt; total_patent_count = 100,000</div><div class='input'>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
-          <span class='kw'>fields</span> <span class='kw'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span>(<span class='st'>"patents"</span>, <span class='fu'>c</span>(<span class='st'>"patents"</span>, <span class='st'>"assignees"</span>)))</div><div class='output co'>#&gt; $data
+<span class='fu'>search_pv</span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
+  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span>(<span class='st'>"patents"</span>, <span class='fu'>c</span>(<span class='st'>"patents"</span>, <span class='st'>"assignees"</span>))
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  31 variables:
 #&gt;   ..$ patent_abstract                       : chr [1:25] "A nose cover or nos"..
-#&gt;   ..$ patent_average_processing_time        : chr [1:25] "1088" ...
+#&gt;   ..$ patent_average_processing_time        : logi [1:25] NA ...
 #&gt;   ..$ patent_date                           : chr [1:25] "2011-01-04" ...
 #&gt;   ..$ patent_firstnamed_assignee_city       : chr [1:25] NA ...
 #&gt;   ..$ patent_firstnamed_assignee_country    : chr [1:25] NA ...
@@ -306,7 +307,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt;   ..$ patent_id                             : chr [1:25] "7861317" ...
 #&gt;   ..$ patent_kind                           : chr [1:25] "B2" ...
 #&gt;   ..$ patent_number                         : chr [1:25] "7861317" ...
-#&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "2" ...
+#&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "3" ...
 #&gt;   ..$ patent_num_claims                     : chr [1:25] "9" ...
 #&gt;   ..$ patent_num_combined_citations         : chr [1:25] "12" ...
 #&gt;   ..$ patent_num_foreign_citations          : chr [1:25] "0" ...
@@ -322,9 +323,12 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
 #&gt; total_patent_count = 100,000</div><div class='input'>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
-          <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POST"</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>,
-          <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"patent_number"</span> <span class='kw'>=</span> <span class='st'>"asc"</span>))</div><div class='output co'>#&gt; $data
+<span class='fu'>search_pv</span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POST"</span>,
+  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>,
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"patent_number"</span> <span class='kw'>=</span> <span class='st'>"asc"</span>)
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame on a patent level:
 #&gt; 
 #&gt; List of 1
@@ -335,37 +339,43 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
 #&gt; total_patent_count = 100,000</div><div class='input'>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>eq</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"crew"</span>),
-          <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $data
+<span class='fu'>search_pv</span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>eq</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"crew"</span>),
+  <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame on a patent level:
 #&gt; 
 #&gt; List of 1
-#&gt;  $ patents:'data.frame':	97 obs. of  3 variables:
-#&gt;   ..$ patent_id    : chr [1:97] "3961846" ...
-#&gt;   ..$ patent_number: chr [1:97] "3961846" ...
-#&gt;   ..$ patent_title : chr [1:97] "Ultra-high reduction microfiche layout and p"..
+#&gt;  $ patents:'data.frame':	98 obs. of  3 variables:
+#&gt;   ..$ patent_id    : chr [1:98] "3961846" ...
+#&gt;   ..$ patent_number: chr [1:98] "3961846" ...
+#&gt;   ..$ patent_title : chr [1:98] "Ultra-high reduction microfiche layout and p"..
 #&gt; 
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 97</div><div class='input'>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
-          <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>)</div><div class='output co'>#&gt; $data
+#&gt; total_patent_count = 98</div><div class='input'>
+<span class='fu'>search_pv</span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
+  <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame on an assignee level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ assignees:'data.frame':	25 obs. of  4 variables:
 #&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...
-#&gt;   ..$ assignee_first_name  : logi [1:25] NA ...
-#&gt;   ..$ assignee_last_name   : logi [1:25] NA ...
+#&gt;   ..$ assignee_first_name  : chr [1:25] NA ...
+#&gt;   ..$ assignee_last_name   : chr [1:25] NA ...
 #&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...
 #&gt; 
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_assignee_count = 8,648</div><div class='input'>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
-          <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>))</div><div class='output co'>#&gt; $data
+#&gt; total_assignee_count = 8,943</div><div class='input'>
+<span class='fu'>search_pv</span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
+  <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>)
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame on a patent level:
 #&gt; 
 #&gt; List of 1
@@ -377,11 +387,13 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 50,079</div><div class='input'>
+#&gt; total_patent_count = 51,351</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Will view error message in RStudio's viewer pane:</span>
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'><a href='with_qfuns.html'>with_qfuns</a></span>(<span class='fu'>not</span>(<span class='fu'>text_any</span>(<span class='kw'>patent_title</span> <span class='kw'>=</span> <span class='st'>"hi"</span>))),
-          <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw pkg'>rstudioapi</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/rstudioapi/topics/viewer'>viewer</a></span>)
+<span class='fu'>search_pv</span>(
+   <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'><a href='with_qfuns.html'>with_qfuns</a></span>(<span class='fu'>not</span>(<span class='fu'>text_any</span>(<span class='kw'>patent_title</span> <span class='kw'>=</span> <span class='st'>"hi"</span>))),
+   <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw pkg'>rstudioapi</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/rstudioapi/topics/viewer'>viewer</a></span>
+)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -32,9 +32,8 @@ returned. Acceptable fields for a given endpoint can be found at the API's
 online documentation (e.g., check out the field list for the
 \href{http://www.patentsview.org/api/patent.html#field_list}{patents
 endpoint}) or by viewing the \code{fieldsdf} data frame
-(\code{View(patentsview::fieldsdf)}). You can also use
-\code{\link{get_fields}} to list out the fields available for a given
-endpoint.}
+(\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
+out the fields available for a given endpoint.}
 
 \item{endpoint}{The web service resource you wish to search. \code{endpoint}
 must be one of the following: "patents", "inventors", "assignees",
@@ -122,26 +121,39 @@ the user's query.
 \examples{
 search_pv(query = '{"_gt":{"patent_year":2010}}')
 
-search_pv(query = qry_funs$gt(patent_year = 2010),
-          fields = get_fields("patents", c("patents", "assignees")))
+search_pv(
+  query = qry_funs$gt(patent_year = 2010),
+  fields = get_fields("patents", c("patents", "assignees"))
+)
 
-search_pv(query = qry_funs$gt(patent_year = 2010),
-          method = "POST", fields = "patent_number",
-          sort = c("patent_number" = "asc"))
+search_pv(
+  query = qry_funs$gt(patent_year = 2010),
+  method = "POST",
+  fields = "patent_number",
+  sort = c("patent_number" = "asc")
+)
 
-search_pv(query = qry_funs$eq(inventor_last_name = "crew"),
-          all_pages = TRUE)
+search_pv(
+  query = qry_funs$eq(inventor_last_name = "crew"),
+  all_pages = TRUE
+)
 
-search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
-          endpoint = "assignees")
+search_pv(
+  query = qry_funs$contains(inventor_last_name = "smith"),
+  endpoint = "assignees"
+)
 
-search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
-          config = httr::timeout(40))
+search_pv(
+  query = qry_funs$contains(inventor_last_name = "smith"),
+  config = httr::timeout(40)
+)
 
 \dontrun{
 
 # Will view error message in RStudio's viewer pane:
-search_pv(query = with_qfuns(not(text_any(patent_title = "hi"))),
-          error_browser = rstudioapi::viewer)
+search_pv(
+   query = with_qfuns(not(text_any(patent_title = "hi"))),
+   error_browser = rstudioapi::viewer
+)
 }
 }

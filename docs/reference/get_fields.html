@@ -173,8 +173,10 @@ endpoint field list table</a>).</p></td>
 <span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>get_fields</span>(<span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>)
 
 <span class='co'>#...Then pass to search_pv:</span>
-<span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_date":"2007-01-04"}}'</span>,
-          <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>)</div><div class='output co'>#&gt; $data
+<span class='fu'><a href='search_pv.html'>search_pv</a></span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_date":"2007-01-04"}}'</span>,
+  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:
 #&gt; 
 #&gt; List of 1
@@ -186,18 +188,19 @@ endpoint field list table</a>).</p></td>
 #&gt; 
 #&gt; total_patent_count = 100,000</div><div class='input'>
 <span class='co'># Get all patent and assignee-level fields for the patents endpoint:</span>
-<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>get_fields</span>(<span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>,
-                     <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"assignees"</span>, <span class='st'>"patents"</span>))
+<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>get_fields</span>(<span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"assignees"</span>, <span class='st'>"patents"</span>))
 
 <span class='co'>#...Then pass to search_pv:</span>
-<span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_date":"2007-01-04"}}'</span>,
-          <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>)</div><div class='output co'>#&gt; $data
+<span class='fu'><a href='search_pv.html'>search_pv</a></span>(
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_date":"2007-01-04"}}'</span>,
+  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>
+)</div><div class='output co'>#&gt; $data
 #&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:
 #&gt; 
 #&gt; List of 1
 #&gt;  $ patents:'data.frame':	25 obs. of  31 variables:
 #&gt;   ..$ patent_abstract                       : chr [1:25] "A protective glove "..
-#&gt;   ..$ patent_average_processing_time        : chr [1:25] "913" ...
+#&gt;   ..$ patent_average_processing_time        : logi [1:25] NA ...
 #&gt;   ..$ patent_date                           : chr [1:25] "2007-01-09" ...
 #&gt;   ..$ patent_firstnamed_assignee_city       : chr [1:25] "Neenah" ...
 #&gt;   ..$ patent_firstnamed_assignee_country    : chr [1:25] "US" ...
@@ -216,7 +219,7 @@ endpoint field list table</a>).</p></td>
 #&gt;   ..$ patent_id                             : chr [1:25] "7159246" ...
 #&gt;   ..$ patent_kind                           : chr [1:25] "B2" ...
 #&gt;   ..$ patent_number                         : chr [1:25] "7159246" ...
-#&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "7" ...
+#&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "12" ...
 #&gt;   ..$ patent_num_claims                     : chr [1:25] "8" ...
 #&gt;   ..$ patent_num_combined_citations         : chr [1:25] "10" ...
 #&gt;   ..$ patent_num_foreign_citations          : chr [1:25] "0" ...
