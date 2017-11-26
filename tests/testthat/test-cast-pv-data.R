@@ -12,6 +12,7 @@ test_that("cast_pv_data casts data types as expected", {
   date <- !is.character(dat$patents$patent_date)
   num <- is.numeric(dat$patents$patent_num_claims)
   date2 <- !is.character(dat$patents$assignees[[1]]$assignee_last_seen_date[1])
+  na_val <- is.na(dat$patents$patent_average_processing_time)
 
-  expect_true(date && num && date2)
+  expect_true(date && num && date2 && na_val)
 })

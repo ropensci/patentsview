@@ -21,6 +21,8 @@ cast_one.character <- function(one, name, typesdf) {
   cast_fun(one)
 }
 
+cast_one.default <- function(one, name, typesdf) NA
+
 cast_one.list <- function(one, name, typesdf) {
   first_df <- one[[1]]
   cols <- colnames(first_df)
