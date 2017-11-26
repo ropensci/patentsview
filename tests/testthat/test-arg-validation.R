@@ -4,7 +4,7 @@ test_that("validate_args throws errors for all bad args", {
   skip_on_cran()
 
   expect_error(
-    search_pv(query = '{"patent_date":["1976-01-06"]}'),
+    search_pv(query = '{"patent_date":["1976-01-06"]}', endpoint = "patent"),
     "endpoint"
   )
   expect_error(
