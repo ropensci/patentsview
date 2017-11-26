@@ -54,8 +54,9 @@ one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
-    get_url <- get_get_url(query = query, base_url = base_url,
-                           arg_list = arg_list)
+    get_url <- get_get_url(
+      query = query, base_url = base_url, arg_list = arg_list
+    )
     resp <- httr::GET(url = get_url, ua, ...)
   } else {
     body <- get_post_body(query = query, arg_list = arg_list)
@@ -79,8 +80,10 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
   tmp <- sapply(1:req_pages, function(i) {
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
-    x <- one_request(method = method, query = query, base_url = base_url,
-                     arg_list = arg_list, error_browser = error_browser, ...)
+    x <- one_request(
+      method = method, query = query, base_url = base_url, arg_list = arg_list,
+      error_browser = error_browser, ...
+    )
     x$data[[1]]
   }, simplify = FALSE)
 
@@ -113,9 +116,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'  online documentation (e.g., check out the field list for the
 #'  \href{http://www.patentsview.org/api/patent.html#field_list}{patents
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
-#'  (\code{View(patentsview::fieldsdf)}). You can also use
-#'  \code{\link{get_fields}} to list out the fields available for a given
-#'  endpoint.
+#'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
+#'  out the fields available for a given endpoint.
 #'@param endpoint The web service resource you wish to search. \code{endpoint}
 #'  must be one of the following: "patents", "inventors", "assignees",
 #'  "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
@@ -188,27 +190,40 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #' @examples
 #' search_pv(query = '{"_gt":{"patent_year":2010}}')
 #'
-#' search_pv(query = qry_funs$gt(patent_year = 2010),
-#'           fields = get_fields("patents", c("patents", "assignees")))
+#' search_pv(
+#'   query = qry_funs$gt(patent_year = 2010),
+#'   fields = get_fields("patents", c("patents", "assignees"))
+#' )
 #'
-#' search_pv(query = qry_funs$gt(patent_year = 2010),
-#'           method = "POST", fields = "patent_number",
-#'           sort = c("patent_number" = "asc"))
+#' search_pv(
+#'   query = qry_funs$gt(patent_year = 2010),
+#'   method = "POST",
+#'   fields = "patent_number",
+#'   sort = c("patent_number" = "asc")
+#' )
 #'
-#' search_pv(query = qry_funs$eq(inventor_last_name = "crew"),
-#'           all_pages = TRUE)
+#' search_pv(
+#'   query = qry_funs$eq(inventor_last_name = "crew"),
+#'   all_pages = TRUE
+#' )
 #'
-#' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
-#'           endpoint = "assignees")
+#' search_pv(
+#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   endpoint = "assignees"
+#' )
 #'
-#' search_pv(query = qry_funs$contains(inventor_last_name = "smith"),
-#'           config = httr::timeout(40))
+#' search_pv(
+#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   config = httr::timeout(40)
+#' )
 #'
 #'\dontrun{
 #'
 #' # Will view error message in RStudio's viewer pane:
-#' search_pv(query = with_qfuns(not(text_any(patent_title = "hi"))),
-#'           error_browser = rstudioapi::viewer)
+#' search_pv(
+#'    query = with_qfuns(not(text_any(patent_title = "hi"))),
+#'    error_browser = rstudioapi::viewer
+#' )
 #'}
 #'@export
 search_pv <- function(query,
@@ -231,24 +246,31 @@ search_pv <- function(query,
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
-  validate_misc_args(query = query, fields = fields, endpoint = endpoint,
-                     method = method, subent_cnts = subent_cnts,
-                     mtchd_subent_only = mtchd_subent_only, page = page,
-                     per_page = per_page, sort = sort)
+  validate_misc_args(
+    query = query, fields = fields, endpoint = endpoint, method = method,
+    subent_cnts = subent_cnts, mtchd_subent_only = mtchd_subent_only,
+    page = page, per_page = per_page, sort = sort
+  )
 
-  arg_list <- to_arglist(fields = fields, subent_cnts = subent_cnts,
-                         mtchd_subent_only = mtchd_subent_only,
-                         page = page, per_page = per_page, sort = sort)
+  arg_list <- to_arglist(
+    fields = fields, subent_cnts = subent_cnts,
+    mtchd_subent_only = mtchd_subent_only, page = page, per_page = per_page,
+    sort = sort
+  )
 
   base_url <- get_base(endpoint = endpoint)
 
-  res <- one_request(method = method, query = query, base_url = base_url,
-                     arg_list = arg_list, error_browser = error_browser, ...)
+  res <- one_request(
+    method = method, query = query, base_url = base_url,  arg_list = arg_list,
+    error_browser = error_browser, ...
+  )
 
   if (!all_pages) return(res)
 
-  full_data <- request_apply(ex_res = res, method = method, query = query,
-                             base_url = base_url, arg_list = arg_list, ...)
+  full_data <- request_apply(
+    ex_res = res, method = method, query = query, base_url = base_url,
+    arg_list = arg_list, ...
+  )
   res$data[[1]] <- full_data
 
   res

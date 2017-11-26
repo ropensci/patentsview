@@ -29,8 +29,11 @@ How many distinct inventors are represented by these highly-cited patents?
 ```{r}
 # Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
 # are subentities for the patents endpoint, this means we will get their counts.
-search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
-          fields = c("patent_number", "inventor_id"), subent_cnts = TRUE)
+search_pv(
+  query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
+  fields = c("patent_number", "inventor_id"), 
+  subent_cnts = TRUE
+)
 ```
 
 Where geographically have Microsoft inventors been coming from over the past 20 years?
@@ -60,8 +63,11 @@ unnest_pv_data(data = pv_out$data, pk = "patent_number")
 Return patent numbers and titles with at least one inventor whose location was Chicago, IL.[^1]
 
 ```{r}
-search_pv(query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
-          endpoint = "inventors", fields = c("patent_number", "patent_title"))
+search_pv(
+  query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
+  endpoint = "inventors", 
+  fields = c("patent_number", "patent_title")
+)
 ```
 
 ## Assignees endpoint
@@ -69,8 +75,10 @@ search_pv(query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]
 Which assignees have an interest in beer?
 
 ```{r}
-search_pv(query = qry_funs$text_phrase(patent_title = "beer"), 
-          endpoint = "assignees")
+search_pv(
+  query = qry_funs$text_phrase(patent_title = "beer"), 
+  endpoint = "assignees"
+)
 ```
 
 [^1]: Example taken from http://www.patentsview.org/api/inventor.html.

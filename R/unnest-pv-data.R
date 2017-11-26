@@ -17,8 +17,10 @@
 #' get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
 #' @export
 get_ok_pk <- function(endpoint) {
-  es_eps <- c("uspc_mainclasses" = "uspc_mainclass_id",
-              "nber_subcategories" = "nber_subcategory_id")
+  es_eps <- c(
+    "uspc_mainclasses" = "uspc_mainclass_id",
+    "nber_subcategories" = "nber_subcategory_id"
+  )
   ifelse(
     endpoint %in% names(es_eps),
     es_eps[[endpoint]],
@@ -62,9 +64,11 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   df <- data[[1]]
 
-  asrt(pk %in% colnames(df),
-       pk, " not in primary entity data frame...Did you include it in your ",
-       "fields list?")
+  asrt(
+    pk %in% colnames(df),
+    pk, " not in primary entity data frame...Did you include it in your ",
+    "fields list?"
+  )
 
   prim_ent_var <- !vapply(df, is.list, logical(1))
 
@@ -75,9 +79,11 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   out_sub_ent <- sapply(sub_ents, function(x) {
     temp <- sub_ent_df[[x]]
-    asrt(length(unique(df[, pk])) == length(temp),
-         pk, " cannot act as a primary key because it is not a ",
-         "unique identifier.\n\nTry using ", ok_pk, " instead.")
+    asrt(
+      length(unique(df[, pk])) == length(temp), pk,
+      " cannot act as a primary key because it is not a unique identifier.\n\n",
+      "Try using ", ok_pk, " instead."
+    )
     names(temp) <- df[, pk]
     xn <- do.call("rbind", temp)
     xn[, pk] <- gsub("\\.[0-9]*$", "", rownames(xn))

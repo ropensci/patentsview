@@ -38,9 +38,11 @@ query <- with_qfuns(
 query
 
 # Create a list of the fields we'll need for the analysis:
-fields <- c("patent_number", "assignee_organization",
-            "patent_num_cited_by_us_patents", "app_date", "patent_date",
-            "assignee_total_num_patents")
+fields <- c(
+  "patent_number", "assignee_organization",
+  "patent_num_cited_by_us_patents", "app_date", "patent_date",
+  "assignee_total_num_patents"
+)
 
 # Send an HTTP request to the PatentsView API to get data:
 pv_out <- search_pv(query = query, fields = fields, all_pages = TRUE)
@@ -99,8 +101,9 @@ data <-
     count() 
 
 # Plot the data using highchartr:
-hc_add_series_df(highchart(), data = data, "line", x = app_yr, y = n,
-                   group = assignee_organization) %>%
+hc_add_series_df(
+  highchart(), data = data, "line", x = app_yr, y = n, group = assignee_organization
+) %>%
   hc_plotOptions(series = list(marker = list(enabled = FALSE))) %>%
   hc_xAxis(title = list(text = "Application year")) %>%
   hc_yAxis(title = list(text = "DB patents")) %>%
@@ -140,8 +143,11 @@ Now let's visualize the data. Each assignee will be represented by a point/bubbl
 
 ```{r}
 # Adapted from http://jkunst.com/highcharter/showcase.html
-hchart(asng_p_dat, "scatter", hcaes(x = db_pats, y = mean_perc, size = frac_db_pats,
-                                    group = assignee_organization, color = color)) %>%
+hchart(
+  asng_p_dat, "scatter", 
+  hcaes(x = db_pats, y = mean_perc, size = frac_db_pats, 
+        group = assignee_organization, color = color)
+) %>%
   hc_xAxis(title = list(text = "DB patents"), type = "logarithmic",
            allowDecimals = FALSE, endOnTick = TRUE) %>%
   hc_yAxis(title = list(text = "Mean cite perc.")) %>%

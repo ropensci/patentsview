@@ -18,8 +18,10 @@ create_key_fun <- function(fun) {
     value <- unlist(value_p)
     names(value) <- NULL
     if (length(value) > 1) {
-      z <- lapply(value, function(value)
-        create_one_fun(field = field, value = value, fun = fun))
+      z <- lapply(
+        value, function(value)
+        create_one_fun(field = field, value = value, fun = fun)
+      )
       z <- list(`_or` = z)
     } else {
       z <- create_one_fun(field = field, value = value, fun = fun)
@@ -113,9 +115,11 @@ create_not_fun <- function(fun) {
 #' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
 #' @export
 qry_funs <- c(
-  sapply(c("eq", "neq", "gt", "gte", "lt", "lte",
-           "begins", "contains", "text_all", "text_any", "text_phrase"),
-         create_key_fun, USE.NAMES = TRUE, simplify = FALSE),
+  sapply(
+    c("eq", "neq", "gt", "gte", "lt", "lte", "begins", "contains", "text_all",
+      "text_any", "text_phrase"), create_key_fun,
+    USE.NAMES = TRUE, simplify = FALSE
+  ),
   sapply(c("and", "or"), create_array_fun, USE.NAMES = TRUE, simplify = FALSE),
   sapply("not", create_not_fun, USE.NAMES = TRUE, simplify = FALSE)
 )

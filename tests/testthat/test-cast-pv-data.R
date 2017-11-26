@@ -3,8 +3,9 @@ context("cast_pv_data")
 test_that("cast_pv_data casts data types as expected", {
   skip_on_cran()
 
-  pv_out <- search_pv("{\"patent_number\":\"5116621\"}", endpoint = "patents",
-                      fields = get_fields("patents"))
+  pv_out <- search_pv(
+    query = "{\"patent_number\":\"5116621\"}", fields = get_fields("patents")
+  )
 
   dat <- cast_pv_data(data = pv_out$data)
 

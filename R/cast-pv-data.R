@@ -26,8 +26,11 @@ cast_one.list <- function(one, name, typesdf) {
   cols <- colnames(first_df)
   fun_list <- lapply(cols, function(x) lookup_cast_fun(x, typesdf = typesdf))
   lapply(one, function(df) {
-    casted_lst <- mapply(FUN = function(df, fun_list) fun_list(df),
-                         fun_list = fun_list, df = df, SIMPLIFY = FALSE)
+    casted_lst <- mapply(
+       function(df, fun_list) fun_list(df),
+        fun_list = fun_list, df = df,
+       SIMPLIFY = FALSE
+    )
     as.data.frame(casted_lst, stringsAsFactors = FALSE, col.names = cols)
   })
 }

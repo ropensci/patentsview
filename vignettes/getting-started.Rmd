@@ -21,8 +21,10 @@ Let's start with a basic example of how to use the package's primary function, `
 ```{r}
 library(patentsview)
 
-search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          endpoint = "patents")
+search_pv(
+  query = '{"_gte":{"patent_date":"2007-01-01"}}',
+  endpoint = "patents"
+)
 ```
 
 This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).[^1] We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) goes into much more depth.
@@ -53,9 +55,11 @@ Check out the [writing queries vignette](http://ropensci.github.io/patentsview/a
 Each endpoint has a different set of _queryable_ and _retrievable_ fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown in the first example). Retrievable fields are those that you can get data on. In the first example, we didn't specify which fields we wanted to retrieve so we were given the default set. You can specify which fields you want using the `fields` argument:
 
 ```{r}
-search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}',
-          endpoint = "patents", 
-          fields = c("patent_number", "patent_title"))
+search_pv(
+  query = '{"_gte":{"patent_date":"2007-01-01"}}',
+  endpoint = "patents", 
+  fields = c("patent_number", "patent_title")
+)
 ```
 
 To list all of the retrievable fields for a given endpoint, use `get_fields()`:
@@ -72,15 +76,19 @@ You can see an endpoint's list of queryable and retrievable fields by viewing th
 By default, `search_pv()` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` argument to download up to 10,000 records per page. You can also choose which page of results you want with the `page` argument:
 
 ```{r}
-search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
-          page = 2, per_page = 150) # gets records 150 - 300
+search_pv(
+  query = qry_funs$eq(inventor_last_name = "chambers"),
+  page = 2, per_page = 150 # gets records 150 - 300
+) 
 ```
 
 You can download all pages of output in one call by setting `all_pages = TRUE`. This will set `per_page` equal to 10,000 and loop over all pages of output (downloading up to 10 pages, or 100,000 records total):
 
 ```{r}
-search_pv(query = qry_funs$eq(inventor_last_name = "chambers"),
-          all_pages = TRUE)
+search_pv(
+  query = qry_funs$eq(inventor_last_name = "chambers"),
+  all_pages = TRUE
+)
 ```
 
 ## Entity counts
@@ -95,18 +103,20 @@ We can get similar data from the 7 endpoints. For example, the following two cal
 
 ```{r}
 # Here we are using the patents endpoint
-search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
-          endpoint = "patents", 
-          fields = c("patent_number", "inventor_last_name", 
-                     "assignee_organization"))
+search_pv(
+  query = qry_funs$eq(inventor_last_name = "chambers"), 
+  endpoint = "patents", 
+  fields = c("patent_number", "inventor_last_name", "assignee_organization")
+)
 ```
 
 ```{r}
 # While here we are using the assignees endpoint
-search_pv(query = qry_funs$eq(inventor_last_name = "chambers"), 
-          endpoint = "assignees", 
-          fields = c("patent_number", "inventor_last_name", 
-                     "assignee_organization"))
+search_pv(
+  query = qry_funs$eq(inventor_last_name = "chambers"), 
+  endpoint = "assignees", 
+  fields = c("patent_number", "inventor_last_name", "assignee_organization")
+)
 ```
 
 Your choice of endpoint determines two things:
@@ -122,8 +132,10 @@ Most of the time you will want to use the patents endpoint. Note that you can st
 The API always returns the data fields as strings, even if they would be better stored using a different data type (e.g., numeric). You can cast all of the fields to their preferred type using `cast_pv_data()`:
 
 ```{r}
-res <- search_pv(query = "{\"patent_number\":\"5116621\"}", 
-                 fields = c("patent_date", "patent_title", "patent_year"))
+res <- search_pv(
+  query = "{\"patent_number\":\"5116621\"}", 
+  fields = c("patent_date", "patent_title", "patent_year")
+)
 
 # Right now all of the fields are stored as characters:
 res
@@ -181,8 +193,11 @@ subent_flds <- get_fields("assignees", c("applications", "gov_interests"))
 fields <- c(asgn_flds, subent_flds)
 
 # Pull data
-res <- search_pv(query = qry_funs$contains(inventor_last_name = "smith"), 
-                 endpoint = "assignees", fields = fields)
+res <- search_pv(
+  query = qry_funs$contains(inventor_last_name = "smith"), 
+  endpoint = "assignees", 
+  fields = fields
+)
 res$data
 ```
 

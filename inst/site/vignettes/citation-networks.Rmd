@@ -65,8 +65,10 @@ nodes <-
       title = pat_title(patent_title, patent_number)
     )
 
-visNetwork(nodes = nodes, edges = edges, height = "400px", width = "100%",
-           main = "Citations among patent citation analysis (PCA) patents") %>%
+visNetwork(
+  nodes = nodes, edges = edges, height = "400px", width = "100%",
+  main = "Citations among patent citation analysis (PCA) patents"
+) %>%
   visEdges(arrows = list(to = list(enabled = TRUE))) %>%
   visIgraphLayout()
 ```
@@ -130,8 +132,11 @@ kable(head(full_network))
 `full_network` contains the similarity score (`cosine_sim`) for all patent pairs that share at least one cited reference in common. This means that it probably contains a lot of patent pairs that have only one or two cited references in common, and thus aren't all that similar. Let's try to identify a natural level of `cosine_sim` to filter on, so our subsequent network graph is not enormous.
 
 ```{r, fig.height = 4, fig.width = 7}
-hist(full_network$cosine_sim, main = "Similarity scores between patents relevant to PCA",
-     xlab = "Cosine similarity", ylab = "Number of patent pairs")
+hist(
+  full_network$cosine_sim, 
+  main = "Similarity scores between patents relevant to PCA",
+  xlab = "Cosine similarity", ylab = "Number of patent pairs"
+)
 ```
 
 There appears to be a smallish group of patent pairs that are very similar to one another (`cosine_sim` > 0.8), which makes it tempting to choose 0.8 as a cutoff point. However, patent pairs that have reference lists that are this similar to each other are probably just patents in the same patent family. Let's choose 0.1 as a cutoff point instead, as there doesn't appear to be too many pairs above this point.[^3] 
@@ -152,8 +157,10 @@ nodes <-
       title = pat_title(patent_title, id)
     )
 
-visNetwork(nodes = nodes, edges = edges, height = "700px", width = "100%",
-           main = "Network of patents relevant to PCA") %>%
+visNetwork(
+  nodes = nodes, edges = edges, height = "700px", width = "100%",
+  main = "Network of patents relevant to PCA"
+) %>%
   visEdges(color = list(color = "#343434")) %>%
   visOptions(highlightNearest = list(enabled = TRUE, degree = 1)) %>%
   visIgraphLayout()
