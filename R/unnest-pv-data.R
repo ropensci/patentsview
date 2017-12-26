@@ -77,7 +77,7 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
   ok_pk <- get_ok_pk(endpoint = names(data))
 
-  out_sub_ent <- sapply(sub_ents, function(x) {
+  out_sub_ent <- lapply2(sub_ents, function(x) {
     temp <- sub_ent_df[[x]]
     asrt(
       length(unique(df[, pk])) == length(temp), pk,
@@ -89,7 +89,7 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
     xn[, pk] <- gsub("\\.[0-9]*$", "", rownames(xn))
     rownames(xn) <- NULL
     xn
-  }, USE.NAMES = TRUE, simplify = FALSE)
+  })
 
   prim_ent <- names(data)
   out_sub_ent[[prim_ent]] <- df[, prim_ent_var, drop = FALSE]

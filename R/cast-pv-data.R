@@ -62,10 +62,10 @@ cast_pv_data <- function(data) {
 
   df <- data[[1]]
 
-  list_out <- sapply(colnames(df), function(x) {
+  list_out <- lapply2(colnames(df), function(x) {
     one <- df[,x]
     cast_one(one = one, name = x, typesdf = typesdf)
-  }, simplify = FALSE, USE.NAMES = TRUE)
+  })
 
   df[] <- list_out
   out_data <- list(x = df)

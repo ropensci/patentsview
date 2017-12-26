@@ -115,13 +115,12 @@ create_not_fun <- function(fun) {
 #' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
 #' @export
 qry_funs <- c(
-  sapply(
+  lapply2(
     c("eq", "neq", "gt", "gte", "lt", "lte", "begins", "contains", "text_all",
-      "text_any", "text_phrase"), create_key_fun,
-    USE.NAMES = TRUE, simplify = FALSE
+      "text_any", "text_phrase"), create_key_fun
   ),
-  sapply(c("and", "or"), create_array_fun, USE.NAMES = TRUE, simplify = FALSE),
-  sapply("not", create_not_fun, USE.NAMES = TRUE, simplify = FALSE)
+  lapply2(c("and", "or"), create_array_fun),
+  lapply2("not", create_not_fun)
 )
 
 #' With qry_funs

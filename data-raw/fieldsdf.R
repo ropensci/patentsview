@@ -6,11 +6,10 @@ library(devtools)
 endpoints <- c("patent", "inventor", "assignee", "location", "cpc_subsection",
                "uspc", "nber_subcat")
 
-all_tabs <- sapply(endpoints, function(x) {
+all_tabs <- lapply2(endpoints, function(x) {
   url <- paste0("http://www.patentsview.org/api/", x, ".html")
-  tab <- readHTMLTable(doc = url)
-  tab[[2]]
-}, USE.NAMES = TRUE, simplify = FALSE)
+  readHTMLTable(doc = url)[[2]]
+})
 
 clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
 

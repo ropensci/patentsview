@@ -77,7 +77,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
     stop("No records matched your query...Can't download multiple pages",
          .call = FALSE)
 
-  tmp <- sapply(1:req_pages, function(i) {
+  tmp <- lapply(1:req_pages, function(i) {
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
     x <- one_request(
@@ -85,7 +85,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
       error_browser = error_browser, ...
     )
     x$data[[1]]
-  }, simplify = FALSE)
+  })
 
   do.call("rbind", c(tmp, make.row.names = FALSE))
 }

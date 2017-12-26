@@ -1,4 +1,7 @@
 #' @noRd
+lapply2 <- function(...) sapply(..., USE.NAMES = TRUE, simplify = FALSE)
+
+#' @noRd
 paste0_stop <- function(...) stop(paste0(...), call. = FALSE)
 
 #' @noRd
