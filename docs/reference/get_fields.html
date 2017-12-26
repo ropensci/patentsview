@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get list of retrievable fields � get_fields • patentsview</title>
+<title>Get list of retrievable fields — get_fields • patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -150,16 +150,11 @@ possible fields for each endpoint).</p>
       <td><p>A character vector giving the group(s) whose fields you want
 returned. A value of <code>NULL</code> indicates that you want all of the
 endpoint's fields (i.e., do not filter the field list based on group
-membership). <code>groups</code> can be one or more of the following, depending
-on the value of <code>endpoint</code>: "applications", "assignees", "cpcs",
-"gov_interests", "inventors", "ipcs", "locations", "nbers", "patents",
-"rawinventors", "uspcs", "wipos", "years", "cpc_subsections",
-"cpc_subgroups", "coinventors", "application_citations",
-"cited_patents", "citedby_patents", "nber_subcategories",
-"uspc_mainclasses", and "uspc_subclasses". See the field tables located
-online to see which fields correspond to which groups (e.g., the
+membership). See the field tables located online to see which groups you
+can specify for a given endpoint (e.g., the
 <a href='http://www.patentsview.org/api/patent.html#field_list'>patents
-endpoint field list table</a>).</p></td>
+endpoint table</a>), or use the <code>fieldsdf</code> table
+(e.g., <code>unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])</code>)</p></td>
     </tr>
     </table>
     
@@ -198,7 +193,8 @@ endpoint field list table</a>).</p></td>
 #&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:
 #&gt; 
 #&gt; List of 1
-#&gt;  $ patents:'data.frame':	25 obs. of  31 variables:
+#&gt;  $ patents:'data.frame':	25 obs. of  32 variables:
+#&gt;   ..$ detail_desc_length                    : chr [1:25] "14247" ...
 #&gt;   ..$ patent_abstract                       : chr [1:25] "A protective glove "..
 #&gt;   ..$ patent_average_processing_time        : logi [1:25] NA ...
 #&gt;   ..$ patent_date                           : chr [1:25] "2007-01-09" ...
@@ -218,13 +214,13 @@ endpoint field list table</a>).</p></td>
 #&gt;   ..$ patent_firstnamed_inventor_state      : chr [1:25] "WI" ...
 #&gt;   ..$ patent_id                             : chr [1:25] "7159246" ...
 #&gt;   ..$ patent_kind                           : chr [1:25] "B2" ...
-#&gt;   ..$ patent_number                         : chr [1:25] "7159246" ...
 #&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "12" ...
 #&gt;   ..$ patent_num_claims                     : chr [1:25] "8" ...
 #&gt;   ..$ patent_num_combined_citations         : chr [1:25] "10" ...
 #&gt;   ..$ patent_num_foreign_citations          : chr [1:25] "0" ...
 #&gt;   ..$ patent_num_us_application_citations   : chr [1:25] "0" ...
 #&gt;   ..$ patent_num_us_patent_citations        : chr [1:25] "10" ...
+#&gt;   ..$ patent_number                         : chr [1:25] "7159246" ...
 #&gt;   ..$ patent_processing_time                : chr [1:25] "1119" ...
 #&gt;   ..$ patent_title                          : chr [1:25] "Glove with high tac"..
 #&gt;   ..$ patent_type                           : chr [1:25] "utility" ...

@@ -13,16 +13,11 @@ get_fields(endpoint, groups = NULL)
 \item{groups}{A character vector giving the group(s) whose fields you want
 returned. A value of \code{NULL} indicates that you want all of the
 endpoint's fields (i.e., do not filter the field list based on group
-membership). \code{groups} can be one or more of the following, depending
-on the value of \code{endpoint}: "applications", "assignees", "cpcs",
-"gov_interests", "inventors", "ipcs", "locations", "nbers", "patents",
-"rawinventors", "uspcs", "wipos", "years", "cpc_subsections",
-"cpc_subgroups", "coinventors", "application_citations",
-"cited_patents", "citedby_patents", "nber_subcategories",
-"uspc_mainclasses", and "uspc_subclasses". See the field tables located
-online to see which fields correspond to which groups (e.g., the
+membership). See the field tables located online to see which groups you
+can specify for a given endpoint (e.g., the
 \href{http://www.patentsview.org/api/patent.html#field_list}{patents
-endpoint field list table}).}
+endpoint table}), or use the \code{fieldsdf} table
+(e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])})}
 }
 \value{
 A character vector with field names.
