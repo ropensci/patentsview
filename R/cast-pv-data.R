@@ -1,5 +1,7 @@
+#' @noRd
 as_is <- function(x) x
 
+#' @noRd
 get_cast_fun <- function(data_type) {
   switch(
     data_type,
@@ -11,18 +13,22 @@ get_cast_fun <- function(data_type) {
   )
 }
 
+#' @noRd
 lookup_cast_fun <- function(name, typesdf) {
   data_type <- typesdf[typesdf$field == name, "data_type"]
   get_cast_fun(data_type = data_type)
 }
 
+#' @noRd
 cast_one.character <- function(one, name, typesdf) {
   cast_fun <- lookup_cast_fun(name = name, typesdf = typesdf)
   cast_fun(one)
 }
 
+#' @noRd
 cast_one.default <- function(one, name, typesdf) NA
 
+#' @noRd
 cast_one.list <- function(one, name, typesdf) {
   first_df <- one[[1]]
   cols <- colnames(first_df)
@@ -37,6 +43,7 @@ cast_one.list <- function(one, name, typesdf) {
   })
 }
 
+#' @noRd
 cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 
 #' Cast PatentsView data
@@ -63,7 +70,7 @@ cast_pv_data <- function(data) {
   df <- data[[1]]
 
   list_out <- lapply2(colnames(df), function(x) {
-    one <- df[,x]
+    one <- df[, x]
     cast_one(one = one, name = x, typesdf = typesdf)
   })
 
