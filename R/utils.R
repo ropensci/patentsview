@@ -35,15 +35,7 @@ validate_endpoint <- function(endpoint) {
 
 #' @noRd
 validate_groups <- function(groups) {
-  ok_grps <- c(
-    "applications", "assignees", "cpcs", "gov_interests",
-    "inventors", "ipcs", "locations", "nbers", "patents",
-    "rawinventors", "uspcs", "wipos", "years", "cpc_subsections",
-    "cpc_subgroups", "coinventors", "coinvetnros",
-    "application_citations", "cited_patents", "citedby_patents",
-    "nber_subcategories", "uspc_mainclasses", "uspc_subclasses"
-  )
-
+  ok_grps <- unique(fieldsdf$group)
   asrt(
     all(groups %in% ok_grps),
     "group must be one of the following: ", paste(ok_grps, collapse = ", ")
