@@ -3,23 +3,26 @@ library(reshape2)
 library(dplyr)
 library(devtools)
 
-endpoints <- c("patent", "inventor", "assignee", "location", "cpc_subsection",
-               "uspc", "nber_subcat")
+endpoints <- c(
+  "patent", "inventor", "assignee", "location", "cpc_subsection",
+   "uspc", "nber_subcat"
+  )
 
-all_tabs <- lapply2(endpoints, function(x) {
+all_tabs <- sapply(endpoints, function(x) {
   url <- paste0("http://www.patentsview.org/api/", x, ".html")
   readHTMLTable(doc = url)[[2]]
-})
+}, simplify = FALSE, USE.NAMES = TRUE)
 
 clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
 
 fields <-
   melt(all_tabs) %>%
-    rename(field = `API Field Name`, data_type = Type, can_query = Query,
-           endpoint = L1, group = Group, common_name = `Common Name`,
-           description = Description) %>%
-    select(endpoint, field, data_type, can_query, group,
-           common_name, description) %>%
+    rename(
+      field = `API Field Name`, data_type = Type, can_query = Query,
+      endpoint = L1, group = Group, common_name = `Common Name`,
+      description = Description
+    ) %>%
+    select(endpoint, field, data_type, can_query, group, common_name, description) %>%
     mutate_at(vars(1:5), funs(clean_field)) %>%
     mutate(endpoint = case_when(
       .$endpoint == "patent" ~ "patents",
@@ -33,7 +36,6 @@ fields <-
     mutate(group = ifelse(group == "coinvetnros", "coinventors", group))
 
 # patent_id left off list for all endpoints:
-
 fieldsdf <-
   data.frame(
     endpoint = unique(fields$endpoint),
