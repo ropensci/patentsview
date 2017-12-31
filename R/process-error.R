@@ -29,6 +29,7 @@ custom_er <- function(resp, error_browser) {
 
 #' @noRd
 throw_er <- function(resp, error_browser) {
+  throw_if_loc_error(resp)
   typ <- httr::http_type(resp)
   is_txt_html <- grepl("text|html|xml", typ, ignore.case = TRUE)
   ifelse(
@@ -36,4 +37,37 @@ throw_er <- function(resp, error_browser) {
     custom_er(resp = resp, error_browser = error_browser),
     httr::stop_for_status(resp)
   )
+}
+
+#' @noRd
+throw_if_loc_error <- function(resp) {
+  if (hit_locations_ep(resp$url) && resp$status_code == 500) {
+    num_grps <- get_num_groups(resp$url)
+    if (num_grps > 2) {
+      paste0_stop(
+        "Your request resulted in a 500 error, likely because you have ",
+        "requested too many fields in your request (the locations endpoint ",
+        "currently has restrictions on the number of fields/groups you can ",
+        "request). Try slimming down your field list and trying again."
+      )
+    }
+  }
+}
+
+#' @noRd
+hit_locations_ep <- function(url) {
+  grepl(
+    "^http://www.patentsview.org/api/locations/",
+    url,
+    ignore.case = TRUE
+  )
+}
+
+#' @noRd
+get_num_groups <- function(url) {
+  prsd_json_filds <- gsub(".*&f=([^&]*).*", "\\1", utils::URLdecode(url))
+  fields <- jsonlite::fromJSON(prsd_json_filds)
+  grps <- fieldsdf[fieldsdf$endpoint == "locations" &
+                     fieldsdf$field %in% fields, "group"]
+  length(unique(grps))
 }

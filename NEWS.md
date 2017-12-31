@@ -1,13 +1,14 @@
 # patentsview 0.2.0 (2018-01-01)
 
-#### New functions
+#### New features
 
-* `cast_pv_data` added to convert the data types of the data returned by 
-  `search_pv`
+* `cast_pv_data()` function added to convert the data types of the data returned by `search_pv()`
   
-#### New fields
+* Additional fields were added to the API (e.g., fields starting with `forprior_`, `examiner_`)
 
-* Additional fields added to API (e.g., fields starting with `forprior_`, `examiner_`)
+#### Misc
+
+* Additional error handler added for the locations endpoint (@mustberuss, #11)
 
 # patentsview 0.1.0 (2017-05-01)
 
