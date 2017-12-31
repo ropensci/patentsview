@@ -33,7 +33,8 @@ fields <-
       .$endpoint == "uspc" ~ "uspc_mainclasses",
       .$endpoint == "nber_subcat" ~ "nber_subcategories"
     )) %>%
-    mutate(group = ifelse(group == "coinvetnros", "coinventors", group))
+    mutate(group = ifelse(group == "coinvetnros", "coinventors", group)) %>%
+    filter(!(endpoint == "locations" & field == "cpc_sequence")) # re: https://github.com/CSSIP-AIR/PatentsView-API/issues/29
 
 # patent_id left off list for all endpoints:
 fieldsdf <-
