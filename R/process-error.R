@@ -28,6 +28,20 @@ custom_er <- function(resp, error_browser) {
 }
 
 #' @noRd
+xheader_er <- function(resp, error_browser, special_chk) {
+
+  # look for the api's ultra-helpful X-Status-Resson header
+  xhdr =  httr::headers(resp)$'X-Status-Reason'
+
+  if(is.null(xhdr))
+     httr::stop_for_status(resp)
+  else {
+     gen_er <- paste0("The api's X-Status-Reason header says: ", xhdr)
+     paste0_stop(gen_er)
+  }
+}
+
+#' @noRd
 throw_er <- function(resp, error_browser) {
   throw_if_loc_error(resp)
   typ <- httr::http_type(resp)
@@ -35,7 +49,7 @@ throw_er <- function(resp, error_browser) {
   ifelse(
     is_txt_html,
     custom_er(resp = resp, error_browser = error_browser),
-    httr::stop_for_status(resp)
+    xheader_er(resp = resp, error_browser = error_browser)
   )
 }
 
