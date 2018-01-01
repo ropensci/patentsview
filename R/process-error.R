@@ -30,7 +30,7 @@ custom_er <- function(resp, error_browser) {
 #' @noRd
 xheader_er <- function(resp, error_browser, special_chk) {
 
-  # look for the api's ultra-helpful X-Status-Resson header
+  # look for the api's ultra-helpful X-Status-Reason header
   xhdr =  httr::headers(resp)$'X-Status-Reason'
 
   if(is.null(xhdr))
