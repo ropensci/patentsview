@@ -85,3 +85,19 @@ test_that("Sort option works as expected", {
 
   expect_true(lat[1] >= lat[100])
 })
+
+test_that("search_pv can pull all fields by group for the locations endpoint", {
+  skip_on_cran()
+
+  groups  <- unique(fieldsdf[fieldsdf$endpoint == "locations", "group"])
+
+  z <- lapply(groups, function(x) {
+    search_pv(
+       query = '{"patent_number":"5116621"}',
+       endpoint = "locations",
+       fields = get_fields("locations", x)
+    )
+  })
+
+   expect_true(TRUE)
+})

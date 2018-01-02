@@ -35,8 +35,6 @@ validate_misc_args <- function(query, fields, endpoint, method, subent_cnts,
       "specified in the field argument. See examples"
     )
 
-  asrt(jsonlite::validate(query), "query must be valid json")
-
   flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint, "field"]
   asrt(
     all(fields %in% flds_flt),

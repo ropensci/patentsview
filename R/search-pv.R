@@ -50,7 +50,7 @@ get_post_body <- function(query, arg_list) {
 }
 
 #' @noRd
-one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
+one_request <- function(method, query, base_url, arg_list, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
@@ -64,14 +64,13 @@ one_request <- function(method, query, base_url, arg_list, error_browser, ...) {
   }
 
   if (httr::http_error(resp))
-    throw_er(resp = resp, error_browser = error_browser)
+    throw_er(resp = resp)
 
   process_resp(resp = resp)
 }
 
 #' @noRd
-request_apply <- function(ex_res, method, query, base_url, arg_list,
-                          error_browser, ...) {
+request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
   req_pages <- ceiling(ex_res$query_results[[1]]/10000)
   if (req_pages < 1)
     stop("No records matched your query...Can't download multiple pages",
@@ -82,7 +81,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
     arg_list$opts$page <- i
     x <- one_request(
       method = method, query = query, base_url = base_url, arg_list = arg_list,
-      error_browser = error_browser, ...
+      ...
     )
     x$data[[1]]
   })
@@ -146,25 +145,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'@param method The HTTP method that you want to use to send the request.
 #'  Possible values include "GET" or "POST". Use the POST method when
 #'  your query is very long (say, over 2,000 characters in length).
-#'@param error_browser The program used to view the HTML error
-#'  messages sent by the API. This should be one of the following:
-#'  \itemize{
-#'    \item The string "false" (the default), which turns error browsing off.
-#'    Instead of viewing the HTML in this case, you will get a portion of the
-#'    parsed HTML text returned to you as an R error.
-#'
-#'    \item The name of the program to use to view the HTML error message. If
-#'    the name of the program is on your PATH, just specify the program name
-#'    (e.g., \code{error_browser = "chrome"}). Otherwise, include the full
-#'    path to the program.
-#'
-#'    \item An R function to be called to invoke the browser (e.g., \cr
-#'    \code{error_browser = rstudioapi::viewer})
-#'
-#'    \item Under Windows, a value of \code{NULL} is allowed and implies that
-#'    the file association mechanism will be used to determine which browser is
-#'    used.
-#'  }
+#'@param error_browser Deprecated
 #'@param ... Arguments passed along to httr's \code{\link[httr]{GET}} or
 #'  \code{\link[httr]{POST}} function.
 #'
@@ -216,15 +197,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list,
 #'   query = qry_funs$contains(inventor_last_name = "smith"),
 #'   config = httr::timeout(40)
 #' )
-#'
-#'\dontrun{
-#'
-#' # Will view error message in RStudio's viewer pane:
-#' search_pv(
-#'    query = with_qfuns(not(text_any(patent_title = "hi"))),
-#'    error_browser = rstudioapi::viewer
-#' )
-#'}
 #'@export
 search_pv <- function(query,
                       fields = NULL,
@@ -236,8 +208,10 @@ search_pv <- function(query,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",
-                      error_browser = getOption("pv_browser"),
+                      error_browser = NULL,
                       ...) {
+
+  if (!is.null(error_browser)) warning("error_browser parameter is deprecated")
 
   validate_endpoint(endpoint = endpoint)
 
@@ -262,7 +236,7 @@ search_pv <- function(query,
 
   res <- one_request(
     method = method, query = query, base_url = base_url,  arg_list = arg_list,
-    error_browser = error_browser, ...
+    ...
   )
 
   if (!all_pages) return(res)
