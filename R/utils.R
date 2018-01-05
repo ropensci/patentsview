@@ -17,8 +17,8 @@ parse_resp <- function(resp) {
 
 #' @noRd
 format_num <- function(x) format(
-  x, big.mark = ",", scientific = FALSE, trim = TRUE
-)
+    x, big.mark = ",", scientific = FALSE, trim = TRUE
+  )
 
 #' @noRd
 validate_endpoint <- function(endpoint) {

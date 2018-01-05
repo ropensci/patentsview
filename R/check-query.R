@@ -7,6 +7,7 @@ swap_null_nms <- function(obj) {
 #' @noRd
 is_int <- function(x)
   if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps^0.5 else FALSE
+  if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps ^ 0.5 else FALSE
 
 #' @noRd
 is_date <- function(x)
@@ -50,8 +51,10 @@ check_query <- function(query, endpoint) {
       lapply(x, FUN = apply_checks)
     } else if (names(x) %in% all_opr) {
       f1 <- flds_flt[flds_flt$field == names(x[[1]]), ]
-      one_check(operator = names(x), field = names(x[[1]]),
-                value = unlist(x[[1]]), f1 = f1)
+      one_check(
+        operator = names(x), field = names(x[[1]]),
+        value = unlist(x[[1]]), f1 = f1
+      )
     } else if (names(x) %in% flds_flt$field) {
       paste0_msg(
         "The _eq operator is a safer alternative to using ",

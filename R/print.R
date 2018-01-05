@@ -16,7 +16,7 @@ print.pv_data_result <- function(x, ...) {
 
   dat_level <- c(
     patents = "a patent", inventors = "an inventor",
-    assignees = "an assignee",  locations = "a location",
+    assignees = "an assignee", locations = "a location",
     cpc_subsections = "a CPC subsection", uspc_mainclasses = "a USPC main class",
     nber_subcategories = "a NBER subcategory"
   )

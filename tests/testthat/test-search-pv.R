@@ -19,8 +19,8 @@ test_that("DSL-based query returns expected results", {
   query <- with_qfuns(
     and(
       or(
-        gte(patent_date = '2014-01-01'),
-        lte(patent_date = '1978-01-01')
+        gte(patent_date = "2014-01-01"),
+        lte(patent_date = "1978-01-01")
       ),
       text_phrase(patent_abstract = c("computer program", "dog leash"))
     )
@@ -89,13 +89,13 @@ test_that("Sort option works as expected", {
 test_that("search_pv can pull all fields by group for the locations endpoint", {
   skip_on_cran()
 
-  groups  <- unique(fieldsdf[fieldsdf$endpoint == "locations", "group"])
+  groups <- unique(fieldsdf[fieldsdf$endpoint == "locations", "group"])
 
   z <- lapply(groups, function(x) {
     search_pv(
-       query = '{"patent_number":"5116621"}',
-       endpoint = "locations",
-       fields = get_fields("locations", x)
+      query = '{"patent_number":"5116621"}',
+      endpoint = "locations",
+      fields = get_fields("locations", x)
     )
   })
 

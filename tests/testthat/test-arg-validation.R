@@ -24,7 +24,7 @@ test_that("validate_args throws errors for all bad args", {
     "per_page"
   )
   expect_error(
-    search_pv(query = '{"patent_date":["1976-01-06"]}',page = NA),
+    search_pv(query = '{"patent_date":["1976-01-06"]}', page = NA),
     "page"
   )
   expect_error(

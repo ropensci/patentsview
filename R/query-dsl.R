@@ -1,7 +1,7 @@
 # Design adapated from http://adv-r.had.co.nz/dsl.html
 
 #' @noRd
-lapply2 <- function(...)  sapply(..., USE.NAMES = TRUE, simplify = FALSE)
+lapply2 <- function(...) sapply(..., USE.NAMES = TRUE, simplify = FALSE)
 
 #' @noRd
 create_one_fun <- function(field, value, fun) {
@@ -23,7 +23,7 @@ create_key_fun <- function(fun) {
     if (length(value) > 1) {
       z <- lapply(
         value, function(value)
-        create_one_fun(field = field, value = value, fun = fun)
+          create_one_fun(field = field, value = value, fun = fun)
       )
       z <- list(`_or` = z)
     } else {
@@ -119,8 +119,10 @@ create_not_fun <- function(fun) {
 #' @export
 qry_funs <- c(
   lapply2(
-    c("eq", "neq", "gt", "gte", "lt", "lte", "begins", "contains", "text_all",
-      "text_any", "text_phrase"), create_key_fun
+    c(
+      "eq", "neq", "gt", "gte", "lt", "lte", "begins", "contains", "text_all",
+      "text_any", "text_phrase"
+    ), create_key_fun
   ),
   lapply2(c("and", "or"), create_array_fun),
   lapply2("not", create_not_fun)
