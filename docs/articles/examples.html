@@ -128,7 +128,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 2,834</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 2,952</span></code></pre></div>
 <p>How many distinct inventors are represented by these highly-cited patents?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setting subent_cnts = TRUE will give us the subentity counts. Since inventors </span>
 <span class="co"># are subentities for the patents endpoint, this means we will get their counts.</span>
@@ -148,7 +148,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 2,834, total_inventor_count = 4,793</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 2,952, total_inventor_count = 4,948</span></code></pre></div>
 <p>Where geographically have Microsoft inventors been coming from over the past 20 years?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write the query</span>
 query &lt;-<span class="st"> </span><span class="kw"><a href="../reference/with_qfuns.html">with_qfuns</a></span>(

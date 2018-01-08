@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search PatentsView — search_pv • patentsview</title>
+<title>Search PatentsView � search_pv • patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -134,8 +134,7 @@ the user's query.</p>
 
     <pre class="usage"><span class='fu'>search_pv</span>(<span class='no'>query</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>, <span class='kw'>subent_cnts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>mtchd_subent_only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>page</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>per_page</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"pv_browser"</span>),
-  <span class='no'>...</span>)</pre>
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -220,21 +219,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
     </tr>
     <tr>
       <th>error_browser</th>
-      <td><p>The program used to view the HTML error
- messages sent by the API. This should be one of the following:</p><ul>
-<li><p>The string "false" (the default), which turns error browsing off.
-   Instead of viewing the HTML in this case, you will get a portion of the
-   parsed HTML text returned to you as an R error.</p></li>
-<li><p>The name of the program to use to view the HTML error message. If
-   the name of the program is on your PATH, just specify the program name
-   (e.g., <code>error_browser = "chrome"</code>). Otherwise, include the full
-   path to the program.</p></li>
-<li><p>An R function to be called to invoke the browser (e.g., 
-   <code>error_browser = rstudioapi::viewer</code>)</p></li>
-<li><p>Under Windows, a value of <code>NULL</code> is allowed and implies that
-   the file association mechanism will be used to determine which browser is
-   used.</p></li>
-</ul></td>
+      <td><p>Deprecated</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -388,14 +373,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 51,351</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># Will view error message in RStudio's viewer pane:</span>
-<span class='fu'>search_pv</span>(
-   <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'><a href='with_qfuns.html'>with_qfuns</a></span>(<span class='fu'>not</span>(<span class='fu'>text_any</span>(<span class='kw'>patent_title</span> <span class='kw'>=</span> <span class='st'>"hi"</span>))),
-   <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw pkg'>rstudioapi</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/rstudioapi/topics/viewer'>viewer</a></span>
-)
-<span class='co'># }</span></pre>
+#&gt; total_patent_count = 51,351</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

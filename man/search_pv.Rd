@@ -6,8 +6,7 @@
 \usage{
 search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
   mtchd_subent_only = TRUE, page = 1, per_page = 25, all_pages = FALSE,
-  sort = NULL, method = "GET", error_browser = getOption("pv_browser"),
-  ...)
+  sort = NULL, method = "GET", error_browser = NULL, ...)
 }
 \arguments{
 \item{query}{The query that the API will use to filter records. \code{query}
@@ -71,25 +70,7 @@ You must include any fields that you wish to sort by in \code{fields}.}
 Possible values include "GET" or "POST". Use the POST method when
 your query is very long (say, over 2,000 characters in length).}
 
-\item{error_browser}{The program used to view the HTML error
- messages sent by the API. This should be one of the following:
- \itemize{
-   \item The string "false" (the default), which turns error browsing off.
-   Instead of viewing the HTML in this case, you will get a portion of the
-   parsed HTML text returned to you as an R error.
-
-   \item The name of the program to use to view the HTML error message. If
-   the name of the program is on your PATH, just specify the program name
-   (e.g., \code{error_browser = "chrome"}). Otherwise, include the full
-   path to the program.
-
-   \item An R function to be called to invoke the browser (e.g., \cr
-   \code{error_browser = rstudioapi::viewer})
-
-   \item Under Windows, a value of \code{NULL} is allowed and implies that
-   the file association mechanism will be used to determine which browser is
-   used.
- }}
+\item{error_browser}{Deprecated}
 
 \item{...}{Arguments passed along to httr's \code{\link[httr]{GET}} or
 \code{\link[httr]{POST}} function.}
@@ -147,13 +128,4 @@ search_pv(
   query = qry_funs$contains(inventor_last_name = "smith"),
   config = httr::timeout(40)
 )
-
-\dontrun{
-
-# Will view error message in RStudio's viewer pane:
-search_pv(
-   query = with_qfuns(not(text_any(patent_title = "hi"))),
-   error_browser = rstudioapi::viewer
-)
-}
 }

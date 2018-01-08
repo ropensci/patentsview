@@ -254,18 +254,15 @@
   <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_last_name"</span>, <span class="st">"assignee_organization"</span>)
 )
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an assignee level:</span>
+<span class="co">#&gt; #### A list with a single data frame on an assignee level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Mississippi State University" ...</span>
-<span class="co">#&gt;   ..$ patents              :List of 25</span>
-<span class="co">#&gt;   ..$ inventors            :List of 25</span>
+<span class="co">#&gt;  $ assignees: NULL</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_assignee_count = 469</span></code></pre></div>
+<span class="co">#&gt; total_assignee_count = 0</span></code></pre></div>
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Which entity your query is applied to.</strong> The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor on them with the last name of “chambers.” The second call used the assignees endpoint, so the API searched for assignees that have at least one patent which has an inventor on it whose last name is “chambers.”</p></li>
@@ -373,7 +370,6 @@ res<span class="op">$</span>data
 <strong>Use tidyr::unnest.</strong> (This is probably the easier choice of the two).</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
-<span class="co">#&gt; Warning: package 'tidyr' was built under R version 3.4.2</span>
 
 <span class="co"># Get assignee/application data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
