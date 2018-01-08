@@ -6,7 +6,6 @@ swap_null_nms <- function(obj) {
 
 #' @noRd
 is_int <- function(x)
-  if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps^0.5 else FALSE
   if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps ^ 0.5 else FALSE
 
 #' @noRd
