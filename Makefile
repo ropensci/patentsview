@@ -19,13 +19,12 @@ doc:
 	Rscript -e "devtools::document()"
 
 # Compile vignettes
-vig: vignettes/writing-queries.Rmd vignettes/getting-started.Rmd vignettes/examples.Rmd
+vig: vignettes/*
 	Rscript -e "devtools::build_vignettes()"
 
 # Test package
 test:
-	Rscript -e "library(testthat); library(patentsview); \
-	devtools::test(); test_examples('man')"
+	Rscript -e "devtools::test()"
 
 # Build site (not part of all)
 site: _pkgdown.yml inst/site/*
