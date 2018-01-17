@@ -3,6 +3,9 @@ as_is <- function(x) x
 
 #' @noRd
 get_cast_fun <- function(data_type) {
+  # Some fields are documented, so we don't know what their data type is. Use
+  # string for these.
+  if (length(data_type) != 1) data_type <- "string"
   switch(
     data_type,
     "string" = as_is,
