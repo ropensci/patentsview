@@ -4,7 +4,8 @@ print.pv_request <- function(x, ...) {
     "#### An HTTP request where:\n\n",
     "Method: ", x$method, "\n",
     "URL: ", x$url,
-    ifelse("body" %in% names(x), paste0("\nBody: ", x$body), ""), sep = ""
+    ifelse("body" %in% names(x), paste0("\nBody: ", x$body), ""),
+    sep = ""
   )
 }
 

@@ -54,27 +54,21 @@ one_request <- function(method, query, base_url, arg_list, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
-    get_url <- get_get_url(
-      query = query, base_url = base_url, arg_list = arg_list
-    )
-    resp <- httr::GET(url = get_url, ua, ...)
+    get_url <- get_get_url(query, base_url = base_url, arg_list = arg_list)
+    resp <- httr::GET(get_url, ua, ...)
   } else {
-    body <- get_post_body(query = query, arg_list = arg_list)
-    resp <- httr::POST(url = base_url, body = body, ua, ...)
+    body <- get_post_body(query, arg_list = arg_list)
+    resp <- httr::POST(base_url, body = body, ua, ...)
   }
 
-  if (httr::http_error(resp))
-    throw_er(resp = resp)
+  if (httr::http_error(resp)) throw_er(resp)
 
-  process_resp(resp = resp)
+  process_resp(resp)
 }
 
 #' @noRd
 request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
-  req_pages <- ceiling(ex_res$query_results[[1]]/10000)
-  if (req_pages < 1)
-    stop("No records matched your query...Can't download multiple pages",
-         .call = FALSE)
+
   req_pages <- ceiling(ex_res$query_results[[1]] / 10000)
   if (req_pages < 1) {
     stop(
@@ -87,8 +81,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
     x <- one_request(
-      method = method, query = query, base_url = base_url, arg_list = arg_list,
-      ...
+      method, query = query, base_url = base_url, arg_list = arg_list, ...
     )
     x$data[[1]]
   })
@@ -218,38 +211,39 @@ search_pv <- function(query,
                       error_browser = NULL,
                       ...) {
 
-  if (!is.null(error_browser)) warning("error_browser parameter is deprecated")
+  if (!is.null(error_browser))
+    warning("error_browser parameter has been deprecated")
 
-  validate_endpoint(endpoint = endpoint)
+  validate_endpoint(endpoint)
 
   if (is.list(query)) {
-    check_query(query = query, endpoint = endpoint)
+    check_query(query, endpoint = endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
   validate_misc_args(
-    query = query, fields = fields, endpoint = endpoint, method = method,
+    query, fields = fields, endpoint = endpoint, method = method,
     subent_cnts = subent_cnts, mtchd_subent_only = mtchd_subent_only,
     page = page, per_page = per_page, sort = sort
   )
 
   arg_list <- to_arglist(
-    fields = fields, subent_cnts = subent_cnts,
-    mtchd_subent_only = mtchd_subent_only, page = page, per_page = per_page,
+    fields,
+    subent_cnts = subent_cnts, mtchd_subent_only = mtchd_subent_only,
+    page = page, per_page = per_page,
     sort = sort
   )
 
-  base_url <- get_base(endpoint = endpoint)
+  base_url <- get_base(endpoint)
 
   res <- one_request(
-    method = method, query = query, base_url = base_url, arg_list = arg_list,
-    ...
+    method, query = query, base_url = base_url, arg_list = arg_list, ...
   )
 
   if (!all_pages) return(res)
 
   full_data <- request_apply(
-    ex_res = res, method = method, query = query, base_url = base_url,
+    res, method = method, query = query, base_url = base_url,
     arg_list = arg_list, ...
   )
   res$data[[1]] <- full_data

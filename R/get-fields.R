@@ -15,7 +15,7 @@
 #'   can specify for a given endpoint (e.g., the
 #'   \href{http://www.patentsview.org/api/patent.html#field_list}{patents
 #'   endpoint table}), or use the \code{fieldsdf} table
-#'   (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])})
+#'   (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])}).
 #'
 #' @return A character vector with field names.
 #'
@@ -39,7 +39,7 @@
 #' )
 #' @export
 get_fields <- function(endpoint, groups = NULL) {
-  validate_endpoint(endpoint = endpoint)
+  validate_endpoint(endpoint)
   if (is.null(groups)) {
     fieldsdf[fieldsdf$endpoint == endpoint, "field"]
   } else {

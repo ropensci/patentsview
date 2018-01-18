@@ -33,11 +33,11 @@ get_query_results <- function(prsd_resp) {
 
 #' @noRd
 process_resp <- function(resp) {
-  prsd_resp <- parse_resp(resp = resp)
+  prsd_resp <- parse_resp(resp)
 
-  request <- get_request(resp = resp)
-  data <- get_data(prsd_resp = prsd_resp)
-  query_results <- get_query_results(prsd_resp = prsd_resp)
+  request <- get_request(resp)
+  data <- get_data(prsd_resp)
+  query_results <- get_query_results(prsd_resp)
 
   structure(
     list(

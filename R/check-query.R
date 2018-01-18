@@ -6,7 +6,7 @@ swap_null_nms <- function(obj) {
 
 #' @noRd
 is_int <- function(x)
-  if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps ^ 0.5 else FALSE
+  if (is.numeric(x)) abs(x - round(x)) < .Machine$double.eps^ 0.5 else FALSE
 
 #' @noRd
 is_date <- function(x)
@@ -67,6 +67,6 @@ check_query <- function(query, endpoint) {
     }
   }
 
-  apply_checks(x = query, endpoint = endpoint)
+  apply_checks(query, endpoint = endpoint)
   invisible()
 }

@@ -60,7 +60,7 @@ get_ok_pk <- function(endpoint) {
 #' @export
 unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
 
-  validate_pv_data(data = data)
+  validate_pv_data(data)
 
   df <- data[[1]]
 
@@ -75,7 +75,7 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
   sub_ent_df <- df[, !prim_ent_var, drop = FALSE]
   sub_ents <- colnames(sub_ent_df)
 
-  ok_pk <- get_ok_pk(endpoint = names(data))
+  ok_pk <- get_ok_pk(names(data))
 
   out_sub_ent <- lapply2(sub_ents, function(x) {
     temp <- sub_ent_df[[x]]

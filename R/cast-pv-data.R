@@ -64,7 +64,7 @@ cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 #' cast_pv_data(data = res$data)
 #' @export
 cast_pv_data <- function(data) {
-  validate_pv_data(data = data)
+  validate_pv_data(data)
 
   endpoint <- names(data)
 
@@ -73,8 +73,7 @@ cast_pv_data <- function(data) {
   df <- data[[1]]
 
   list_out <- lapply2(colnames(df), function(x) {
-    one <- df[, x]
-    cast_one(one = one, name = x, typesdf = typesdf)
+    cast_one(df[, x], name = x, typesdf = typesdf)
   })
 
   df[] <- list_out
