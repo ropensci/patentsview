@@ -7,7 +7,6 @@ matrix:
   - r: oldrel
   - r: release
   - r: devel
-  - os: osx
   allow_failures:
   - r: devel
 
