@@ -154,7 +154,7 @@ membership). See the field tables located online to see which groups you
 can specify for a given endpoint (e.g., the
 <a href='http://www.patentsview.org/api/patent.html#field_list'>patents
 endpoint table</a>), or use the <code>fieldsdf</code> table
-(e.g., <code>unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])</code>)</p></td>
+(e.g., <code>unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])</code>).</p></td>
     </tr>
     </table>
     
@@ -181,7 +181,7 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 200,000</div><div class='input'>
+#&gt; total_patent_count = 100,000</div><div class='input'>
 <span class='co'># Get all patent and assignee-level fields for the patents endpoint:</span>
 <span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>get_fields</span>(<span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"assignees"</span>, <span class='st'>"patents"</span>))
 
@@ -196,7 +196,7 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 #&gt;  $ patents:'data.frame':	25 obs. of  32 variables:
 #&gt;   ..$ detail_desc_length                    : chr [1:25] "14247" ...
 #&gt;   ..$ patent_abstract                       : chr [1:25] "A protective glove "..
-#&gt;   ..$ patent_average_processing_time        : logi [1:25] NA ...
+#&gt;   ..$ patent_average_processing_time        : chr [1:25] "913" ...
 #&gt;   ..$ patent_date                           : chr [1:25] "2007-01-09" ...
 #&gt;   ..$ patent_firstnamed_assignee_city       : chr [1:25] "Neenah" ...
 #&gt;   ..$ patent_firstnamed_assignee_country    : chr [1:25] "US" ...
@@ -230,7 +230,7 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 200,000</div></pre>
+#&gt; total_patent_count = 100,000</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

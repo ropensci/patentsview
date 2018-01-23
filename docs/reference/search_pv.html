@@ -274,7 +274,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt;  $ patents:'data.frame':	25 obs. of  32 variables:
 #&gt;   ..$ detail_desc_length                    : chr [1:25] "10151" ...
 #&gt;   ..$ patent_abstract                       : chr [1:25] "A nose cover or nos"..
-#&gt;   ..$ patent_average_processing_time        : logi [1:25] NA ...
+#&gt;   ..$ patent_average_processing_time        : chr [1:25] "1088" ...
 #&gt;   ..$ patent_date                           : chr [1:25] "2011-01-04" ...
 #&gt;   ..$ patent_firstnamed_assignee_city       : chr [1:25] NA ...
 #&gt;   ..$ patent_firstnamed_assignee_country    : chr [1:25] NA ...
@@ -357,7 +357,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_assignee_count = 8,943</div><div class='input'>
+#&gt; total_assignee_count = 8,893</div><div class='input'>
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
   <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>)
@@ -373,7 +373,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 #&gt; $query_results
 #&gt; #### Distinct entity counts across all downloadable pages of output:
 #&gt; 
-#&gt; total_patent_count = 51,351</div></pre>
+#&gt; total_patent_count = 51,766</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -9,7 +9,8 @@ test_that("", {
 
   z <- lapply(eps_no_loc, function(x) {
     pv_out <- search_pv(
-      query = "{\"patent_number\":\"5116621\"}", endpoint = x,
+      "{\"patent_number\":\"5116621\"}",
+      endpoint = x,
       fields = get_fields(x)
     )
     unnest_pv_data(pv_out[["data"]])

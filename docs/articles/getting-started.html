@@ -198,7 +198,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 1,894</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 1,907</span></code></pre></div>
 <p>You can download all pages of output in one call by setting <code>all_pages = TRUE</code>. This will set <code>per_page</code> equal to 10,000 and loop over all pages of output (downloading up to 10 pages, or 100,000 records total):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(
   <span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">inventor_last_name =</span> <span class="st">"chambers"</span>),
@@ -208,15 +208,15 @@
 <span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ patents:'data.frame': 1894 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ patent_id    : chr [1:1894] "3931611" ...</span>
-<span class="co">#&gt;   ..$ patent_number: chr [1:1894] "3931611" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:1894] "Program event recorder and data proce"..</span>
+<span class="co">#&gt;  $ patents:'data.frame': 1907 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_id    : chr [1:1907] "3931611" ...</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:1907] "3931611" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:1907] "Program event recorder and data proce"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 1,894</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 1,907</span></code></pre></div>
 </div>
 <div id="entity-counts" class="section level2">
 <h2 class="hasAnchor">
@@ -246,7 +246,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 1,894</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 1,907</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># While here we are using the assignees endpoint</span>
 <span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(
   <span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">inventor_last_name =</span> <span class="st">"chambers"</span>), 
@@ -254,15 +254,18 @@
   <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"inventor_last_name"</span>, <span class="st">"assignee_organization"</span>)
 )
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on an assignee level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an assignee level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ assignees: NULL</span>
+<span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Mississippi State University" ...</span>
+<span class="co">#&gt;   ..$ patents              :List of 25</span>
+<span class="co">#&gt;   ..$ inventors            :List of 25</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_assignee_count = 0</span></code></pre></div>
+<span class="co">#&gt; total_assignee_count = 463</span></code></pre></div>
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Which entity your query is applied to.</strong> The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor on them with the last name of “chambers.” The second call used the assignees endpoint, so the API searched for assignees that have at least one patent which has an inventor on it whose last name is “chambers.”</p></li>
@@ -382,13 +385,13 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt; 4 0014741cba71f79c56703ad2f13adaf4 Scientific Operating Systems, Inc.</span>
 <span class="co">#&gt; 5 0014741cba71f79c56703ad2f13adaf4 Scientific Operating Systems, Inc.</span>
 <span class="co">#&gt; 6 00172a3f29e660fdb2288e3ff35b7b26        KINGPIN TATTOO SUPPLY, INC.</span>
-<span class="co">#&gt;   app_country   app_date app_number app_type</span>
-<span class="co">#&gt; 1          US 1974-12-23   05536925       05</span>
-<span class="co">#&gt; 2          US 1975-08-18   05605303       05</span>
-<span class="co">#&gt; 3          US 1998-12-11   09209876       09</span>
-<span class="co">#&gt; 4          US 2000-04-26   09558501       09</span>
-<span class="co">#&gt; 5          US 1998-07-15   09091326       09</span>
-<span class="co">#&gt; 6          US 2014-04-25   29488968       29</span>
+<span class="co">#&gt;   app_country   app_date app_number app_type    app_id</span>
+<span class="co">#&gt; 1          US 1974-12-23   05536925       05 05/536925</span>
+<span class="co">#&gt; 2          US 1975-08-18   05605303       05 05/605303</span>
+<span class="co">#&gt; 3          US 1998-12-11   09209876       09 09/209876</span>
+<span class="co">#&gt; 4          US 2000-04-26   09558501       09 09/558501</span>
+<span class="co">#&gt; 5          US 1998-07-15   09091326       09 09/091326</span>
+<span class="co">#&gt; 6          US 2014-04-25   29488968       29 29/488968</span>
 
 <span class="co"># Get assignee/gov_interest data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
@@ -408,13 +411,13 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt; 4                       Highland Industries, Inc.</span>
 <span class="co">#&gt; 5 Idea Development, Engineering and Service, Inc.</span>
 <span class="co">#&gt; 6             Siemens Industrial Automation, Inc.</span>
-<span class="co">#&gt;                                                                               applications</span>
-<span class="co">#&gt; 1                               US, US, 1974-12-23, 1975-08-18, 05536925, 05605303, 05, 05</span>
-<span class="co">#&gt; 2 US, US, US, 1998-12-11, 2000-04-26, 1998-07-15, 09209876, 09558501, 09091326, 09, 09, 09</span>
-<span class="co">#&gt; 3                               US, US, 2014-04-25, 2014-08-11, 29488968, 29498979, 29, 29</span>
-<span class="co">#&gt; 4                                                             US, 2000-02-16, 09504737, 09</span>
-<span class="co">#&gt; 5                               US, US, 1995-08-14, 1997-06-20, 08514660, 08879174, 08, 08</span>
-<span class="co">#&gt; 6                                                             US, 1993-08-10, 08104311, 08</span>
+<span class="co">#&gt;                                                                                                                applications</span>
+<span class="co">#&gt; 1                                          US, US, 1974-12-23, 1975-08-18, 05536925, 05605303, 05, 05, 05/536925, 05/605303</span>
+<span class="co">#&gt; 2 US, US, US, 1998-12-11, 2000-04-26, 1998-07-15, 09209876, 09558501, 09091326, 09, 09, 09, 09/209876, 09/558501, 09/091326</span>
+<span class="co">#&gt; 3                                          US, US, 2014-04-25, 2014-08-11, 29488968, 29498979, 29, 29, 29/488968, 29/498979</span>
+<span class="co">#&gt; 4                                                                                   US, 2000-02-16, 09504737, 09, 09/504737</span>
+<span class="co">#&gt; 5                                          US, US, 1995-08-14, 1997-06-20, 08514660, 08879174, 08, 08, 08/514660, 08/879174</span>
+<span class="co">#&gt; 6                                                                                   US, 1993-08-10, 08104311, 08, 08/104311</span>
 <span class="co">#&gt;   govint_contract_award_number govint_org_id govint_org_level_one</span>
 <span class="co">#&gt; 1                           NA            NA                   NA</span>
 <span class="co">#&gt; 2                           NA            NA                   NA</span>
@@ -442,12 +445,13 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> res<span class="op">$</span>data, <span class="dt">pk =</span> <span class="st">"assignee_id"</span>)
 <span class="co">#&gt; List of 3</span>
-<span class="co">#&gt;  $ applications :'data.frame':   69 obs. of  5 variables:</span>
+<span class="co">#&gt;  $ applications :'data.frame':   69 obs. of  6 variables:</span>
 <span class="co">#&gt;   ..$ assignee_id: chr [1:69] "000fd451e3903862279995c8f7946893" ...</span>
 <span class="co">#&gt;   ..$ app_country: chr [1:69] "US" ...</span>
 <span class="co">#&gt;   ..$ app_date   : chr [1:69] "1974-12-23" ...</span>
 <span class="co">#&gt;   ..$ app_number : chr [1:69] "05536925" ...</span>
 <span class="co">#&gt;   ..$ app_type   : chr [1:69] "05" ...</span>
+<span class="co">#&gt;   ..$ app_id     : chr [1:69] "05/536925" ...</span>
 <span class="co">#&gt;  $ gov_interests:'data.frame':   25 obs. of  8 variables:</span>
 <span class="co">#&gt;   ..$ assignee_id                 : chr [1:25] "000fd451e3903862279995c8"..</span>
 <span class="co">#&gt;   ..$ govint_contract_award_number: logi [1:25] NA ...</span>

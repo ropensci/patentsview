@@ -26,7 +26,7 @@ test_that("DSL-based query returns expected results", {
     )
   )
 
-  out <- search_pv(query = query)
+  out <- search_pv(query)
 
   expect_gt(out$query_results$total_patent_count, 1000)
 })
@@ -38,7 +38,7 @@ test_that("search_pv can pull all fields for all endpoints except locations", {
 
   z <- lapply(eps_no_loc, function(x) {
     search_pv(
-      query = "{\"patent_number\":\"5116621\"}",
+      "{\"patent_number\":\"5116621\"}",
       endpoint = x,
       fields = get_fields(x)
     )
@@ -53,7 +53,8 @@ test_that("Locations endpoint throws custom error when asked for all avail. fiel
 
   expect_error(
     search_pv(
-      query = "{\"patent_number\":\"5116621\"}", endpoint = "locations",
+      "{\"patent_number\":\"5116621\"}",
+      endpoint = "locations",
       fields = get_fields("locations")
     ), regexp = "the locations endpoint currently"
   )
@@ -62,9 +63,9 @@ test_that("Locations endpoint throws custom error when asked for all avail. fiel
 test_that("search_pv can return subent_cnts", { # though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
   skip_on_cran()
 
-  fields <- get_fields("patents", c("patents", "inventors"))
   out_spv <- search_pv(
-    query = "{\"patent_number\":\"5116621\"}", fields = fields,
+    "{\"patent_number\":\"5116621\"}",
+    fields = get_fields("patents", c("patents", "inventors")),
     subent_cnts = TRUE
   )
   expect_true(length(out_spv$query_results) == 2)
@@ -73,12 +74,12 @@ test_that("search_pv can return subent_cnts", { # though note this issue: https:
 test_that("Sort option works as expected", {
   skip_on_cran()
 
-  fields <- get_fields("inventors", c("inventors"))
-  query <- qry_funs$gt(patent_date = "2015-01-01")
-
   out_spv <- search_pv(
-    query = query, fields = fields, endpoint = "inventors",
-    sort = c("inventor_lastknown_latitude" = "desc"), per_page = 100
+    qry_funs$gt(patent_date = "2015-01-01"),
+    fields = get_fields("inventors", c("inventors")),
+    endpoint = "inventors",
+    sort = c("inventor_lastknown_latitude" = "desc"),
+    per_page = 100
   )
 
   lat <- as.numeric(out_spv$data$inventors$inventor_lastknown_latitude)
@@ -93,7 +94,7 @@ test_that("search_pv can pull all fields by group for the locations endpoint", {
 
   z <- lapply(groups, function(x) {
     search_pv(
-      query = '{"patent_number":"5116621"}',
+      '{"patent_number":"5116621"}',
       endpoint = "locations",
       fields = get_fields("locations", x)
     )

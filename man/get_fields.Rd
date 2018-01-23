@@ -17,7 +17,7 @@ membership). See the field tables located online to see which groups you
 can specify for a given endpoint (e.g., the
 \href{http://www.patentsview.org/api/patent.html#field_list}{patents
 endpoint table}), or use the \code{fieldsdf} table
-(e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])})}
+(e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])}).}
 }
 \value{
 A character vector with field names.
