@@ -562,6 +562,7 @@
 "locations","cpc_last_seen_date","date","y","cpcs","Last Seen Date","Grant date of the most recent patent in the database within a CPC subsection"
 "locations","cpc_num_patents_for_location","integer","n","cpcs","Number of Patents for Location","Number of patents for a location within a CPC subsection"
 "locations","cpc_section_id","string","y","cpcs","Section ID","CPC section ID (A = Human Necessitites, B = Performing Operations; Transporint, C = Chemistry; Metallurgy, D = Textiles; paper, E = Fixed Constructing, F = Mechanical Engineering; Lighting; Heating; Weapons; Blasting Engines; Pumps, G = Physics, H = Electricity, Y = General Tagging of new technological developments)"
+"locations","cpc_sequence","integer","y","cpcs","Sequence","Order of the CPC classification in the list of classifications for the selected patent"
 "locations","cpc_subgroup_id","string","y","cpcs","Subgroup ID","CPC subgroup ID"
 "locations","cpc_subgroup_title","string","y","cpcs","Subgroup Title","Description of CPC subgroup"
 "locations","cpc_subsection_id","string","y","cpcs","Subsection ID","CPC subsection ID"
