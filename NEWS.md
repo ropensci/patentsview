@@ -1,4 +1,4 @@
-# patentsview 0.2.0 (2018-02-01)
+# patentsview 0.2.0 (2018-02-08)
 
 #### New features
 
