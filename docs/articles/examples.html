@@ -116,8 +116,6 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
 <span class="kw"><a href="../reference/search_pv.html">search_pv</a></span>(<span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">gt</span>(<span class="dt">patent_num_cited_by_us_patents =</span> <span class="dv">500</span>))
-<span class="co">#&gt; Warning in strptime(x, fmt, tz = "GMT"): unknown timezone 'zone/tz/2017c.</span>
-<span class="co">#&gt; 1.0/zoneinfo/America/New_York'</span>
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
@@ -170,29 +168,26 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
 <span class="co"># Unnest the inventor list column</span>
 <span class="kw"><a href="../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> pv_out<span class="op">$</span>data, <span class="dt">pk =</span> <span class="st">"patent_number"</span>)
 <span class="co">#&gt; List of 2</span>
-<span class="co">#&gt;  $ inventors:'data.frame':   105989 obs. of  24 variables:</span>
+<span class="co">#&gt;  $ inventors:'data.frame':   105989 obs. of  21 variables:</span>
 <span class="co">#&gt;   ..$ patent_number                 : chr [1:105989] "7249856" ...</span>
 <span class="co">#&gt;   ..$ inventor_city                 : chr [1:105989] "Kirkland" ...</span>
 <span class="co">#&gt;   ..$ inventor_country              : chr [1:105989] "US" ...</span>
-<span class="co">#&gt;   ..$ inventor_county               : chr [1:105989] "King" ...</span>
-<span class="co">#&gt;   ..$ inventor_county_fips          : chr [1:105989] "033" ...</span>
 <span class="co">#&gt;   ..$ inventor_first_name           : chr [1:105989] "Michael J." ...</span>
 <span class="co">#&gt;   ..$ inventor_first_seen_date      : chr [1:105989] "1981-03-17" ...</span>
 <span class="co">#&gt;   ..$ inventor_id                   : chr [1:105989] "4257107-2" ...</span>
-<span class="co">#&gt;   ..$ inventor_last_name            : chr [1:105989] "Sinclair" ...</span>
-<span class="co">#&gt;   ..$ inventor_last_seen_date       : chr [1:105989] "2017-08-15" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_city       : chr [1:105989] "Kirkland" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_country    : chr [1:105989] "US" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_latitude   : chr [1:105989] "47.6769" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_location_id: chr [1:105989] "47.6768927|-122.20"..</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_longitude  : chr [1:105989] "-122.206" ...</span>
 <span class="co">#&gt;   ..$ inventor_lastknown_state      : chr [1:105989] "WA" ...</span>
+<span class="co">#&gt;   ..$ inventor_last_name            : chr [1:105989] "Sinclair" ...</span>
+<span class="co">#&gt;   ..$ inventor_last_seen_date       : chr [1:105989] "2017-08-15" ...</span>
 <span class="co">#&gt;   ..$ inventor_latitude             : chr [1:105989] "47.6769" ...</span>
 <span class="co">#&gt;   ..$ inventor_location_id          : chr [1:105989] "47.6768927|-122.20"..</span>
 <span class="co">#&gt;   ..$ inventor_longitude            : chr [1:105989] "-122.206" ...</span>
 <span class="co">#&gt;   ..$ inventor_sequence             : chr [1:105989] "0" ...</span>
 <span class="co">#&gt;   ..$ inventor_state                : chr [1:105989] "WA" ...</span>
-<span class="co">#&gt;   ..$ inventor_state_fips           : chr [1:105989] "53" ...</span>
 <span class="co">#&gt;   ..$ inventor_total_num_patents    : chr [1:105989] "104" ...</span>
 <span class="co">#&gt;   ..$ inventor_key_id               : chr [1:105989] "292352" ...</span>
 <span class="co">#&gt;  $ patents  :'data.frame':   29253 obs. of  1 variable:</span>
@@ -208,40 +203,16 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sear
   <span class="dt">fields =</span> <span class="kw">c</span>(<span class="st">"patent_number"</span>, <span class="st">"patent_title"</span>)
 )
 <span class="co">#&gt; $data</span>
-<span class="co">#&gt; #### A list with a single data frame on an inventor level:</span>
+<span class="co">#&gt; #### A list with a single data frame (with list column(s) inside) on an inventor level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ inventors:List of 25</span>
-<span class="co">#&gt;   ..$ :List of 1</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
-<span class="co">#&gt;   ..$ : list()</span>
+<span class="co">#&gt;  $ inventors:'data.frame':   25 obs. of  1 variable:</span>
+<span class="co">#&gt;   ..$ patents:List of 25</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_inventor_count = 10,425</span></code></pre></div>
+<span class="co">#&gt; total_inventor_count = 10,500</span></code></pre></div>
 </div>
 <div id="assignees-endpoint" class="section level2">
 <h2 class="hasAnchor">
