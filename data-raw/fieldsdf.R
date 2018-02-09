@@ -55,3 +55,4 @@ fieldsdf <-
 
 write.csv(fieldsdf, "data-raw/fieldsdf.csv", row.names = FALSE)
 use_data(fieldsdf, internal = FALSE, overwrite = TRUE)
+use_data(fieldsdf, internal = TRUE, overwrite = TRUE)
