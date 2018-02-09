@@ -119,6 +119,8 @@
   <span class="dt">query =</span> <span class="st">'{"_gte":{"patent_date":"2007-01-01"}}'</span>,
   <span class="dt">endpoint =</span> <span class="st">"patents"</span>
 )
+<span class="co">#&gt; Warning in strptime(x, fmt, tz = "GMT"): unknown timezone 'zone/tz/2017c.</span>
+<span class="co">#&gt; 1.0/zoneinfo/America/New_York'</span>
 <span class="co">#&gt; $data</span>
 <span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
@@ -174,8 +176,8 @@
 <p>To list all of the retrievable fields for a given endpoint, use <code><a href="../reference/get_fields.html">get_fields()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">retrvble_flds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_fields.html">get_fields</a></span>(<span class="dt">endpoint =</span> <span class="st">"patents"</span>)
 <span class="kw">head</span>(retrvble_flds)
-<span class="co">#&gt; [1] "appcit_app_number" "appcit_category"   "appcit_date"      </span>
-<span class="co">#&gt; [4] "appcit_kind"       "appcit_sequence"   "app_country"</span></code></pre></div>
+<span class="co">#&gt; [1] "app_country"       "app_date"          "app_number"       </span>
+<span class="co">#&gt; [4] "app_type"          "appcit_app_number" "appcit_category"</span></code></pre></div>
 <p>You can see an endpoint’s list of queryable and retrievable fields by viewing the endpoint’s online field list (e.g., the <a href="http://www.patentsview.org/api/inventor.html#field_list">inventor field list table</a>). Note the “Query” column in this table, which indicates whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). The field tables for all of the endpoints can be found in the <code>fieldsdf</code> data frame, which you can load using <code>data("fieldsdf")</code> or <code>View(patentsview::fieldsdf)</code>.</p>
 </div>
 <div id="paginated-responses" class="section level2">
@@ -376,7 +378,7 @@ res<span class="op">$</span>data
 
 <span class="co"># Get assignee/application data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">unnest</span>(applications) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(applications) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>()
 <span class="co">#&gt;                        assignee_id              assignee_organization</span>
 <span class="co">#&gt; 1 000fd451e3903862279995c8f7946893           Ferranti-Packard Limited</span>
@@ -395,7 +397,7 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 
 <span class="co"># Get assignee/gov_interest data:</span>
 res<span class="op">$</span>data<span class="op">$</span>assignees <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">unnest</span>(gov_interests) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(gov_interests) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>()
 <span class="co">#&gt;                        assignee_id</span>
 <span class="co">#&gt; 1 000fd451e3903862279995c8f7946893</span>
