@@ -100,6 +100,9 @@ This function makes an HTTP request to the PatentsView API for data matching
 the user's query.
 }
 \examples{
+
+\dontrun{
+
 search_pv(query = '{"_gt":{"patent_year":2010}}')
 
 search_pv(
@@ -128,4 +131,6 @@ search_pv(
   query = qry_funs$contains(inventor_last_name = "smith"),
   config = httr::timeout(40)
 )
+}
+
 }

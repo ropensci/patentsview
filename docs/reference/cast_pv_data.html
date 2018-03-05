@@ -152,15 +152,12 @@ inside it. See examples.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_date"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"patent_year"</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_date"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"patent_year"</span>)
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>"{\"patent_number\":\"5116621\"}"</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>)
-<span class='fu'>cast_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt; #### A list with a single data frame on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	1 obs. of  3 variables:
-#&gt;   ..$ patent_date : Date[1:1], format: "1992-05-26"
-#&gt;   ..$ patent_title: chr "Anti-inflammatory analgesic patch"
-#&gt;   ..$ patent_year : int 1992</div></pre>
+<span class='fu'>cast_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

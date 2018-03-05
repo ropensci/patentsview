@@ -116,6 +116,7 @@ create_not_fun <- function(fun) {
 #' qry_funs$eq(patent_date = "2001-01-01")
 #'
 #' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
+#'
 #' @export
 qry_funs <- c(
   lapply2(
@@ -162,5 +163,6 @@ qry_funs <- c(
 #'    )
 #'  )
 #' )
+#'
 #' @export
 with_qfuns <- function(code) eval(substitute(code), qry_funs)

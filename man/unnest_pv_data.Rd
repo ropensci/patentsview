@@ -34,7 +34,11 @@ variable specified by the user (see the
 in "R for Data Science" for an in-depth introduction to joining tabular data).
 }
 \examples{
+\dontrun{
+
 fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
 unnest_pv_data(data = res$data, pk = "patent_id")
+}
+
 }
