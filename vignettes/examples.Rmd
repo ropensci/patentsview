@@ -52,21 +52,20 @@ inv_fields <- get_fields(endpoint = "patents", groups = "inventors")
 fields <- c(inv_fields, "patent_number")
 
 # Pull the data
-pv_out <- search_pv(query = query, fields = fields, all_pages = TRUE)
+pv_out <- search_pv(query, fields = fields, all_pages = TRUE)
 
 # Unnest the inventor list column
-unnest_pv_data(data = pv_out$data, pk = "patent_number")
+unnest_pv_data(pv_out$data, "patent_number")
 ```
 
 ## Inventors endpoint
 
-Return patent numbers and titles with at least one inventor whose location was Chicago, IL.[^1]
+Which inventors have Chicago, IL listed as their location on at least one patent.[^1]
 
 ```{r}
 search_pv(
   query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
-  endpoint = "inventors", 
-  fields = c("patent_number", "patent_title")
+  endpoint = "inventors"
 )
 ```
 

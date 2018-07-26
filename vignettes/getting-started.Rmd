@@ -27,11 +27,11 @@ search_pv(
 )
 ```
 
-This call to `search_pv()` sends our query to the "patents" API endpoint. The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).[^1] We filtered our results using the API's [query language](http://www.patentsview.org/api/query-language.html) which uses JSON, though we could have used pure R functions instead. The next section briefly touches on those functions, while the [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) goes into much more depth.
+This call to `search_pv()` sends our query to the patents endpoint (the default). The API has 7 different endpoints, corresponding to 7 different entity types (assignees, CPC subsections, inventors, locations, NBER subcategories, patents, and USPC main classes).[^1] Your choice of endpoint determines which entity your query is applied to, as well as the structure of the data that is returned (more on this in the "7 endpoints for 7 entities section"). For now, let's turn our attention to the `query` parameter. 
 
 ## Writing queries
 
-The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).[^2] However, it can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using the functions in this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why...Let's rewrite the query from the basic example using one of those functions `qry_funs$gte()`:
+The PatentsView query syntax is documented on their [query language page](http://www.patentsview.org/api/query-language.html#query_string_format).[^2] However, it can be difficult to get your query right if you're writing it by hand (i.e., just writing the query in a string like `'{"_gte":{"patent_date":"2007-01-01"}}'`, as we did in the example shown above). The `patentsview` package comes with a simple domain specific language (DSL) to make writing queries a breeze. I recommend using the functions in this DSL for all but the most basic queries, especially if you're encountering errors and don't understand why. To get a feel for how it works, let's rewrite the query shown above using one of the functions in the DSL, `qry_funs$gte()`:
 
 ```{r}
 qry_funs$gte(patent_date = "2007-01-01")
@@ -52,12 +52,11 @@ Check out the [writing queries vignette](http://ropensci.github.io/patentsview/a
 
 ## Fields
 
-Each endpoint has a different set of _queryable_ and _retrievable_ fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown in the first example). Retrievable fields are those that you can get data on. In the first example, we didn't specify which fields we wanted to retrieve so we were given the default set. You can specify which fields you want using the `fields` argument:
+Each endpoint has a different set of _queryable_ and _retrievable_ fields. Queryable fields are those that you can include in your query (e.g., `patent_date` shown in the first example). Retrievable fields are those that you can get data on (i.e., fields returned by `search_pv()`). In the first example, we didn't specify which fields we wanted to retrieve so we were given the default set. You can specify which fields you want using the `fields` argument:
 
 ```{r}
 search_pv(
   query = '{"_gte":{"patent_date":"2007-01-01"}}',
-  endpoint = "patents", 
   fields = c("patent_number", "patent_title")
 )
 ```
@@ -69,11 +68,13 @@ retrvble_flds <- get_fields(endpoint = "patents")
 head(retrvble_flds)
 ```
 
-You can see an endpoint's list of queryable and retrievable fields by viewing the endpoint's online field list (e.g., the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which indicates whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). The field tables for all of the endpoints can be found in the `fieldsdf` data frame, which you can load using `data("fieldsdf")` or `View(patentsview::fieldsdf)`.
+You can also visit an endpoint's online documentation page to see a list of its queryable and retrievable fields (e.g., see the [inventor field list table](http://www.patentsview.org/api/inventor.html#field_list)). Note the "Query" column in this table, which indicates whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). The field tables for all of the endpoints can be found in the `fieldsdf` data frame, which you can load using `data("fieldsdf")` or `View(patentsview::fieldsdf)`.
+
+**An important note: By default, PatentsView uses disambiguted versions of assignees, inventors, and locations, instead of raw data.** For example, let's say you search for all inventors whose first name is "john." The PatentsView API is going to return all of the inventors who have a preferred first name (as per the disambiguation results) of john, which may not necessarily be their raw first name. You could be getting back inventors whose first name appears on the patent as, say, "jonathan," "johnn," or even "john jay." You can search on the raw inventor names instead of the preferred names by using the fields starting with "raw" in your query (e.g., `rawinventor_first_name`). The assignee and location raw data fields are not currently being offered by the API. To see the methods behind the disambiguation process, see the [PatentsView Inventor Disambiguation Technical Workshop website]( http://www.patentsview.org/workshop/).
 
 ## Paginated responses
 
-By default, `search_pv()` returns 25 records per page and only gives you the first page of results. I suggest using these defaults while you're figuring out the details of your request, such as the query syntax you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` argument to download up to 10,000 records per page. You can also choose which page of results you want with the `page` argument:
+By default, `search_pv()` returns 25 records per page and only gives you the first page of results. I suggest sticking with these defaults while you're figuring out the details of your request, such as the query you want to use and the fields you want returned. Once you have those items finalized, you can use the `per_page` argument to download up to 10,000 records per page. You can also choose which page of results you want with the `page` argument:
 
 ```{r}
 search_pv(
@@ -93,43 +94,36 @@ search_pv(
 
 ## Entity counts
 
-Our last two calls to `search_pv()` gave the same value for `total_patent_count`, even though we got a lot more data from the second call. This is because the entity counts returned by the API refer to the number of distinct entities across all *downloadable pages of output*, not just the page that was returned. Downloadable pages of output is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` when we searched for patents published on or after 2007, even though there are way more than 100,000 patents that have been published since 2007. See the FAQs below for details on how to overcome the 100,000 record restriction.
-
-By default, **PatentsView uses disambiguted versions of assignees, inventors, and locations, instead of raw data.** For example, let's say you search for all inventors whose first name is "john." The PatentsView API is going to return all of the inventors who have a preferred first name of john (as per the disambiguation results), which may not necessarily match their raw first name. You could be getting back inventors whose first name is, say, "jonathan," "johnn," or even "john jay." You can search on the raw inventor names instead of the preferred names by using the fields starting with "raw" in your query (e.g., `rawinventor_first_name`). Note that the assignee and location raw data fields are not currently being offered by the API. To see the methods behind the disambiguation process, see the [PatentsView Inventor Disambiguation Technical Workshop website]( http://www.patentsview.org/workshop/)
+Our last two calls to `search_pv()` gave the same value for `total_patent_count`, even though we got a lot more data from the second call. This is because the entity counts returned by the API refer to the number of distinct entities across all *downloadable pages of output*, not just the page that was returned. Downloadable pages of output is an important phrase here, as the API limits us to 100,000 records per query. For example, we got `total_patent_count = 100,000` when we searched for patents published on or after 2007, even though there are way more than 100,000 such patents. See the FAQs below for details on how to overcome the 100,000 record restriction.
 
 ## 7 endpoints for 7 entities
 
 We can get similar data from the 7 endpoints. For example, the following two calls differ only in the endpoint that is chosen:
 
 ```{r}
-# Here we are using the patents endpoint
-search_pv(
-  query = qry_funs$eq(inventor_last_name = "chambers"), 
-  endpoint = "patents", 
-  fields = c("patent_number", "inventor_last_name", "assignee_organization")
-)
+query <- qry_funs$eq(inventor_last_name = "chambers")
+fields <- c("patent_number", "inventor_last_name", "assignee_organization")
+
+# Here we are using the patents endpoint:
+search_pv(query, endpoint = "patents", fields = fields)
 ```
 
 ```{r}
-# While here we are using the assignees endpoint
-search_pv(
-  query = qry_funs$eq(inventor_last_name = "chambers"), 
-  endpoint = "assignees", 
-  fields = c("patent_number", "inventor_last_name", "assignee_organization")
-)
+# While here we are using the assignees endpoint:
+search_pv(query, endpoint = "assignees", fields = fields)
 ```
 
 Your choice of endpoint determines two things:
 
-1. **Which entity your query is applied to.** The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor on them with the last name of "chambers." The second call used the assignees endpoint, so the API searched for assignees that have at least one patent which has an inventor on it whose last name is "chambers."
+1. **Which entity your query is applied to.** The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor listed on them with the last name "chambers." The second call used the assignees endpoint, so the API searched for all assignees that have been *assigned to at least one patent* which has an inventor listed on it with the last name "chambers."
 
-2. **The structure of the data frame that is returned.** The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns that are named after the subentity associated with the field (e.g., the `inventors` subentity).[^3] Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.
+2. **The structure of the data frame that is returned.** The first call returned a data frame on the patent level, meaning that each row corresponded to a different patent. Fields that were not on the patent level (e.g., `inventor_last_name`) were returned in list columns that are named after the entity associated with the field (e.g., the `inventors` entity).[^3] Meanwhile, the second call gave us a data frame on the assignee level (one row for each assignee) because it used the assignees endpoint.
 
-Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., filter on assignee name or CPC category), due to the fact that patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search.
+Most of the time you will want to use the patents endpoint. Note that you can still effectively filter on fields that are not at the patent-level when using the patents endpoint (e.g., you can filter on assignee name or CPC category). This is because patents are relatively low-level entities. For higher level entities like assignees, if you filter on a field that is not at the assignee-level (e.g., inventor name), the API will return data on any assignee that has at least one inventor whose name matches your search, which is probably not what you want.
 
 ## Casting fields
 
-The API always returns the data fields as strings, even if they would be better stored using a different data type (e.g., numeric). You can cast all of the fields to their preferred type using `cast_pv_data()`:
+The API always returns the data fields as strings, even if they would be better stored using a different data type (e.g., numeric). You can cast all fields to their preferred R types using `cast_pv_data()`:
 
 ```{r}
 res <- search_pv(
@@ -137,11 +131,11 @@ res <- search_pv(
   fields = c("patent_date", "patent_title", "patent_year")
 )
 
-# Right now all of the fields are stored as characters:
+# Right now all of the fields are stored as character vectors:
 res
 
 # Use more appropriate data types:
-cast_pv_data(data = res$data)
+cast_pv_data(res$data)
 ```
 
 ## FAQs
@@ -159,9 +153,7 @@ Not at the moment.
 Your best bet is to split your query into pieces based on dates, then concatenate the results together. For example, the below query would return more than 100,000 records for the patents endpoint:
 
 ```{r}
-query <- with_qfuns(
-  text_any(patent_abstract = 'tool animal')
-)
+query <- with_qfuns(text_any(patent_abstract = 'tool animal'))
 ```
 
 To download all of the records associated with this query, we could split it into two pieces and make two calls to `search_pv()`:
@@ -182,9 +174,9 @@ query_1b <- with_qfuns(
 )
 ```
 
-#### How do I access the data frames inside of the subentity list columns?
+#### How do I access the data frames inside the list columns returned by `search_pv()`?
 
-Let's consider the following data, in which assignees are the primary entity while applications and "government interest statements" are the subentities:
+Let’s consider the following data, in which assignees are the primary entity while applications and “government interest statements” are the secondary entities (also referred to as subentities):
 
 ```{r}
 # Create field list
@@ -201,7 +193,7 @@ res <- search_pv(
 res$data
 ```
 
-`res$data` has assignee-level columns that are vectors (e.g., `res$data$assignees$assignee_id`) and subentity-level columns that are lists (e.g., `res$data$assignees$applications`). You have two good ways to get at data frames nested inside the subentity lists: 
+`res$data` has vector columns for those fields that belong to the primary entity (e.g., `res$data$assignees$assignee_id`) and list columns for those fields that belong to any secondary entity (e.g., `res$data$assignees$applications`). You have two good ways to pull out the data frames that are nested inside these list columns: 
 
 1. **Use tidyr::unnest.** (This is probably the easier choice of the two). 
 
@@ -219,7 +211,7 @@ res$data$assignees %>%
   head()
 ```
 
-2. **Use patentsview::unnest_pv_data.** `unnest_pv_data()` creates a series of data frames (one for each entity/subentity level) that are like tables in a relational database. You provide it with the data that `search_pv()` returned to you, as well as a field that can act as a unique identifier for the primary entities:
+2. **Use patentsview::unnest_pv_data.** `unnest_pv_data()` creates a series of data frames (one for each entity level) that are like tables in a relational database. You provide it with the data returned by `search_pv()` and a field that can act as a unique identifier for the primary entities:
 
 ```{r}
 unnest_pv_data(data = res$data, pk = "assignee_id")

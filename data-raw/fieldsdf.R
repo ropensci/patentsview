@@ -5,8 +5,8 @@ library(devtools)
 
 endpoints <- c(
   "patent", "inventor", "assignee", "location", "cpc_subsection",
-   "uspc", "nber_subcat"
-  )
+  "uspc", "nber_subcat"
+)
 
 all_tabs <- sapply(endpoints, function(x) {
   url <- paste0("http://www.patentsview.org/api/", x, ".html")

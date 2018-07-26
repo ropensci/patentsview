@@ -27,7 +27,7 @@ library(knitr)
 # the patent title or abstract...Note, this isn't a terribly good way to ID our 
 # patents, but it will work for the purpose of demonstration. Users who are 
 # interested in writing higher-quality queries could consult the large body of 
-# research that has been done in patent document retrieval.
+# research that has been done in field of patent document retrieval.
 query <- with_qfuns(
   or(
     text_phrase(patent_abstract = "database"),
@@ -37,30 +37,30 @@ query <- with_qfuns(
 
 query
 
-# Create a list of the fields we'll need for the analysis:
+# Create a list of the fields we'll need for the analysis
 fields <- c(
   "patent_number", "assignee_organization",
   "patent_num_cited_by_us_patents", "app_date", "patent_date",
   "assignee_total_num_patents"
 )
 
-# Send an HTTP request to the PatentsView API to get data:
-pv_out <- search_pv(query = query, fields = fields, all_pages = TRUE)
+# Send an HTTP request to the PatentsView API to get the data
+pv_out <- search_pv(query, fields = fields, all_pages = TRUE)
 ```
 
-2. Now let's identify who the top assignees are based on how many patents they have in our data set (i.e., calculate `db_pats`). We'll also calculate how many total patents these assignees have (`ttl_pats`) and what fraction of their total patents relate to databases (`frac_db_pats`).
+2. Now let's identify who the top assignees are based on how many patents they have in our data set. We'll also calculate how many total patents these assignees have and what fraction of their total patents relate to databases.
 
 ```{r}
-# Unnest the data frames that are stored in the assignee list column:
-dl <- unnest_pv_data(data = pv_out$data, pk = "patent_number")
+# Unnest the data frames that are stored in the assignee list column
+dl <- unnest_pv_data(pv_out$data, "patent_number")
 dl
 
 # Create a data frame with the top 75 assignees:
 top_asgns <-
   dl$assignees %>%
-    filter(!is.na(assignee_organization)) %>% # some patents are not assigned to an org (only to an inventor)
+    filter(!is.na(assignee_organization)) %>% # some patents are assigned to an inventor (not an org)
     mutate(ttl_pats = as.numeric(assignee_total_num_patents)) %>%
-    group_by(assignee_organization, ttl_pats) %>% # group by ttl_pats so we can retain ttl_pats
+    group_by(assignee_organization, ttl_pats) %>% 
     summarise(db_pats = n()) %>% 
     mutate(frac_db_pats = round(db_pats / ttl_pats, 3)) %>%
     ungroup() %>%
@@ -68,12 +68,13 @@ top_asgns <-
     arrange(desc(db_pats)) %>%
     slice(1:75)
 
-# Create datatable:
+# Create datatable
 datatable(
   data = top_asgns,
   rownames = FALSE,
-  colnames = c("Assignee", "DB patents","Total patents", 
-               "DB patents / total patents"),
+  colnames = c(
+    "Assignee", "DB patents","Total patents", "DB patents / total patents"
+  ),
   caption = htmltools::tags$caption(
     style = 'caption-side: top; text-align: left; font-style: italic;',
     "Table 1: Top assignees in 'databases'"
@@ -86,10 +87,10 @@ datatable(
 
 IBM is far and away the biggest player in the field. However, we can see that Oracle and Salesforce.com are relatively more interested in this area, as indicated by the fraction of their patents that relate to databases.
 
-3. Let's see how these assignees' level of investment in databases has changed have changed over time.
+3. Let's see how these assignees' level of investment in databases has changed over time.
 
 ```{r}
-# Create a data frame with patent counts by application year for each assignee:
+# Create a data frame with patent counts by application year for each assignee
 data <- 
   top_asgns %>%
     select(-contains("pats")) %>%
@@ -106,21 +107,21 @@ hc_add_series_df(
 ) %>%
   hc_plotOptions(series = list(marker = list(enabled = FALSE))) %>%
   hc_xAxis(title = list(text = "Application year")) %>%
-  hc_yAxis(title = list(text = "DB patents")) %>%
+  hc_yAxis(title = list(text = "Patents")) %>%
   hc_title(text = "Top five assignees in 'databases'") %>%
   hc_subtitle(text = "Yearly patent applications over time")
 ```
 
 It's hard to see any clear trends in this graph. What is clear is that the top assignees have all been patenting in the field for many years.
 
-4. Finally, let's see how the organizations compare in terms of their citation rates. First, we'll need to normalize the raw citation counts by publication year, so that older patents don't have an unfair advantage over younger patents (i.e., because they have had a longer time to accrue citations).
+4. Finally, let's see how the organizations compare in terms of their citation rates. First, we'll need to normalize the raw citation counts by publication year, so that older patents don't have an unfair advantage over younger patents (i.e., because they have had a longer time to accumulate citations).
 
 ```{r}
-# Write a ranking function that will be used to rank patents by their citation counts:
+# Write a ranking function that will be used to rank patents by their citation counts
 percent_rank2 <- function(x)
   (rank(x, ties.method = "average", na.last = "keep") - 1) / (sum(!is.na(x)) - 1)
 
-# Create a data frame with normalized citation rates and stats from Step 2: 
+# Create a data frame with normalized citation rates and stats from Step 2
 asng_p_dat <-
   dl$patents %>%
     mutate(patent_yr = substr(patent_date, 1, 4)) %>%
@@ -139,7 +140,7 @@ asng_p_dat <-
 kable(head(asng_p_dat), row.names = FALSE)
 ```
 
-Now let's visualize the data. Each assignee will be represented by a point/bubble. The x-value of the assignee will represent the total number of patents it has published in the field of databases (on a log scale), while the y-value will represent its average normalized citation rate. The size of the bubble we be proportional to the percent of the assignee's patents that relate to databases.
+Now let's visualize the data. Each assignee will be represented by a point/bubble. The x-value of the point will represent the total number of patents the assignee has published in the field of databases (on a log scale), while the y-value will represent its average normalized citation rate. The size of the bubble will be proportional to the percent of the assignee's patents that relate to databases.
 
 ```{r}
 # Adapted from http://jkunst.com/highcharter/showcase.html
@@ -148,12 +149,15 @@ hchart(
   hcaes(x = db_pats, y = mean_perc, size = frac_db_pats, 
         group = assignee_organization, color = color)
 ) %>%
-  hc_xAxis(title = list(text = "DB patents"), type = "logarithmic",
-           allowDecimals = FALSE, endOnTick = TRUE) %>%
+  hc_xAxis(
+    title = list(text = "DB patents"), type = "logarithmic",
+    allowDecimals = FALSE, endOnTick = TRUE
+  ) %>%
   hc_yAxis(title = list(text = "Mean cite perc.")) %>%
   hc_title(text = "Top assignees in 'databases'") %>%
   hc_add_theme(hc_theme_flatdark()) %>%
-  hc_tooltip(useHTML = TRUE, pointFormat = tooltip_table(
+  hc_tooltip(
+    useHTML = TRUE, pointFormat = tooltip_table(
     x = c("DB patents", "Mean cite percentile", "Fraction DB patents"),
     y = c("{point.db_pats:.0f}","{point.mean_perc:.2f}", "{point.frac_db_pats:.3f}")
   )) %>%
@@ -162,4 +166,4 @@ hchart(
 
 <br>
 
-It looks like Microsoft has relatively high values across the three metrics (average citation percentile, number of database patents, and percent of total patents that are related to databases). IBM has more patents than Microsoft, but a slightly lower average citation percentile.
+It looks like Microsoft has relatively high values across all three three metrics (average citation percentile, number of database patents, and percent of total patents that are related to databases). IBM has more patents than Microsoft, but also has a lower average citation percentile.
