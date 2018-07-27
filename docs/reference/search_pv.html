@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search PatentsView — search_pv • patentsview</title>
+<title>Search PatentsView � search_pv • patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -251,129 +251,38 @@ your query is very long (say, over 2,000 characters in length).</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gt":{"patent_year":2010}}'</span>)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	25 obs. of  3 variables:
-#&gt;   ..$ patent_id    : chr [1:25] "7861317" ...
-#&gt;   ..$ patent_number: chr [1:25] "7861317" ...
-#&gt;   ..$ patent_title : chr [1:25] "Nose cover" ...
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_patent_count = 100,000</div><div class='input'>
+    <pre class="examples"><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gt":{"patent_year":2010}}'</span>)
+
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
   <span class='kw'>fields</span> <span class='kw'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span>(<span class='st'>"patents"</span>, <span class='fu'>c</span>(<span class='st'>"patents"</span>, <span class='st'>"assignees"</span>))
-)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame (with list column(s) inside) on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	25 obs. of  32 variables:
-#&gt;   ..$ detail_desc_length                    : chr [1:25] "10295" ...
-#&gt;   ..$ patent_abstract                       : chr [1:25] "A nose cover or nos"..
-#&gt;   ..$ patent_average_processing_time        : chr [1:25] "1088" ...
-#&gt;   ..$ patent_date                           : chr [1:25] "2011-01-04" ...
-#&gt;   ..$ patent_firstnamed_assignee_city       : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_country    : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_id         : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_latitude   : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_location_id: chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_longitude  : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_assignee_state      : chr [1:25] NA ...
-#&gt;   ..$ patent_firstnamed_inventor_city       : chr [1:25] "San Pedro" ...
-#&gt;   ..$ patent_firstnamed_inventor_country    : chr [1:25] "US" ...
-#&gt;   ..$ patent_firstnamed_inventor_id         : chr [1:25] "7861317-1" ...
-#&gt;   ..$ patent_firstnamed_inventor_latitude   : chr [1:25] "33.7358" ...
-#&gt;   ..$ patent_firstnamed_inventor_location_id: chr [1:25] "33.7358333|-118.291"..
-#&gt;   ..$ patent_firstnamed_inventor_longitude  : chr [1:25] "-118.291" ...
-#&gt;   ..$ patent_firstnamed_inventor_state      : chr [1:25] "CA" ...
-#&gt;   ..$ patent_id                             : chr [1:25] "7861317" ...
-#&gt;   ..$ patent_kind                           : chr [1:25] "B2" ...
-#&gt;   ..$ patent_num_cited_by_us_patents        : chr [1:25] "3" ...
-#&gt;   ..$ patent_num_claims                     : chr [1:25] "9" ...
-#&gt;   ..$ patent_num_combined_citations         : chr [1:25] "12" ...
-#&gt;   ..$ patent_num_foreign_citations          : chr [1:25] "0" ...
-#&gt;   ..$ patent_num_us_application_citations   : chr [1:25] "0" ...
-#&gt;   ..$ patent_num_us_patent_citations        : chr [1:25] "12" ...
-#&gt;   ..$ patent_number                         : chr [1:25] "7861317" ...
-#&gt;   ..$ patent_processing_time                : chr [1:25] "2279" ...
-#&gt;   ..$ patent_title                          : chr [1:25] "Nose cover" ...
-#&gt;   ..$ patent_type                           : chr [1:25] "utility" ...
-#&gt;   ..$ patent_year                           : chr [1:25] "2011" ...
-#&gt;   ..$ assignees                             :List of 25
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_patent_count = 100,000</div><div class='input'>
+)
+
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POST"</span>,
   <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>,
   <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"patent_number"</span> <span class='kw'>=</span> <span class='st'>"asc"</span>)
-)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	25 obs. of  1 variable:
-#&gt;   ..$ patent_number: chr [1:25] "7861317" ...
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_patent_count = 100,000</div><div class='input'>
+)
+
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>eq</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"crew"</span>),
   <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	98 obs. of  3 variables:
-#&gt;   ..$ patent_id    : chr [1:98] "3961846" ...
-#&gt;   ..$ patent_number: chr [1:98] "3961846" ...
-#&gt;   ..$ patent_title : chr [1:98] "Ultra-high reduction microfiche layout and p"..
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_patent_count = 98</div><div class='input'>
+)
+
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
   <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>
-)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on an assignee level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ assignees:'data.frame':	25 obs. of  4 variables:
-#&gt;   ..$ assignee_id          : chr [1:25] "000fd451e3903862279995c8f7946893" ...
-#&gt;   ..$ assignee_first_name  : chr [1:25] NA ...
-#&gt;   ..$ assignee_last_name   : chr [1:25] NA ...
-#&gt;   ..$ assignee_organization: chr [1:25] "Ferranti-Packard Limited" ...
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_assignee_count = 8,893</div><div class='input'>
+)
+
 <span class='fu'>search_pv</span>(
   <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
   <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/httr/topics/timeout'>timeout</a></span>(<span class='fl'>40</span>)
-)</div><div class='output co'>#&gt; $data
-#&gt; #### A list with a single data frame on a patent level:
-#&gt; 
-#&gt; List of 1
-#&gt;  $ patents:'data.frame':	25 obs. of  3 variables:
-#&gt;   ..$ patent_id    : chr [1:25] "3930365" ...
-#&gt;   ..$ patent_number: chr [1:25] "3930365" ...
-#&gt;   ..$ patent_title : chr [1:25] "Fuel control system for gas turbine engine" ...
-#&gt; 
-#&gt; $query_results
-#&gt; #### Distinct entity counts across all downloadable pages of output:
-#&gt; 
-#&gt; total_patent_count = 51,766</div></pre>
+)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

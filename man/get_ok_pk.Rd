@@ -24,4 +24,5 @@ given endpoint). For example, it will return "patent_id" when
 \examples{
 get_ok_pk(endpoint = "inventors") # Returns "inventor_id"
 get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
+
 }

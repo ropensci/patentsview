@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unnest PatentsView data — unnest_pv_data • patentsview</title>
+<title>Unnest PatentsView data � unnest_pv_data • patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -168,17 +168,12 @@ vector when you called <code>search_pv</code></strong>. You can use
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_id"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"inventor_city"</span>, <span class='st'>"inventor_country"</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"patent_id"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"inventor_city"</span>, <span class='st'>"inventor_country"</span>)
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_year":2015}}'</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>)
-<span class='fu'>unnest_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='st'>"patent_id"</span>)</div><div class='output co'>#&gt; List of 2
-#&gt;  $ inventors:'data.frame':	54 obs. of  4 variables:
-#&gt;   ..$ patent_id       : chr [1:54] "8925112" ...
-#&gt;   ..$ inventor_city   : chr [1:54] "Thornton" ...
-#&gt;   ..$ inventor_country: chr [1:54] "AU" ...
-#&gt;   ..$ inventor_key_id : chr [1:54] "1387371" ...
-#&gt;  $ patents  :'data.frame':	25 obs. of  2 variables:
-#&gt;   ..$ patent_id   : chr [1:25] "8925112" ...
-#&gt;   ..$ patent_title: chr [1:25] "Aircrew ensembles" ...</div></pre>
+<span class='fu'>unnest_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='st'>"patent_id"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

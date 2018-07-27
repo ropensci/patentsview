@@ -169,6 +169,9 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  }
 #'
 #' @examples
+#'
+#' \dontrun{
+#'
 #' search_pv(query = '{"_gt":{"patent_year":2010}}')
 #'
 #' search_pv(
@@ -197,6 +200,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'   query = qry_funs$contains(inventor_last_name = "smith"),
 #'   config = httr::timeout(40)
 #' )
+#' }
+#'
 #' @export
 search_pv <- function(query,
                       fields = NULL,

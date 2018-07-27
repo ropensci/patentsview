@@ -116,7 +116,7 @@
 <ol style="list-style-type: decimal">
 <li>Use a raw character/JSON vector:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_<span class="dv">1</span> &lt;-
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_1 &lt;-
 <span class="st">  '{"_and":[</span>
 <span class="st">          {"_gte":{"patent_date":"2007-03-01"}},</span>
 <span class="st">          {"_or":[</span>
@@ -131,7 +131,7 @@
 <ol start="2" style="list-style-type: decimal">
 <li>Use a list (which will be converted to JSON by <code><a href="../reference/search_pv.html">search_pv()</a></code>):</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_<span class="dv">2</span> &lt;-<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query_v_2 &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw">list</span>(<span class="st">"_and"</span> =<span class="st"> </span>
 <span class="st">       </span><span class="kw">list</span>(
           <span class="kw">list</span>(<span class="st">"_gte"</span> =<span class="st"> </span><span class="kw">list</span>(<span class="dt">patent_date =</span> <span class="st">"2007-03-01"</span>)),
@@ -154,7 +154,7 @@
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(patentsview)
 
-query_v_<span class="dv">3</span> &lt;-<span class="st"> </span>
+query_v_3 &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/with_qfuns.html">with_qfuns</a></span>(
     <span class="kw">and</span>(
       <span class="kw">gte</span>(<span class="dt">patent_date =</span> <span class="st">"2007-03-01"</span>),
@@ -170,11 +170,11 @@ query_v_<span class="dv">3</span> &lt;-<span class="st"> </span>
 <h2 class="hasAnchor">
 <a href="#why-use-the-dsl" class="anchor"></a>Why use the DSL?</h2>
 <p>We can see that all three versions of the query shown above are equivalent:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jsonlite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/jsonlite/topics/prettify">minify</a></span>(query_v_<span class="dv">1</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jsonlite::<span class="kw">minify</span>(query_v_1)
 <span class="co">#&gt; {"_and":[{"_gte":{"patent_date":"2007-03-01"}},{"_or":[{"_text_all":{"patent_title":"dog"}},{"_text_all":{"patent_abstract":"dog"}}]},{"_or":[{"_eq":{"assingee_country":"US"}},{"_eq":{"assingee_country":"CA"}}]}]}</span>
-jsonlite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/jsonlite/topics/fromJSON">toJSON</a></span>(query_v_<span class="dv">2</span>, <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
+jsonlite::<span class="kw">toJSON</span>(query_v_2, <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; {"_and":[{"_gte":{"patent_date":"2007-03-01"}},{"_or":[{"_text_all":{"patent_title":"dog"}},{"_text_all":{"patent_abstract":"dog"}}]},{"_or":[{"_eq":{"assingee_country":"US"}},{"_eq":{"assingee_country":"CA"}}]}]}</span>
-jsonlite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/jsonlite/topics/fromJSON">toJSON</a></span>(query_v_<span class="dv">3</span>, <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
+jsonlite::<span class="kw">toJSON</span>(query_v_3, <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; {"_and":[{"_gte":{"patent_date":"2007-03-01"}},{"_or":[{"_text_all":{"patent_title":"dog"}},{"_text_all":{"patent_abstract":"dog"}}]},{"_or":[{"_eq":{"assingee_country":"US"}},{"_eq":{"assingee_country":"CA"}}]}]}</span></code></pre></div>
 <p>…So why would you ever want to use method 3 over methods 1 and 2? There are two main reasons:</p>
 <div id="query-validation" class="section level4">
@@ -212,10 +212,10 @@ jsonlite<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <a href="#query-examples" class="anchor"></a>Query examples</h2>
 <p><em>The following queries are intended for the patents endpoint</em></p>
 <p>Patents linked to an assignee with 10 or fewer distinct (and disambiguated) inventors:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs<span class="op">$</span><span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">lte</span>(<span class="dt">assignee_total_num_inventors =</span> <span class="dv">10</span>)
 <span class="co">#&gt; {"_lte":{"assignee_total_num_inventors":10}}</span></code></pre></div>
 <p>Patents assigned to the “CPC subsection”<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> of G12 (physics instruments):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">cpc_subsection_id =</span> <span class="st">"G12"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qry_funs$<span class="kw">eq</span>(<span class="dt">cpc_subsection_id =</span> <span class="st">"G12"</span>)
 <span class="co">#&gt; {"_eq":{"cpc_subsection_id":"G12"}}</span></code></pre></div>
 <p>Patents that have an inventor listed on them whose first name contains “joh” and has an abstract with either the phrase “dog bark” or “cat meow,” but not the phrase “dog chain”:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/with_qfuns.html">with_qfuns</a></span>(
@@ -227,7 +227,7 @@ jsonlite<span class="op">::</span><span class="kw"><a href="http://www.rdocument
     )
   )
 )
-<span class="co">#&gt; {"_and":[{"_contains":{"rawinventor_first_name":"joh"}},{"_or":[{"_text_phrase":{"patent_abstract":"dog bark"}},{"_text_phrase":{"patent_abstract":"cat meow"}}]},{"_not":{"_text_phrase":{"patent_abstract":"dog chain"</span><span class="re">}}}</span><span class="co">]}</span></code></pre></div>
+<span class="co">#&gt; {"_and":[{"_contains":{"rawinventor_first_name":"joh"}},{"_or":[{"_text_phrase":{"patent_abstract":"dog bark"}},{"_text_phrase":{"patent_abstract":"cat meow"}}]},{"_not":{"_text_phrase":{"patent_abstract":"dog chain"}}}]}</span></code></pre></div>
 <p>Patents with an inventor whose disambiguated last name is “Smith” and with “cotton gin” in the patent title, or with an inventor whose disambiguated last name is “Hopper” and with “COBOL” in the patent title:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/with_qfuns.html">with_qfuns</a></span>(
   <span class="kw">or</span>(

@@ -1,3 +1,9 @@
+# patentsview 0.2.1 (2018-03-05)
+
+#### Misc
+
+* Examples that hit the API were wrapped in `\dontrun{}` so CRAN doesn't request fixes to package when API is down
+
 # patentsview 0.2.0 (2018-02-08)
 
 #### New features

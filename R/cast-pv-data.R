@@ -59,9 +59,13 @@ cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 #' @return The same type of object that you passed into \code{cast_pv_data}.
 #'
 #' @examples
+#' \dontrun{
+#'
 #' fields <- c("patent_date", "patent_title", "patent_year")
 #' res <- search_pv(query = "{\"patent_number\":\"5116621\"}", fields = fields)
 #' cast_pv_data(data = res$data)
+#' }
+#'
 #' @export
 cast_pv_data <- function(data) {
   validate_pv_data(data)

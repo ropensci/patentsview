@@ -1,11 +1,11 @@
 Package: patentsview
 Type: Package
-Title: An R Client to the PatentsView API
-Version: 0.2.0
+Title: An R Client to the 'PatentsView' API
+Version: 0.2.1
 Authors@R: person("Christopher", "Baker", email = "chriscrewbaker@gmail.com",
     role = c("aut", "cre"))
 Encoding: UTF-8
-Description: Provides functions to simplify the PatentsView API
+Description: Provides functions to simplify the 'PatentsView' API
     (<http://www.patentsview.org/api/doc.html>) query language,
     send GET and POST requests to the API's seven endpoints, and parse the data
     that comes back.

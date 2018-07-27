@@ -34,17 +34,22 @@ possible fields for each endpoint).
 fields <- get_fields(endpoint = "patents", groups = "assignees")
 
 #...Then pass to search_pv:
+\dontrun{
+
 search_pv(
   query = '{"_gte":{"patent_date":"2007-01-04"}}',
   fields = fields
 )
-
+}
 # Get all patent and assignee-level fields for the patents endpoint:
 fields <- get_fields(endpoint = "patents", groups = c("assignees", "patents"))
 
+\dontrun{
 #...Then pass to search_pv:
 search_pv(
   query = '{"_gte":{"patent_date":"2007-01-04"}}',
   fields = fields
 )
+}
+
 }

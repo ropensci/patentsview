@@ -20,7 +20,11 @@ This will cast the data fields returned by \code{\link{search_pv}} so that
 they have their most appropriate data types (e.g., date, numeric, etc.).
 }
 \examples{
+\dontrun{
+
 fields <- c("patent_date", "patent_title", "patent_year")
 res <- search_pv(query = "{\\"patent_number\\":\\"5116621\\"}", fields = fields)
 cast_pv_data(data = res$data)
+}
+
 }
