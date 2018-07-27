@@ -6,8 +6,8 @@ data-raw/fields.csv: data-raw/fieldsdf.R
 
 # Render README.Rmd to README.md
 README.md: README.Rmd
-	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE)"
-	Rscript -e "file.remove('README.html')"
+	- Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md', output_dir = getwd(), output_format = 'github_document', quiet = TRUE)"
+	- Rscript -e "file.remove('README.html')"
 ifeq ($(CRAN),true)
 
 else
