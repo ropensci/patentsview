@@ -35,24 +35,6 @@ fields <-
     )) %>%
     mutate(group = ifelse(group == "coinvetnros", "coinventors", group))
 
-# patent_id left off list for all endpoints:
-fieldsdf <-
-  data.frame(
-    endpoint = unique(fields$endpoint),
-    field = rep("patent_id", 7),
-    data_type = rep("string", 7),
-    can_query = rep("y", 7),
-    group = rep("patents", 7),
-    common_name = rep("Patent ID", 7),
-    description = rep("Unique database ID for patent", 7),
-    stringsAsFactors = FALSE
-  ) %>%
-    rbind(fields) %>%
-    arrange(endpoint, field) %>%
-    mutate(description = iconv(description, from = "UTF-8", to = "ASCII")) %>%
-    distinct() %>%
-    mutate(data_type = ifelse(data_type == "int", "integer", data_type))
-
 write.csv(fieldsdf, "data-raw/fieldsdf.csv", row.names = FALSE)
 use_data(fieldsdf, internal = FALSE, overwrite = TRUE)
 use_data(fieldsdf, internal = TRUE, overwrite = TRUE)
