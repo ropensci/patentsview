@@ -24,7 +24,7 @@ lookup_cast_fun <- function(name, typesdf) {
 
 #' @noRd
 cast_one.character <- function(one, name, typesdf) {
-  cast_fun <- lookup_cast_fun(name = name, typesdf = typesdf)
+  cast_fun <- lookup_cast_fun(name, typesdf)
   cast_fun(one)
 }
 

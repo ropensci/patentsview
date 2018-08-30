@@ -1,10 +1,7 @@
 #' @noRd
 get_request <- function(resp) {
   gp <- structure(
-    list(
-      method = resp$req$method,
-      url = resp$req$url
-    ),
+    list(method = resp$req$method, url = resp$req$url),
     class = c("list", "pv_request")
   )
 

@@ -54,11 +54,11 @@ one_request <- function(method, query, base_url, arg_list, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
-    get_url <- get_get_url(query, base_url = base_url, arg_list = arg_list)
+    get_url <- get_get_url(query, base_url, arg_list)
     resp <- httr::GET(get_url, ua, ...)
   } else {
-    body <- get_post_body(query, arg_list = arg_list)
-    resp <- httr::POST(base_url, body = body, ua, ...)
+    body <- get_post_body(query, arg_list)
+    resp <- httr::POST(base_url, body, ua, ...)
   }
 
   if (httr::http_error(resp)) throw_er(resp)
@@ -80,9 +80,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
   tmp <- lapply(1:req_pages, function(i) {
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
-    x <- one_request(
-      method, query = query, base_url = base_url, arg_list = arg_list, ...
-    )
+    x <- one_request(method, query, base_url, arg_list, ...)
     x$data[[1]]
   })
 
@@ -222,35 +220,26 @@ search_pv <- function(query,
   validate_endpoint(endpoint)
 
   if (is.list(query)) {
-    check_query(query, endpoint = endpoint)
+    check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
   validate_misc_args(
-    query, fields = fields, endpoint = endpoint, method = method,
-    subent_cnts = subent_cnts, mtchd_subent_only = mtchd_subent_only,
-    page = page, per_page = per_page, sort = sort
+    query, fields, endpoint, method, subent_cnts, mtchd_subent_only, page,
+    per_page, sort
   )
 
   arg_list <- to_arglist(
-    fields,
-    subent_cnts = subent_cnts, mtchd_subent_only = mtchd_subent_only,
-    page = page, per_page = per_page,
-    sort = sort
+    fields, subent_cnts, mtchd_subent_only, page, per_page, sort
   )
 
   base_url <- get_base(endpoint)
 
-  res <- one_request(
-    method, query = query, base_url = base_url, arg_list = arg_list, ...
-  )
+  res <- one_request(method, query, base_url, arg_list, ...)
 
   if (!all_pages) return(res)
 
-  full_data <- request_apply(
-    res, method = method, query = query, base_url = base_url,
-    arg_list = arg_list, ...
-  )
+  full_data <- request_apply(res, method, query, base_url, arg_list, ...)
   res$data[[1]] <- full_data
 
   res
