@@ -33,3 +33,5 @@ site: _pkgdown.yml inst/site/*
 # Clean
 clean:
 	rm -R README.md inst/doc docs
+
+.PHONY: doc test clean
