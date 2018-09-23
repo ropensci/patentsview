@@ -1,0 +1,10 @@
+pandoc: 1.19.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  citation-networks: citation-networks.html
+  examples: examples.html
+  getting-started: getting-started.html
+  top-assignees: top-assignees.html
+  writing-queries: writing-queries.html
+

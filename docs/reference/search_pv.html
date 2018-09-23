@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search PatentsView � search_pv • patentsview</title>
+<title>Search PatentsView — search_pv • patentsview</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
   <link href="../extra.css" rel="stylesheet">
   
+<meta property="og:title" content="Search PatentsView — search_pv" />
+
+<meta property="og:description" content="This function makes an HTTP request to the PatentsView API for data matching
+the user's query." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">patentsview</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">patentsview</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -114,6 +133,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -121,36 +141,40 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Search PatentsView</h1>
+    
+    <div class="hidden name"><code>search_pv.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function makes an HTTP request to the PatentsView API for data matching
 the user's query.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>search_pv</span>(<span class='no'>query</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>, <span class='kw'>subent_cnts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>mtchd_subent_only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>page</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>per_page</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>sort</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>query</th>
       <td><p>The query that the API will use to filter records. <code>query</code>
  can come in any one of the following forms:</p><ul>
-<li><p>A character string with valid JSON. 
+<li><p>A character string with valid JSON. <br />
    E.g., <code>'{"_gte":{"patent_date":"2007-01-04"}}'</code></p></li>
-<li><p>A list which will be converted to JSON by <code>search_pv</code>. 
+<li><p>A list which will be converted to JSON by <code>search_pv</code>. <br />
    E.g., <code>list("_gte" = list("patent_date" = "2007-01-04"))</code></p></li>
 <li><p>An object of class <code>pv_query</code>, which you create by calling one
    of the functions found in the <code><a href='qry_funs.html'>qry_funs</a></code> list...See the
    <a href='http://ropensci.github.io/patentsview/articles/writing-queries.html'>writing
-   queries vignette</a> for details.
+   queries vignette</a> for details.<br />
    E.g., <code>qry_funs$gte(patent_date = "2007-01-04")</code></p></li>
 </ul></td>
     </tr>
@@ -207,7 +231,7 @@ ignored.</p></td>
       <td><p>A named character vector where the name indicates the field to
 sort by and the value indicates the direction of sorting (direction should
 be either "asc" or "desc"). For example, <code>sort = c("patent_number" =
-"asc")</code> or <code>sort = c("patent_number" = "asc", "patent_date" =
+"asc")</code> or <br /><code>sort = c("patent_number" = "asc", "patent_date" =
 "desc")</code>. <code>sort = NULL</code> (the default) means do not sort the results.
 You must include any fields that you wish to sort by in <code>fields</code>.</p></td>
     </tr>
@@ -303,11 +327,14 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
