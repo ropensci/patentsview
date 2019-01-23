@@ -1,4 +1,4 @@
-all: data-raw/fieldsdf.csv doc README.md vig test
+all: data-raw/fieldsdf.csv doc README.md test
 
 # Pull endpoint fields from PatentsView website
 data-raw/fields.csv: data-raw/fieldsdf.R
@@ -17,10 +17,6 @@ endif
 # Document package
 doc:
 	Rscript -e "devtools::document()"
-
-# Compile vignettes
-vig: vignettes/*
-	Rscript -e "devtools::build_vignettes()"
 
 # Test package
 test:
