@@ -15,6 +15,3 @@ warnings_are_errors: true
 
 notifications:
   email: false
-
-env:
-  - NOT_CRAN=true
