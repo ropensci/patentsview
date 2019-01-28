@@ -4,10 +4,9 @@
 \alias{search_pv}
 \title{Search PatentsView}
 \usage{
-search_pv(query, fields = NULL, endpoint = "patents",
-  subent_cnts = FALSE, mtchd_subent_only = TRUE, page = 1,
-  per_page = 25, all_pages = FALSE, sort = NULL, method = "GET",
-  error_browser = NULL, ...)
+search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
+  mtchd_subent_only = TRUE, page = 1, per_page = 25, all_pages = FALSE,
+  sort = NULL, method = "GET", error_browser = NULL, ...)
 }
 \arguments{
 \item{query}{The query that the API will use to filter records. \code{query}
