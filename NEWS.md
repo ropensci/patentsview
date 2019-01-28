@@ -1,3 +1,9 @@
+# patentsview 0.2.2 (2019-01-23)
+
+#### Misc
+
+* Vignettes removed from package so that CRAN builds don't fail when API is down
+
 # patentsview 0.2.1 (2018-03-05)
 
 #### Misc
