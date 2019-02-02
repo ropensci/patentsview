@@ -1,11 +1,8 @@
 #' @noRd
-paste0_stop <- function(...) stop(paste0(...), call. = FALSE)
+stop2 <- function(...) stop(..., call. = FALSE)
 
 #' @noRd
-paste0_msg <- function(...) message(paste0(...))
-
-#' @noRd
-asrt <- function(expr, ...) if (!expr) paste0_stop(...)
+asrt <- function(expr, ...) if (!expr) stop2(...)
 
 #' @noRd
 parse_resp <- function(resp) {

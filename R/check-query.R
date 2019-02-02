@@ -16,13 +16,13 @@ is_date <- function(x)
 one_check <- function(operator, field, value, f1) {
 
   if (nrow(f1) == 0)
-    paste0_stop(field, " is not a valid field to query for your endpoint")
+    stop2(field, " is not a valid field to query for your endpoint")
   if (f1$data_type == "date" && !is_date(value))
-    paste0_stop("Bad date: ", value, ". Date must be in the format of yyyy-mm-dd")
+    stop2("Bad date: ", value, ". Date must be in the format of yyyy-mm-dd")
   if (f1$data_type %in% c("string", "fulltext") && !is.character(value))
-    paste0_stop(value, " must be of type character")
+    stop2(value, " must be of type character")
   if (f1$data_type == "integer" && !is_int(value))
-    paste0_stop(value, " must be an integer")
+    stop2(value, " must be an integer")
 
   if (
     (operator %in% c("_begins", "_contains") && !(f1$data_type == "string")) ||
@@ -31,7 +31,7 @@ one_check <- function(operator, field, value, f1) {
     (f1$data_type %in% c("string", "fulltext") &&
       operator %in% c("_gt", "_gte", "_lt", "_lte"))
   )
-    paste0_stop("You cannot use the operator ", operator, " with the field ", field)
+    stop2("You cannot use the operator ", operator, " with the field ", field)
 }
 
 #' @noRd
@@ -55,12 +55,12 @@ check_query <- function(query, endpoint) {
         value = unlist(x[[1]]), f1 = f1
       )
     } else if (names(x) %in% flds_flt$field) {
-      paste0_msg(
+      message(
         "The _eq operator is a safer alternative to using ",
         "field:value pairs or value arrays in your query"
       )
     } else {
-      paste0_stop(
+      stop2(
         names(x), " is either not a valid operator or not a ",
         "queryable field for this endpoint"
       )

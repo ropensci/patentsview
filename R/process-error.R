@@ -9,7 +9,7 @@ throw_if_loc_error <- function(resp) {
   if (hit_locations_ep(resp$url) && httr::status_code(resp) == 500) {
     num_grps <- get_num_groups(resp$url)
     if (num_grps > 2) {
-      paste0_stop(
+      stop2(
         "Your request resulted in a 500 error, likely because you have ",
         "requested too many fields in your request (the locations endpoint ",
         "currently has restrictions on the number of fields/groups you can ",
