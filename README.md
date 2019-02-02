@@ -3,7 +3,7 @@ patentsview
 
 > An R client to the PatentsView API
 
-[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112) [![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/patentsview) [![CRAN version](http://www.r-pkg.org/badges/version/patentsview)](https://cran.r-project.org/package=patentsview)
+[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112) [![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/patentsview) [![CRAN version](http://www.r-pkg.org/badges/version/patentsview)](https://cran.r-project.org/package=patentsview) [![Coverage status](https://codecov.io/gh/ropensci/patentsview/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/patentsview?branch=master)
 
 Installation
 ------------

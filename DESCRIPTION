@@ -23,5 +23,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    tidyr
+    tidyr,
+    covr
 RoxygenNote: 6.1.0
