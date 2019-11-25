@@ -58,7 +58,7 @@ one_request <- function(method, query, base_url, arg_list, ...) {
     resp <- httr::GET(get_url, ua, ...)
   } else {
     body <- get_post_body(query, arg_list)
-    resp <- httr::POST(base_url, body, ua, ...)
+    resp <- httr::POST(base_url, body = body, ua, ...)
   }
 
   if (httr::http_error(resp)) throw_er(resp)
