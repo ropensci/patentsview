@@ -20,7 +20,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 
    \item An object of class \code{pv_query}, which you create by calling one
    of the functions found in the \code{\link{qry_funs}} list...See the
-   \href{http://ropensci.github.io/patentsview/articles/writing-queries.html}{writing
+   \href{http://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
    queries vignette} for details.\cr
    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
  }}

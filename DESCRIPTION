@@ -9,7 +9,7 @@ Description: Provides functions to simplify the 'PatentsView' API
     (<http://www.patentsview.org/api/doc.html>) query language,
     send GET and POST requests to the API's seven endpoints, and parse the data
     that comes back.
-URL: https://ropensci.github.io/patentsview/index.html
+URL: https://docs.ropensci.org/patentsview/index.html
 BugReports: https://github.com/ropensci/patentsview/issues
 License: MIT + file LICENSE
 LazyData: TRUE
