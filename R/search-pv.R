@@ -103,7 +103,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'
 #'    \item An object of class \code{pv_query}, which you create by calling one
 #'    of the functions found in the \code{\link{qry_funs}} list...See the
-#'    \href{http://ropensci.github.io/patentsview/articles/writing-queries.html}{writing
+#'    \href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
 #'    queries vignette} for details.\cr
 #'    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 #'  }

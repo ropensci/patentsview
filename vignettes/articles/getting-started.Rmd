@@ -48,7 +48,7 @@ with_qfuns(
 )
 ```
 
-Check out the [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) for more details on using the DSL.
+Check out the [writing queries vignette](https://docs.ropensci.org/patentsview/articles/writing-queries.html) for more details on using the DSL.
 
 ## Fields
 
@@ -142,7 +142,7 @@ cast_pv_data(res$data)
 
 #### I'm sure my query is well formatted and correct but I keep getting an error. What's the deal?
 
-The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](http://ropensci.github.io/patentsview/articles/writing-queries.html) has more details on this. 
+The API query syntax guidelines do not cover all of the API's behavior. Specifically, there are several things that you cannot do which are not documented on the API's webpage. The [writing queries vignette](https://docs.ropensci.org/patentsview/articles/writing-queries.html) has more details on this. 
 
 #### Does the API have any rate limiting/throttling controls?
 
