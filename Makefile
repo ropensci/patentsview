@@ -23,8 +23,8 @@ test:
 	Rscript -e "devtools::test()"
 
 # Build site (not part of all)
-site: _pkgdown.yml inst/site/*
-	Rscript -e "source('inst/site/build-site.R'); build_site()"
+site: _pkgdown.yml $(wildcard vignettes/articles/.Rmd)
+	Rscript -e "pkgdown::build_site()"
 
 # Clean
 clean:

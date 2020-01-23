@@ -29,22 +29,22 @@ navbar:
   left:
   - text: "Getting started"
     icon: fa-play
-    href: articles/getting-started.html
+    href: articles/articles/getting-started.html
   - text: "Writing queries"
     icon: fa-pencil
-    href: articles/writing-queries.html
+    href: articles/articles/writing-queries.html
   - text: "Examples"
     icon: fa-code
-    href: articles/examples.html
+    href: articles/articles/examples.html
   - text: "Applications"
     icon: fa-bar-chart
     menu:
       - text: "Top assignees"
         icon: fa-university
-        href: articles/top-assignees.html
+        href: articles/articles/top-assignees.html
       - text: "Citation networks"
         icon: fa-long-arrow-left
-        href: articles/citation-networks.html
+        href: articles/articles/citation-networks.html
   right:
   - text: "Reference"
     icon: fa-info-circle
