@@ -51,3 +51,8 @@ navbar:
     href: reference/index.html
   - icon: fa-github fa-lg
     href: https://github.com/ropensci/patentsview
+
+extra_packages:
+  - visNetwork
+  - igraph
+  - highcharter
