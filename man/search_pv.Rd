@@ -4,9 +4,10 @@
 \alias{search_pv}
 \title{Search PatentsView}
 \usage{
-search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
-  mtchd_subent_only = TRUE, page = 1, per_page = 25, all_pages = FALSE,
-  sort = NULL, method = "GET", error_browser = NULL, ...)
+search_pv(query, fields = NULL, endpoint = "patents",
+  subent_cnts = FALSE, mtchd_subent_only = TRUE, page = 1,
+  per_page = 25, all_pages = FALSE, sort = NULL, method = "GET",
+  error_browser = NULL, ...)
 }
 \arguments{
 \item{query}{The query that the API will use to filter records. \code{query}
@@ -20,7 +21,7 @@ search_pv(query, fields = NULL, endpoint = "patents", subent_cnts = FALSE,
 
    \item An object of class \code{pv_query}, which you create by calling one
    of the functions found in the \code{\link{qry_funs}} list...See the
-   \href{http://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
+   \href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
    queries vignette} for details.\cr
    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
  }}
