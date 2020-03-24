@@ -1,4 +1,4 @@
-library(XML)
+library(rvest)
 library(reshape2)
 library(dplyr)
 library(devtools)
@@ -9,8 +9,9 @@ endpoints <- c(
 )
 
 all_tabs <- sapply(endpoints, function(x) {
-  url <- paste0("http://www.patentsview.org/api/", x, ".html")
-  readHTMLTable(doc = url)[[2]]
+  url <- paste0("https://www.patentsview.org/api/", x, ".html")
+  html <- read_html(url)
+  html_table(html)[[2]]
 }, simplify = FALSE, USE.NAMES = TRUE)
 
 clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
