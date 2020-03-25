@@ -3,7 +3,7 @@
 #' This function suggests a value that you could use for the \code{pk} argument
 #' in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
 #' It will return a potential unique identifier for a given entity (i.e., a
-#' given endpoint). For example, it will return "patent_id" when
+#' given endpoint). For example, it will return "patent_number" when
 #' \code{endpoint = "patents"}.
 #'
 #' @param endpoint The endpoint which you would like to know a potential primary
@@ -20,7 +20,8 @@
 get_ok_pk <- function(endpoint) {
   es_eps <- c(
     "uspc_mainclasses" = "uspc_mainclass_id",
-    "nber_subcategories" = "nber_subcategory_id"
+    "nber_subcategories" = "nber_subcategory_id",
+    "patents" = "patent_number"
   )
   ifelse(
     endpoint %in% names(es_eps),
@@ -45,10 +46,10 @@ get_ok_pk <- function(endpoint) {
 #' @param pk The column/field name that will link the data frames together. This
 #'   should be the unique identifier for the primary entity. For example, if you
 #'   used the patents endpoint in your call to \code{search_pv}, you could
-#'   specify \code{pk = "patent_id"} or \code{pk = "patent_number"}.
-#'   \strong{This identifier has to have been included in your \code{fields}
-#'   vector when you called \code{search_pv}}. You can use
-#'   \code{\link{get_ok_pk}} to suggest a potential primary key for your data.
+#'   specify \code{pk = "patent_number"}. \strong{This identifier has to have
+#'   been included in your \code{fields} vector when you called
+#'   \code{search_pv}}. You can use \code{\link{get_ok_pk}} to suggest a
+#'   potential primary key for your data.
 #'
 #' @return A list with multiple data frames, one for each entity/subentity.
 #'   Each data frame will have the \code{pk} column in it, so you can link the
@@ -57,9 +58,9 @@ get_ok_pk <- function(endpoint) {
 #' @examples
 #' \dontrun{
 #'
-#' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
+#' fields <- c("patent_number", "patent_title", "inventor_city", "inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-#' unnest_pv_data(data = res$data, pk = "patent_id")
+#' unnest_pv_data(data = res$data, pk = "patent_number")
 #' }
 #'
 #' @export
