@@ -47,19 +47,6 @@ test_that("search_pv can pull all fields for all endpoints except locations", {
   expect_true(TRUE)
 })
 
-# As per this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/24
-test_that("Locations endpoint throws custom error when asked for all avail. fields", {
-  skip_on_cran()
-
-  expect_error(
-    search_pv(
-      "{\"patent_number\":\"5116621\"}",
-      endpoint = "locations",
-      fields = get_fields("locations")
-    ), regexp = "the locations endpoint currently"
-  )
-})
-
 test_that("search_pv can return subent_cnts", { # though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
   skip_on_cran()
 
