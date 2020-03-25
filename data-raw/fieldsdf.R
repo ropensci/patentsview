@@ -16,7 +16,7 @@ all_tabs <- sapply(endpoints, function(x) {
 
 clean_field <- function(x) gsub("[^[:alnum:]_]", "", tolower(as.character(x)))
 
-fields <-
+fieldsdf <-
   melt(all_tabs) %>%
     rename(
       field = `API Field Name`, data_type = Type, can_query = Query,
