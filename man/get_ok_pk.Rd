@@ -18,7 +18,7 @@ The name of a primary key (\code{pk}) that you could pass to
 This function suggests a value that you could use for the \code{pk} argument
 in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
 It will return a potential unique identifier for a given entity (i.e., a
-given endpoint). For example, it will return "patent_id" when
+given endpoint). For example, it will return "patent_number" when
 \code{endpoint = "patents"}.
 }
 \examples{

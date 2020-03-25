@@ -186,8 +186,8 @@
 <p>To list all of the retrievable fields for a given endpoint, use <code><a href="../../reference/get_fields.html">get_fields()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">retrvble_flds &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/get_fields.html">get_fields</a></span>(<span class="dt">endpoint =</span> <span class="st">"patents"</span>)
 <span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(retrvble_flds)
-<span class="co">#&gt; [1] "app_country"       "app_date"          "app_number"       </span>
-<span class="co">#&gt; [4] "app_type"          "appcit_app_number" "appcit_category"</span></code></pre></div>
+<span class="co">#&gt; [1] "appcit_app_number" "appcit_category"   "appcit_date"      </span>
+<span class="co">#&gt; [4] "appcit_kind"       "appcit_sequence"   "app_country"</span></code></pre></div>
 <p>You can also visit an endpoint’s online documentation page to see a list of its queryable and retrievable fields (e.g., see the <a href="http://www.patentsview.org/api/inventor.html#field_list">inventor field list table</a>). Note the “Query” column in this table, which indicates whether the field is both queryable and retrievable (Query = Y), or just retrievable (Query = N). The field tables for all of the endpoints can be found in the <code>fieldsdf</code> data frame, which you can load using <code><a href="https://rdrr.io/r/utils/data.html">data("fieldsdf")</a></code> or <code><a href="https://rdrr.io/r/utils/View.html">View(patentsview::fieldsdf)</a></code>.</p>
 <p><strong>An important note: By default, PatentsView uses disambiguted versions of assignees, inventors, and locations, instead of raw data.</strong> For example, let’s say you search for all inventors whose first name is “john.” The PatentsView API is going to return all of the inventors who have a preferred first name (as per the disambiguation results) of john, which may not necessarily be their raw first name. You could be getting back inventors whose first name appears on the patent as, say, “jonathan,” “johnn,” or even “john jay.” You can search on the raw inventor names instead of the preferred names by using the fields starting with “raw” in your query (e.g., <code>rawinventor_first_name</code>). The assignee and location raw data fields are not currently being offered by the API. To see the methods behind the disambiguation process, see the <a href="http://www.patentsview.org/workshop/">PatentsView Inventor Disambiguation Technical Workshop website</a>.</p>
 </div>
@@ -204,14 +204,14 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ patents:'data.frame': 150 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ patent_id    : chr [1:150] "4055654" ...</span>
-<span class="co">#&gt;   ..$ patent_number: chr [1:150] "4055654" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:150] "6,8-Di-t-butyl-4-oxo-4H-1-benzopyran-2-carb"..</span>
+<span class="co">#&gt;   ..$ patent_id    : chr [1:150] "3990015" ...</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:150] "3990015" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:150] "Differential phase shift keyed detector uti"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 2,071</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 2,033</span></code></pre></div>
 <p>You can download all pages of output in one call by setting <code>all_pages = TRUE</code>. This will set <code>per_page</code> equal to 10,000 and loop over all pages of output (downloading up to 10 pages, or 100,000 records total):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/search_pv.html">search_pv</a></span>(
   <span class="dt">query =</span> qry_funs<span class="op">$</span><span class="kw">eq</span>(<span class="dt">inventor_last_name =</span> <span class="st">"chambers"</span>),
@@ -221,15 +221,15 @@
 <span class="co">#&gt; #### A list with a single data frame on a patent level:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
-<span class="co">#&gt;  $ patents:'data.frame': 2071 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ patent_id    : chr [1:2071] "10000988" ...</span>
-<span class="co">#&gt;   ..$ patent_number: chr [1:2071] "10000988" ...</span>
-<span class="co">#&gt;   ..$ patent_title : chr [1:2071] "Seal assemblies in subsea rotating control"..</span>
+<span class="co">#&gt;  $ patents:'data.frame': 2033 obs. of  3 variables:</span>
+<span class="co">#&gt;   ..$ patent_id    : chr [1:2033] "10000988" ...</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:2033] "10000988" ...</span>
+<span class="co">#&gt;   ..$ patent_title : chr [1:2033] "Seal assemblies in subsea rotating control"..</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 2,071</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 2,033</span></code></pre></div>
 </div>
 <div id="entity-counts" class="section level2">
 <h2 class="hasAnchor">
@@ -257,7 +257,7 @@ fields &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 2,071</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 2,033</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># While here we are using the assignees endpoint:</span>
 <span class="kw"><a href="../../reference/search_pv.html">search_pv</a></span>(query, <span class="dt">endpoint =</span> <span class="st">"assignees"</span>, <span class="dt">fields =</span> fields)
 <span class="co">#&gt; $data</span>
@@ -265,14 +265,14 @@ fields &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Weatherford/Lamb, Inc." ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Hill-Rom Services, Inc." ...</span>
 <span class="co">#&gt;   ..$ patents              :List of 25</span>
 <span class="co">#&gt;   ..$ inventors            :List of 25</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_assignee_count = 498</span></code></pre></div>
+<span class="co">#&gt; total_assignee_count = 504</span></code></pre></div>
 <p>Your choice of endpoint determines two things:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Which entity your query is applied to.</strong> The first call shown above used the patents endpoint, so the API searched for patents that have at least one inventor listed on them with the last name “chambers.” The second call used the assignees endpoint, so the API searched for all assignees that have been <em>assigned to at least one patent</em> which has an inventor listed on it with the last name “chambers.”</p></li>
@@ -368,8 +368,8 @@ res<span class="op">$</span>data
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "08dbi1ij0fn8o9t4yxemmxxly" ...</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Innovative Chemical Technologies Can"..</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "043yr8yfk42hwwf1dlmsi0ku4" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "The Invention Science Fund I, LLC" ...</span>
 <span class="co">#&gt;   ..$ applications         :List of 25</span>
 <span class="co">#&gt;   ..$ gov_interests        :List of 25</span></code></pre></div>
 <p><code>res$data</code> has vector columns for those fields that belong to the primary entity (e.g., <code>res$data$assignees$assignee_id</code>) and list columns for those fields that belong to any secondary entity (e.g., <code>res$data$assignees$applications</code>). You have two good ways to pull out the data frames that are nested inside these list columns:</p>
@@ -386,12 +386,12 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt; # A tibble: 6 x 8</span>
 <span class="co">#&gt;   assignee_id assignee_organi… app_country app_date app_number app_type app_id</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt; </span>
-<span class="co">#&gt; 1 08dbi1ij0f… Innovative Chem… US          2007-11… 11945980   11       11/94…</span>
-<span class="co">#&gt; 2 0gknx6vpji… The Invention S… US          2008-12… 12315880   12       12/31…</span>
-<span class="co">#&gt; 3 0lmih03ydk… SRRS, LLC        US          2013-01… 13741239   13       13/74…</span>
-<span class="co">#&gt; 4 0synv8selm… Elwha LLC        US          2015-09… 14853370   14       14/85…</span>
-<span class="co">#&gt; 5 15kmmo86r4… United Parcel S… US          2012-12… 13725160   13       13/72…</span>
-<span class="co">#&gt; 6 1s64n7fx1q… The Invention S… US          2009-10… 12589925   12       12/58…</span>
+<span class="co">#&gt; 1 043yr8yfk4… The Invention S… US          2010-05… 12800793   12       12/80…</span>
+<span class="co">#&gt; 2 07xssj38mc… AGP Plastics, I… US          2009-11… 12590705   12       12/59…</span>
+<span class="co">#&gt; 3 15x1njgw67… The Invention S… US          2008-04… 12080787   12       12/08…</span>
+<span class="co">#&gt; 4 17n3ldtcq4… The Invention S… US          2008-05… 12156443   12       12/15…</span>
+<span class="co">#&gt; 5 1g4azmqnv5… Hills Legacy Se… US          2010-02… 29355800   29       29/35…</span>
+<span class="co">#&gt; 6 1mtylmc12t… GM Global Techn… US          2007-12… 11959773   11       11/95…</span>
 <span class="co">#&gt; # … with 1 more variable: gov_interests &lt;list&gt;</span>
 
 <span class="co"># Get assignee/gov_interest data:</span>
@@ -401,14 +401,14 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <span class="co">#&gt; # A tibble: 6 x 10</span>
 <span class="co">#&gt;   assignee_id assignee_organi… applications govint_contract… govint_org_id</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;            &lt;list&gt;       &lt;lgl&gt;            &lt;lgl&gt;        </span>
-<span class="co">#&gt; 1 08dbi1ij0f… Innovative Chem… &lt;df[,5] [1 … NA               NA           </span>
-<span class="co">#&gt; 2 0gknx6vpji… The Invention S… &lt;df[,5] [1 … NA               NA           </span>
-<span class="co">#&gt; 3 0lmih03ydk… SRRS, LLC        &lt;df[,5] [1 … NA               NA           </span>
-<span class="co">#&gt; 4 0synv8selm… Elwha LLC        &lt;df[,5] [1 … NA               NA           </span>
-<span class="co">#&gt; 5 15kmmo86r4… United Parcel S… &lt;df[,5] [1 … NA               NA           </span>
-<span class="co">#&gt; 6 1s64n7fx1q… The Invention S… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 1 043yr8yfk4… The Invention S… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 2 07xssj38mc… AGP Plastics, I… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 3 15x1njgw67… The Invention S… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 4 17n3ldtcq4… The Invention S… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 5 1g4azmqnv5… Hills Legacy Se… &lt;df[,5] [1 … NA               NA           </span>
+<span class="co">#&gt; 6 1mtylmc12t… GM Global Techn… &lt;df[,5] [1 … NA               NA           </span>
 <span class="co">#&gt; # … with 5 more variables: govint_org_level_one &lt;lgl&gt;,</span>
-<span class="co">#&gt; #   govint_org_level_three &lt;lgl&gt;, govint_org_level_two &lt;lgl&gt;,</span>
+<span class="co">#&gt; #   govint_org_level_two &lt;lgl&gt;, govint_org_level_three &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   govint_org_name &lt;lgl&gt;, govint_raw_statement &lt;lgl&gt;</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>
@@ -417,24 +417,24 @@ res<span class="op">$</span>data<span class="op">$</span>assignees <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/unnest_pv_data.html">unnest_pv_data</a></span>(<span class="dt">data =</span> res<span class="op">$</span>data, <span class="dt">pk =</span> <span class="st">"assignee_id"</span>)
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ applications :'data.frame':   25 obs. of  6 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id: chr [1:25] "08dbi1ij0fn8o9t4yxemmxxly" ...</span>
+<span class="co">#&gt;   ..$ assignee_id: chr [1:25] "043yr8yfk42hwwf1dlmsi0ku4" ...</span>
 <span class="co">#&gt;   ..$ app_country: chr [1:25] "US" ...</span>
-<span class="co">#&gt;   ..$ app_date   : chr [1:25] "2007-11-27" ...</span>
-<span class="co">#&gt;   ..$ app_number : chr [1:25] "11945980" ...</span>
-<span class="co">#&gt;   ..$ app_type   : chr [1:25] "11" ...</span>
-<span class="co">#&gt;   ..$ app_id     : chr [1:25] "11/945980" ...</span>
+<span class="co">#&gt;   ..$ app_date   : chr [1:25] "2010-05-21" ...</span>
+<span class="co">#&gt;   ..$ app_number : chr [1:25] "12800793" ...</span>
+<span class="co">#&gt;   ..$ app_type   : chr [1:25] "12" ...</span>
+<span class="co">#&gt;   ..$ app_id     : chr [1:25] "12/800793" ...</span>
 <span class="co">#&gt;  $ gov_interests:'data.frame':   25 obs. of  8 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id                 : chr [1:25] "08dbi1ij0fn8o9t4yxemmxxly" ...</span>
+<span class="co">#&gt;   ..$ assignee_id                 : chr [1:25] "043yr8yfk42hwwf1dlmsi0ku4" ...</span>
 <span class="co">#&gt;   ..$ govint_contract_award_number: logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_id               : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_level_one        : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ govint_org_level_three      : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_level_two        : logi [1:25] NA ...</span>
+<span class="co">#&gt;   ..$ govint_org_level_three      : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_org_name             : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ govint_raw_statement        : logi [1:25] NA ...</span>
 <span class="co">#&gt;  $ assignees    :'data.frame':   25 obs. of  2 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "08dbi1ij0fn8o9t4yxemmxxly" ...</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Innovative Chemical Technologies Can"..</span></code></pre></div>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "043yr8yfk42hwwf1dlmsi0ku4" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "The Invention Science Fund I, LLC" ...</span></code></pre></div>
 <p>Now we are left with a series of flat data frames instead of having a single data frame with other data frames nested inside of it. These flat data frames can be joined together as needed via the primary key (<code>assignee_id</code>).</p>
 </div>
 </div>

@@ -187,10 +187,10 @@ inside it. See examples.</p></td>
       <td><p>The column/field name that will link the data frames together. This
 should be the unique identifier for the primary entity. For example, if you
 used the patents endpoint in your call to <code>search_pv</code>, you could
-specify <code>pk = "patent_id"</code> or <code>pk = "patent_number"</code>.
-<strong>This identifier has to have been included in your <code>fields</code>
-vector when you called <code>search_pv</code></strong>. You can use
-<code><a href='get_ok_pk.html'>get_ok_pk</a></code> to suggest a potential primary key for your data.</p></td>
+specify <code>pk = "patent_number"</code>. <strong>This identifier has to have
+been included in your <code>fields</code> vector when you called
+<code>search_pv</code></strong>. You can use <code><a href='get_ok_pk.html'>get_ok_pk</a></code> to suggest a
+potential primary key for your data.</p></td>
     </tr>
     </table>
 
@@ -203,9 +203,9 @@ vector when you called <code>search_pv</code></strong>. You can use
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"patent_id"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"inventor_city"</span>, <span class='st'>"inventor_country"</span>)
+<span class='no'>fields</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"patent_number"</span>, <span class='st'>"patent_title"</span>, <span class='st'>"inventor_city"</span>, <span class='st'>"inventor_country"</span>)
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='search_pv.html'>search_pv</a></span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gte":{"patent_year":2015}}'</span>, <span class='kw'>fields</span> <span class='kw'>=</span> <span class='no'>fields</span>)
-<span class='fu'>unnest_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='st'>"patent_id"</span>)
+<span class='fu'>unnest_pv_data</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>data</span>, <span class='kw'>pk</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

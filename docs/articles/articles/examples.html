@@ -141,7 +141,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 5,806</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 6,214</span></code></pre></div>
 <p>How many distinct inventors are represented by these highly-cited patents?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Setting subent_cnts = TRUE will give us the subentity counts. Since inventors </span>
 <span class="co"># are subentities for the patents endpoint, this means we will get their counts.</span>
@@ -161,7 +161,7 @@
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_patent_count = 5,806, total_inventor_count = 8,613</span></code></pre></div>
+<span class="co">#&gt; total_patent_count = 6,214, total_inventor_count = 9,127</span></code></pre></div>
 <p>Where geographically have Microsoft inventors been coming from over the past 20 years?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write the query</span>
 query &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/with_qfuns.html">with_qfuns</a></span>(
@@ -181,33 +181,33 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/s
 <span class="co"># Unnest the inventor list column</span>
 <span class="kw"><a href="../../reference/unnest_pv_data.html">unnest_pv_data</a></span>(pv_out<span class="op">$</span>data, <span class="st">"patent_number"</span>)
 <span class="co">#&gt; List of 2</span>
-<span class="co">#&gt;  $ inventors:'data.frame':   126904 obs. of  24 variables:</span>
-<span class="co">#&gt;   ..$ patent_number                 : chr [1:126904] "10001683" ...</span>
-<span class="co">#&gt;   ..$ inventor_city                 : chr [1:126904] "Mountain View" ...</span>
-<span class="co">#&gt;   ..$ inventor_country              : chr [1:126904] "US" ...</span>
-<span class="co">#&gt;   ..$ inventor_county               : chr [1:126904] "Santa Clara" ...</span>
-<span class="co">#&gt;   ..$ inventor_county_fips          : chr [1:126904] "6085" ...</span>
-<span class="co">#&gt;   ..$ inventor_first_name           : chr [1:126904] "Andriy" ...</span>
-<span class="co">#&gt;   ..$ inventor_first_seen_date      : chr [1:126904] "2014-04-22" ...</span>
-<span class="co">#&gt;   ..$ inventor_id                   : chr [1:126904] "8704119-1" ...</span>
-<span class="co">#&gt;   ..$ inventor_last_name            : chr [1:126904] "Pletenetskyy" ...</span>
-<span class="co">#&gt;   ..$ inventor_last_seen_date       : chr [1:126904] "2019-01-22" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_city       : chr [1:126904] "Mountain View" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_country    : chr [1:126904] "US" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_latitude   : chr [1:126904] "37.3861" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_location_id: chr [1:126904] "37.3861|-122.0828" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_longitude  : chr [1:126904] "-122.083" ...</span>
-<span class="co">#&gt;   ..$ inventor_lastknown_state      : chr [1:126904] "CA" ...</span>
-<span class="co">#&gt;   ..$ inventor_latitude             : chr [1:126904] "37.3861" ...</span>
-<span class="co">#&gt;   ..$ inventor_location_id          : chr [1:126904] "37.3861|-122.0828" ...</span>
-<span class="co">#&gt;   ..$ inventor_longitude            : chr [1:126904] "-122.083" ...</span>
-<span class="co">#&gt;   ..$ inventor_sequence             : chr [1:126904] "0" ...</span>
-<span class="co">#&gt;   ..$ inventor_state                : chr [1:126904] "CA" ...</span>
-<span class="co">#&gt;   ..$ inventor_state_fips           : chr [1:126904] "6" ...</span>
-<span class="co">#&gt;   ..$ inventor_total_num_patents    : chr [1:126904] "8" ...</span>
-<span class="co">#&gt;   ..$ inventor_key_id               : chr [1:126904] "2997281" ...</span>
-<span class="co">#&gt;  $ patents  :'data.frame':   34635 obs. of  1 variable:</span>
-<span class="co">#&gt;   ..$ patent_number: chr [1:34635] "10001683" ...</span></code></pre></div>
+<span class="co">#&gt;  $ inventors:'data.frame':   129705 obs. of  24 variables:</span>
+<span class="co">#&gt;   ..$ patent_number                 : chr [1:129705] "10001683" ...</span>
+<span class="co">#&gt;   ..$ inventor_city                 : chr [1:129705] "Mountain View" ...</span>
+<span class="co">#&gt;   ..$ inventor_country              : chr [1:129705] "US" ...</span>
+<span class="co">#&gt;   ..$ inventor_county               : chr [1:129705] "Santa Clara" ...</span>
+<span class="co">#&gt;   ..$ inventor_county_fips          : chr [1:129705] "6085" ...</span>
+<span class="co">#&gt;   ..$ inventor_first_name           : chr [1:129705] "Andriy" ...</span>
+<span class="co">#&gt;   ..$ inventor_first_seen_date      : chr [1:129705] "2014-04-22" ...</span>
+<span class="co">#&gt;   ..$ inventor_id                   : chr [1:129705] "8704119-1" ...</span>
+<span class="co">#&gt;   ..$ inventor_last_name            : chr [1:129705] "Pletenetskyy" ...</span>
+<span class="co">#&gt;   ..$ inventor_last_seen_date       : chr [1:129705] "2019-12-31" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_city       : chr [1:129705] "Redmond" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_country    : chr [1:129705] "US" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_latitude   : chr [1:129705] "47.6742" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_location_id: chr [1:129705] "47.6742|-122.1203" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_longitude  : chr [1:129705] "-122.12" ...</span>
+<span class="co">#&gt;   ..$ inventor_lastknown_state      : chr [1:129705] "WA" ...</span>
+<span class="co">#&gt;   ..$ inventor_latitude             : chr [1:129705] "37.3861" ...</span>
+<span class="co">#&gt;   ..$ inventor_location_id          : chr [1:129705] "37.3861|-122.0828" ...</span>
+<span class="co">#&gt;   ..$ inventor_longitude            : chr [1:129705] "-122.083" ...</span>
+<span class="co">#&gt;   ..$ inventor_sequence             : chr [1:129705] "0" ...</span>
+<span class="co">#&gt;   ..$ inventor_state                : chr [1:129705] "CA" ...</span>
+<span class="co">#&gt;   ..$ inventor_state_fips           : chr [1:129705] "6" ...</span>
+<span class="co">#&gt;   ..$ inventor_total_num_patents    : chr [1:129705] "10" ...</span>
+<span class="co">#&gt;   ..$ inventor_key_id               : chr [1:129705] "3033602" ...</span>
+<span class="co">#&gt;  $ patents  :'data.frame':   35373 obs. of  1 variable:</span>
+<span class="co">#&gt;   ..$ patent_number: chr [1:35373] "10001683" ...</span></code></pre></div>
 </div>
 <div id="inventors-endpoint" class="section level2">
 <h2 class="hasAnchor">
@@ -229,7 +229,7 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/s
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_inventor_count = 14,599</span></code></pre></div>
+<span class="co">#&gt; total_inventor_count = 14,784</span></code></pre></div>
 </div>
 <div id="assignees-endpoint" class="section level2">
 <h2 class="hasAnchor">
@@ -244,15 +244,15 @@ pv_out &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/s
 <span class="co">#&gt; </span>
 <span class="co">#&gt; List of 1</span>
 <span class="co">#&gt;  $ assignees:'data.frame':   25 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "org_0b1YmxPMda1xpuvoJYk4" ...</span>
+<span class="co">#&gt;   ..$ assignee_id          : chr [1:25] "org_0fiObAmeq0VlCrucoFYy" ...</span>
 <span class="co">#&gt;   ..$ assignee_first_name  : logi [1:25] NA ...</span>
 <span class="co">#&gt;   ..$ assignee_last_name   : logi [1:25] NA ...</span>
-<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Manville Corporation" ...</span>
+<span class="co">#&gt;   ..$ assignee_organization: chr [1:25] "Big Dogg Pong LLC" ...</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $query_results</span>
 <span class="co">#&gt; #### Distinct entity counts across all downloadable pages of output:</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; total_assignee_count = 197</span></code></pre></div>
+<span class="co">#&gt; total_assignee_count = 200</span></code></pre></div>
 </div>
 <div class="footnotes">
 <hr>

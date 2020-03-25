@@ -4,10 +4,13 @@
 \alias{with_qfuns}
 \title{With qry_funs}
 \usage{
-with_qfuns(code)
+with_qfuns(code, envir = parent.frame())
 }
 \arguments{
 \item{code}{Code to evaluate. See example.}
+
+\item{envir}{Where should R look for objects present in \code{code} that
+aren't present in \code{\link{qry_funs}}.}
 }
 \value{
 The result of \code{code} - i.e., your query.

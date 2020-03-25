@@ -168,7 +168,7 @@ try assigning the <code><a href='qry_funs.html'>qry_funs</a></code> list into yo
 with: <code><a href='https://rdrr.io/r/base/list2env.html'>list2env(qry_funs, envir = globalenv())</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_qfuns</span>(<span class='no'>code</span>)</pre>
+    <pre class="usage"><span class='fu'>with_qfuns</span>(<span class='no'>code</span>, <span class='kw'>envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,6 +176,11 @@ with: <code><a href='https://rdrr.io/r/base/list2env.html'>list2env(qry_funs, en
     <tr>
       <th>code</th>
       <td><p>Code to evaluate. See example.</p></td>
+    </tr>
+    <tr>
+      <th>envir</th>
+      <td><p>Where should R look for objects present in <code>code</code> that
+aren't present in <code><a href='qry_funs.html'>qry_funs</a></code>.</p></td>
     </tr>
     </table>
 
