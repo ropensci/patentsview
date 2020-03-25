@@ -138,6 +138,8 @@ qry_funs <- c(
 #' with: \code{list2env(qry_funs, envir = globalenv())}.
 #'
 #' @param code Code to evaluate. See example.
+#' @param envir Where should R look for objects present in \code{code} that
+#' aren't present in \code{\link{qry_funs}}.
 #'
 #' @return The result of \code{code} - i.e., your query.
 #'
@@ -165,4 +167,6 @@ qry_funs <- c(
 #' )
 #'
 #' @export
-with_qfuns <- function(code) eval(substitute(code), qry_funs)
+with_qfuns <- function(code, envir = parent.frame()) {
+  eval(substitute(code), qry_funs, envir)
+}
