@@ -17,7 +17,8 @@ notifications:
   email: false
 
 env:
-  - NOT_CRAN=false
+  global:
+    - NOT_CRAN=false
 
 after_success:
   - Rscript -e 'covr::codecov()'
