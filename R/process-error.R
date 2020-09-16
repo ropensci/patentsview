@@ -22,7 +22,7 @@ throw_if_loc_error <- function(resp) {
 #' @noRd
 hit_locations_ep <- function(url) {
   grepl(
-    "^http://www.patentsview.org/api/locations/",
+    "^https://api.patentsview.org/locations/",
     url,
     ignore.case = TRUE
   )
