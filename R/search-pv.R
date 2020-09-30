@@ -1,6 +1,6 @@
 #' @noRd
 get_base <- function(endpoint)
-  sprintf("https://www.patentsview.org/api/%s/query", endpoint)
+  sprintf("https://api.patentsview.org/%s/query", endpoint)
 
 #' @noRd
 tojson_2 <- function(x, ...) {
