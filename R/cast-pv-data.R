@@ -12,6 +12,7 @@ get_cast_fun <- function(data_type) {
     "date" = as.Date,
     "float" = as.numeric,
     "integer" = as.integer,
+    "int" = as.integer,
     "fulltext" = as_is
   )
 }
