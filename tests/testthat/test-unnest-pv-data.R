@@ -8,6 +8,7 @@ test_that("", {
   eps_no_loc <- eps[eps != "locations"]
 
   z <- lapply(eps_no_loc, function(x) {
+    Sys.sleep(1)
     pv_out <- search_pv(
       "{\"patent_number\":\"5116621\"}",
       endpoint = x,
