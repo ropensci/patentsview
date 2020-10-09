@@ -13,8 +13,6 @@ branches:
   except:
   - dev
 
-warnings_are_errors: true
-
 notifications:
   email: false
 
