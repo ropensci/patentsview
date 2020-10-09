@@ -78,6 +78,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
   }
 
   tmp <- lapply(1:req_pages, function(i) {
+    Sys.sleep(3)
     arg_list$opts$per_page <- 10000
     arg_list$opts$page <- i
     x <- one_request(method, query, base_url, arg_list, ...)
