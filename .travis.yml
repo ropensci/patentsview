@@ -2,7 +2,9 @@ language: r
 sudo: false
 cache: packages
 
-before_script: export NOT_CRAN=false
+before_script:
+  - export NOT_CRAN=false
+  - rm -rf vignettes
 
 matrix:
   include:
