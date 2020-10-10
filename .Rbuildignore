@@ -17,3 +17,5 @@ inst/dev\.R$
 ^\.Rhistory$
 ^NEWS\.md$
 ^\.gitattributes$
+^vignettes$
+
