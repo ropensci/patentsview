@@ -49,7 +49,8 @@ test_that("search_pv can pull all fields for all endpoints except locations", {
   expect_true(TRUE)
 })
 
-test_that("search_pv can return subent_cnts", { # though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
+test_that("search_pv can return subent_cnts", {
+  # ...Though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
   skip_on_cran()
 
   out_spv <- search_pv(
@@ -91,4 +92,17 @@ test_that("search_pv can pull all fields by group for the locations endpoint", {
   })
 
    expect_true(TRUE)
+})
+
+test_that("search_pv properly encodes queries", {
+  skip_on_cran()
+
+  # Covers https://github.com/ropensci/patentsview/issues/24
+  result <- search_pv(
+    query = with_qfuns(
+      begins(assignee_organization = "Johnson & Johnson")
+    )
+  )
+
+  expect_true(TRUE)
 })

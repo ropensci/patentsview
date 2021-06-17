@@ -28,7 +28,7 @@ to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
 get_get_url <- function(query, base_url, arg_list) {
   j <- paste0(
     base_url,
-    "?q=", query,
+    "?q=", utils::URLencode(query, reserved = TRUE),
     "&f=", tojson_2(arg_list$fields),
     "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE),
     "&s=", tojson_2(arg_list$sort, auto_unbox = TRUE)
