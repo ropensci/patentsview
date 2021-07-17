@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The following is a quick analysis of the top organizations patenting in the field of databases. 
+The following is a quick analysis of the top organizations patenting in the field of databases.
 
 1. The first step is to download the relevant data fields from the PatentsView API:
 
@@ -102,8 +102,9 @@ data <-
     count() 
 
 # Plot the data using highchartr:
-hc_add_series_df(
-  highchart(), data = data, "line", x = app_yr, y = n, group = assignee_organization
+hchart(
+  data, "line", 
+  hcaes(x = app_yr, y = n, group = assignee_organization)
 ) %>%
   hc_plotOptions(series = list(marker = list(enabled = FALSE))) %>%
   hc_xAxis(title = list(text = "Application year")) %>%
