@@ -3,10 +3,14 @@ patentsview
 
 > An R client to the PatentsView API
 
-[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112) [![Linux Build Status](https://travis-ci.org/ropensci/patentsview.svg?branch=master)](https://travis-ci.org/ropensci/patentsview) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/patentsview?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/patentsview) [![CRAN version](http://www.r-pkg.org/badges/version/patentsview)](https://cran.r-project.org/package=patentsview) [![Coverage status](https://codecov.io/gh/ropensci/patentsview/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/patentsview?branch=master)
+[![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112)
+[![R-CMD-check](https://github.com/crew102/slowraker/workflows/R-CMD-check/badge.svg)](https://github.com/crew102/slowraker/actions)
+[![CRAN
+version](http://www.r-pkg.org/badges/version/patentsview)](https://cran.r-project.org/package=patentsview)
+[![Coverage
+status](https://codecov.io/gh/ropensci/patentsview/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/patentsview?branch=master)
 
-Installation
-------------
+## Installation
 
 You can get the stable version from CRAN:
 
@@ -23,10 +27,12 @@ if (!"devtools" %in% rownames(installed.packages()))
 devtools::install_github("ropensci/patentsview")
 ```
 
-Basic usage
------------
+## Basic usage
 
-The [PatentsView API](http://www.patentsview.org/api/doc.html) provides an interface to a disambiguated version of USPTO. The `patentsview` R package provides one main function, `search_pv()`, to make it easy to interact with the API:
+The [PatentsView API](http://www.patentsview.org/api/doc.html) provides
+an interface to a disambiguated version of USPTO. The `patentsview` R
+package provides one main function, `search_pv()`, to make it easy to
+interact with the API:
 
 ``` r
 library(patentsview)
@@ -47,13 +53,23 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}')
 #> total_patent_count = 100,000
 ```
 
-Learning more
--------------
+## Learning more
 
-Head over to the package's [webpage](https://docs.ropensci.org/patentsview/index.html) for more info, including:
+Head over to the package’s
+[webpage](https://docs.ropensci.org/patentsview/index.html) for more
+info, including:
 
--   A [getting started vignette](http://docs.ropensci.org/patentsview/articles/articles/getting-started.html) for first-time users. The package was also introduced in an [rOpenSci blog post](https://ropensci.org/blog/blog/2017/09/19/patentsview).
--   An in-depth tutorial on [writing queries](http://docs.ropensci.org/patentsview/articles/articles/writing-queries.html)
--   A list of [basic examples](http://docs.ropensci.org/patentsview/articles/articles/examples.html)
--   Two examples of data applications (e.g., a brief analysis of the [top assignees](http://docs.ropensci.org/patentsview/articles/articles/top-assignees.html) in the field of databases)
+-   A [getting started
+    vignette](http://docs.ropensci.org/patentsview/articles/articles/getting-started.html)
+    for first-time users. The package was also introduced in an
+    [rOpenSci blog
+    post](https://ropensci.org/blog/blog/2017/09/19/patentsview).
+-   An in-depth tutorial on [writing
+    queries](http://docs.ropensci.org/patentsview/articles/articles/writing-queries.html)
+-   A list of [basic
+    examples](http://docs.ropensci.org/patentsview/articles/articles/examples.html)
+-   Two examples of data applications (e.g., a brief analysis of the
+    [top
+    assignees](http://docs.ropensci.org/patentsview/articles/articles/top-assignees.html)
+    in the field of databases)
 [![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)

@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 <meta property="og:title" content="Search PatentsView — search_pv" />
 <meta property="og:description" content="This function makes an HTTP request to the PatentsView API for data matching
 the user's query." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -58,7 +61,7 @@ the user's query." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +75,7 @@ the user's query." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">patentsview</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -80,28 +83,28 @@ the user's query." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../articles/articles/getting-started.html">
-    <span class="fa fa-play"></span>
+    <span class="fas fa-play"></span>
      
     Getting started
   </a>
 </li>
 <li>
   <a href="../articles/articles/writing-queries.html">
-    <span class="fa fa-pencil"></span>
+    <span class="fas fa-pencil"></span>
      
     Writing queries
   </a>
 </li>
 <li>
   <a href="../articles/articles/examples.html">
-    <span class="fa fa-code"></span>
+    <span class="fas fa-code"></span>
      
     Examples
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-bar-chart"></span>
+    <span class="fas fa-bar-chart"></span>
      
     Applications
      
@@ -110,14 +113,14 @@ the user's query." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/top-assignees.html">
-        <span class="fa fa-university"></span>
+        <span class="fas fa-university"></span>
          
         Top assignees
       </a>
     </li>
     <li>
       <a href="../articles/articles/citation-networks.html">
-        <span class="fa fa-long-arrow-left"></span>
+        <span class="fas fa-long-arrow-left"></span>
          
         Citation networks
       </a>
@@ -128,14 +131,14 @@ the user's query." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../reference/index.html">
-    <span class="fa fa-info-circle"></span>
+    <span class="fas fa-info-circle"></span>
      
     Reference
   </a>
 </li>
 <li>
   <a href="https://github.com/ropensci/patentsview">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -153,7 +156,7 @@ the user's query." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Search PatentsView</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/ropensci/patentsview/blob/master/R/search-pv.R'><code>R/search-pv.R</code></a></small>
     <div class="hidden name"><code>search_pv.Rd</code></div>
     </div>
 
@@ -162,20 +165,20 @@ the user's query." />
 the user's query.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>search_pv</span>(
-  <span class='no'>query</span>,
-  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"patents"</span>,
-  <span class='kw'>subent_cnts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>mtchd_subent_only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>page</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>per_page</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>,
-  <span class='kw'>error_browser</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>search_pv</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  fields <span class='op'>=</span> <span class='cn'>NULL</span>,
+  endpoint <span class='op'>=</span> <span class='st'>"patents"</span>,
+  subent_cnts <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  mtchd_subent_only <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  page <span class='op'>=</span> <span class='fl'>1</span>,
+  per_page <span class='op'>=</span> <span class='fl'>25</span>,
+  all_pages <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  sort <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='st'>"GET"</span>,
+  error_browser <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -271,7 +274,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with the following three elements:</p><dl class='dl-horizontal'>
+    <p>A list with the following three elements:</p><dl>
    <dt>data</dt><dd><p>A list with one element - a named data frame containing the
    data returned by the server. Each row in the data frame corresponds to a
    single value for the primary entity. For example, if you search the
@@ -293,46 +296,44 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-<span class='fu'>search_pv</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>'{"_gt":{"patent_year":2010}}'</span>)
+<span class='fu'>search_pv</span><span class='op'>(</span>query <span class='op'>=</span> <span class='st'>'{"_gt":{"patent_year":2010}}'</span><span class='op'>)</span>
 
-<span class='fu'>search_pv</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
-  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span>(<span class='st'>"patents"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"patents"</span>, <span class='st'>"assignees"</span>))
-)
+<span class='fu'>search_pv</span><span class='op'>(</span>
+  query <span class='op'>=</span> <span class='va'>qry_funs</span><span class='op'>$</span><span class='fu'>gt</span><span class='op'>(</span>patent_year <span class='op'>=</span> <span class='fl'>2010</span><span class='op'>)</span>,
+  fields <span class='op'>=</span> <span class='fu'><a href='get_fields.html'>get_fields</a></span><span class='op'>(</span><span class='st'>"patents"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"patents"</span>, <span class='st'>"assignees"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>search_pv</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>gt</span>(<span class='kw'>patent_year</span> <span class='kw'>=</span> <span class='fl'>2010</span>),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"POST"</span>,
-  <span class='kw'>fields</span> <span class='kw'>=</span> <span class='st'>"patent_number"</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"patent_number"</span> <span class='kw'>=</span> <span class='st'>"asc"</span>)
-)
+<span class='fu'>search_pv</span><span class='op'>(</span>
+  query <span class='op'>=</span> <span class='va'>qry_funs</span><span class='op'>$</span><span class='fu'>gt</span><span class='op'>(</span>patent_year <span class='op'>=</span> <span class='fl'>2010</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='st'>"POST"</span>,
+  fields <span class='op'>=</span> <span class='st'>"patent_number"</span>,
+  sort <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"patent_number"</span> <span class='op'>=</span> <span class='st'>"asc"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>search_pv</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>eq</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"crew"</span>),
-  <span class='kw'>all_pages</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'>search_pv</span><span class='op'>(</span>
+  query <span class='op'>=</span> <span class='va'>qry_funs</span><span class='op'>$</span><span class='fu'>eq</span><span class='op'>(</span>inventor_last_name <span class='op'>=</span> <span class='st'>"crew"</span><span class='op'>)</span>,
+  all_pages <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>search_pv</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
-  <span class='kw'>endpoint</span> <span class='kw'>=</span> <span class='st'>"assignees"</span>
-)
+<span class='fu'>search_pv</span><span class='op'>(</span>
+  query <span class='op'>=</span> <span class='va'>qry_funs</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span>inventor_last_name <span class='op'>=</span> <span class='st'>"smith"</span><span class='op'>)</span>,
+  endpoint <span class='op'>=</span> <span class='st'>"assignees"</span>
+<span class='op'>)</span>
 
-<span class='fu'>search_pv</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='no'>qry_funs</span>$<span class='fu'>contains</span>(<span class='kw'>inventor_last_name</span> <span class='kw'>=</span> <span class='st'>"smith"</span>),
-  <span class='kw'>config</span> <span class='kw'>=</span> <span class='kw pkg'>httr</span><span class='kw ns'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/timeout.html'>timeout</a></span>(<span class='fl'>40</span>)
-)
-}</div></pre>
+<span class='fu'>search_pv</span><span class='op'>(</span>
+  query <span class='op'>=</span> <span class='va'>qry_funs</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span>inventor_last_name <span class='op'>=</span> <span class='st'>"smith"</span><span class='op'>)</span>,
+  config <span class='op'>=</span> <span class='fu'>httr</span><span class='fu'>::</span><span class='fu'><a href='https://httr.r-lib.org/reference/timeout.html'>timeout</a></span><span class='op'>(</span><span class='fl'>40</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -343,7 +344,7 @@ your query is very long (say, over 2,000 characters in length).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

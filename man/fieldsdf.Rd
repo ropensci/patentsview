@@ -4,7 +4,8 @@
 \name{fieldsdf}
 \alias{fieldsdf}
 \title{Fields data frame}
-\format{A data frame with 992 rows and 7 variables:
+\format{
+A data frame with 992 rows and 7 variables:
 \describe{
   \item{endpoint}{The endpoint that this field record is for}
   \item{field}{The name of the field}
@@ -15,7 +16,8 @@
   \item{group}{The group the field belongs to}
   \item{common_name}{The field's common name}
   \item{description}{A description of the field}
-}}
+}
+}
 \usage{
 fieldsdf
 }
