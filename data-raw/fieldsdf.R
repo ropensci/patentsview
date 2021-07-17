@@ -4,12 +4,18 @@ library(dplyr)
 library(devtools)
 
 endpoints <- c(
-  "patent", "inventor", "assignee", "location", "cpc_subsection",
-  "uspc", "nber_subcat"
+  "assignees" = "assignees",
+  "cpc_subsections" = "cpc",
+  "inventors" = "inventors",
+  "locations" = "locations",
+  "nber_subcategories" = "nber",
+  "patents" = "patents",
+  "uspc_mainclasses" = "uspc"
 )
 
 all_tabs <- sapply(endpoints, function(x) {
-  url <- paste0("https://www.patentsview.org/api/", x, ".html")
+  print(x)
+  url <- paste0("https://www.patentsview.org/apis/api-endpoints/", x)
   html <- read_html(url)
   html_table(html)[[2]]
 }, simplify = FALSE, USE.NAMES = TRUE)
@@ -24,17 +30,7 @@ fieldsdf <-
       description = Description
     ) %>%
     select(endpoint, field, data_type, can_query, group, common_name, description) %>%
-    mutate_at(vars(1:5), funs(clean_field)) %>%
-    mutate(endpoint = case_when(
-      .$endpoint == "patent" ~ "patents",
-      .$endpoint == "inventor" ~ "inventors",
-      .$endpoint == "assignee" ~ "assignees",
-      .$endpoint == "location" ~ "locations",
-      .$endpoint == "cpc_subsection" ~ "cpc_subsections",
-      .$endpoint == "uspc" ~ "uspc_mainclasses",
-      .$endpoint == "nber_subcat" ~ "nber_subcategories"
-    )) %>%
-    mutate(group = ifelse(group == "coinvetnros", "coinventors", group))
+    mutate_at(vars(1:5), funs(clean_field))
 
 write.csv(fieldsdf, "data-raw/fieldsdf.csv", row.names = FALSE)
 use_data(fieldsdf, internal = FALSE, overwrite = TRUE)
