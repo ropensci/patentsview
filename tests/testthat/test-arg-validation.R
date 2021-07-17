@@ -2,6 +2,7 @@ context("validate_args")
 
 test_that("validate_args throws errors for all bad args", {
   skip_on_cran()
+  skip_on_ci()
 
   expect_error(
     search_pv('{"patent_date":["1976-01-06"]}', endpoint = "patent"),
