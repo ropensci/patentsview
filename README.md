@@ -6,7 +6,6 @@ patentsview
 [![](http://badges.ropensci.org/112_status.svg)](https://github.com/ropensci/onboarding/issues/112)
 [![R-CMD-check](https://github.com/ropensci/patentsview/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/patentsview/actions)
 [![CRAN version](http://www.r-pkg.org/badges/version/patentsview)](https://cran.r-project.org/package=patentsview)
-[![Coverage status](https://codecov.io/gh/ropensci/patentsview/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/patentsview?branch=master)
 
 ## Installation
 

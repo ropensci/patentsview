@@ -23,6 +23,5 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    tidyr,
-    covr
 RoxygenNote: 7.0.2
+    tidyr
