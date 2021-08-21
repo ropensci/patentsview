@@ -1,0 +1,205 @@
+---
+title: "Citation networks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Citation networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+The following is a brief foray into patent citation networks. The analysis is done on 3 patents that describe patent citation analysis (PCA) themselves. 
+
+The first step is to download the relevant data from the PatentsView API. We can use the CPC code of  [Y10S707/933](https://worldwide.espacenet.com/classification#!/CPC=Y10S707/933) to identify the patents that relate to PCA. 
+
+
+```r
+library(patentsview)
+library(dplyr)
+library(visNetwork)
+library(magrittr)
+library(stringr)
+library(knitr)
+
+# Write a query to pull patents assigned to the CPC code of "Y10S707/933"
+query <- qry_funs$begins(cpc_subgroup_id = "Y10S707/933")
+
+# Create a list of fields to pull from the API
+fields <- c(
+  "patent_number", 
+  "patent_title",
+  "cited_patent_number", # Which patents do these patents cite?
+  "citedby_patent_number" # Which patents cite them?
+)
+
+# Send a request to the API
+res <- search_pv(query, fields = fields, all_pages = TRUE)
+
+# Unnest the data found in the list columns
+res_lst <- unnest_pv_data(res$data, pk = "patent_number")
+res_lst
+#> List of 3
+#>  $ cited_patents  :'data.frame':	971 obs. of  2 variables:
+#>   ..$ patent_number      : chr [1:971] "10095778" ...
+#>   ..$ cited_patent_number: chr [1:971] "4991087" ...
+#>  $ citedby_patents:'data.frame':	806 obs. of  2 variables:
+#>   ..$ patent_number        : chr [1:806] "10095778" ...
+#>   ..$ citedby_patent_number: chr [1:806] "10635705" ...
+#>  $ patents        :'data.frame':	11 obs. of  2 variables:
+#>   ..$ patent_number: chr [1:11] "10095778" ...
+#>   ..$ patent_title : chr [1:11] "Method and system for probabilistically quan"..
+```
+
+There are only 11 PCA patents. These patents cite 971 patents and are cited by 806 patents. Let's visualize the citations among the PCA patents. We'll create our visualization using the `visNetwork` package, which requires us to create a data frame of nodes and a data frame of edges.
+
+
+```r
+pat_title <- function(title, number) {
+  temp_title <- str_wrap(title)
+  i <- gsub("\\n", "<br>", temp_title)
+  paste0('<a href="https://patents.google.com/patent/US', number, '">', i, '</a>')
+}
+
+edges <-
+  res_lst$cited_patents %>%
+    semi_join(x = ., y = ., by = c("cited_patent_number" = "patent_number")) %>%
+    set_colnames(c("from", "to"))
+
+nodes <-
+  res_lst$patents %>%
+    mutate(
+      id = patent_number,
+      label = patent_number,
+      title = pat_title(patent_title, patent_number)
+    )
+
+visNetwork(
+  nodes = nodes, edges = edges, height = "400px", width = "100%",
+  main = "Citations among patent citation analysis (PCA) patents"
+) %>%
+  visEdges(arrows = list(to = list(enabled = TRUE))) %>%
+  visIgraphLayout()
+```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+
+It looks like several of the patents cite patent number 6,499,026, perhaps indicating that this patent contains technology that is foundational to the field. However, when we hover over the nodes we see that several of the patents have the same title. Clicking on the titles brings us to their full text on Google Patents, which confirms that many of these PCA patents belong to the same patent family.[^1]  Let's choose one of the patents in each family to act as the family's representative. This will reduce the size of the subsequent network, while hopefully retaining its overall structure.
+
+
+```r
+p3 <- c("7797336", "9075849", "6499026")
+res_lst2 <- lapply(res_lst, function(x) x[x$patent_number %in% p3, ])
+```
+
+With only 3 patents, it will probably be possible to visualize how these patents' cited and citing patents are all related to one another. Let's create a list of these "relevant patents" (i.e., the 3 patents plus all of their cited and citing patents)[^2], and then get a list of all of their cited patents (i.e., the patents that they cite). This list of cited patents will allow us to measure how similar the relevant patents are to one another. 
+
+
+```r
+rel_pats <-
+  res_lst2$cited_patents %>%
+    rbind(setNames(res_lst2$citedby_patents, names(.))) %>% 
+    select(-patent_number) %>%
+    rename(patent_number = cited_patent_number) %>%
+    bind_rows(data.frame(patent_number = p3)) %>% 
+    distinct() %>%
+    filter(!is.na(patent_number))
+
+# Look up which patents the relevant patents cite
+rel_pats_res <- search_pv(
+  query = list(patent_number = rel_pats$patent_number),
+  fields =  c("cited_patent_number", "patent_number", "patent_title"), 
+  all_pages = TRUE, method = "POST"
+)
+
+rel_pats_lst <- unnest_pv_data(rel_pats_res$data, "patent_number")
+```
+
+Now we know which patents the 514 relevant patents cite. This allows us to measure the similarity between the 514 patents by seeing how many cited references they share in common (a method known as [bibliographic coupling](https://en.wikipedia.org/wiki/Bibliographic_coupling)).
+
+
+```r
+cited_pats <-
+  rel_pats_lst$cited_patents %>%
+    filter(!is.na(cited_patent_number))
+
+full_network <- 
+  cited_pats %>%
+    do({
+      .$ind <- 
+        group_by(., patent_number) %>% 
+          group_indices()
+        group_by(., patent_number) %>%  
+          mutate(sqrt_num_cited = sqrt(n()))
+    }) %>%
+    inner_join(x = ., y = ., by = "cited_patent_number") %>%
+    filter(ind.x > ind.y) %>%
+    group_by(patent_number.x, patent_number.y) %>% 
+    mutate(cosine_sim = n() / (sqrt_num_cited.x * sqrt_num_cited.y)) %>% 
+    ungroup() %>%
+    select(matches("patent_number\\.|cosine_sim")) %>%
+    distinct()
+
+kable(head(full_network))
+```
+
+
+
+|patent_number.x |patent_number.y | cosine_sim|
+|:---------------|:---------------|----------:|
+|10095778        |10073890        |  0.0317500|
+|10095778        |10055864        |  0.0240008|
+|10108700        |10055462        |  0.8894992|
+|10140198        |10055864        |  0.0264628|
+|10140198        |10095778        |  0.0088918|
+|10140673        |10095778        |  0.2330866|
+
+`full_network` contains the similarity score (`cosine_sim`) for all patent pairs that share at least one cited reference in common. This means that it probably contains a lot of patent pairs that have only one or two cited references in common, and thus aren't all that similar. Let's try to identify a natural level of `cosine_sim` to filter on so that our subsequent network is not too hairy.
+
+
+```r
+hist(
+  full_network$cosine_sim, 
+  main = "Similarity scores between patents relevant to PCA",
+  xlab = "Cosine similarity", ylab = "Number of patent pairs"
+)
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+
+There appears to be a smallish group of patent pairs that are very similar to one another (`cosine_sim` > 0.8), which makes it tempting to choose 0.8 as a cutoff point. However, patent pairs that have reference lists that are this similar to each other are probably just patents in the same patent family. Let's choose 0.1 as a cutoff point instead, as there doesn't appear to be too many pairs above this point.[^3] 
+
+
+```r
+edges <- 
+  full_network %>%
+    filter(cosine_sim >= .1) %>% 
+    rename(from = patent_number.x, to = patent_number.y, value = cosine_sim) %>%
+    mutate(title = paste("Cosine similarity =", as.character(round(value, 3))))
+
+nodes <-
+  rel_pats_lst$patents %>%
+    rename(id = patent_number) %>%
+    mutate(
+      # the 3 patents of interest will be represented as blue nodes, all others
+      # will be yellow
+      color = ifelse(id %in% p3, "#97C2FC", "#DDCC77"), 
+      label = id,
+      title = pat_title(patent_title, id)
+    )
+
+visNetwork(
+  nodes = nodes, edges = edges, height = "700px", width = "100%",
+  main = "Network of patents relevant to PCA"
+) %>%
+  visEdges(color = list(color = "#343434")) %>%
+  visOptions(highlightNearest = list(enabled = TRUE, degree = 1)) %>%
+  visIgraphLayout()
+```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+
+
+[^1]: A patent family is a group of related patents, usually all authored by the same inventor and relating to the same technology.
+[^2]: Defining the network of patents relevant to PCA as those that cite or are cited by the 3 patents of interest is fairly restrictive (i.e., it doesn't adequately capture all of the patents related to PCA). There are likely patents out there that aren't cited by nor cite any of the 3, but are still relevant to PCA. One would need to measure the similarity between all the patents that are in the general area of PCA to get a more complete picture of the patents in this area. This is a much harder problem, though, and would require more analysis than can fit in a single vignette.
+[^3]: This is still a pretty arbitrary choice. Take a look at algorithms like the [disparity filter](http://www.pnas.org/content/106/16/6483.full.pdf) for a more systematic way to filter edges.

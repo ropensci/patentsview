@@ -2,10 +2,10 @@ pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  articles/citation-networks: citation-networks.html
-  articles/examples: examples.html
-  articles/getting-started: getting-started.html
-  articles/top-assignees: top-assignees.html
-  articles/writing-queries: writing-queries.html
-last_built: 2021-07-17T03:27Z
+  citation-networks: citation-networks.html
+  examples: examples.html
+  getting-started: getting-started.html
+  top-assignees: top-assignees.html
+  writing-queries: writing-queries.html
+last_built: 2021-08-21T01:54Z
 

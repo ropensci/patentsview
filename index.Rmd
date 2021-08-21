@@ -43,7 +43,7 @@ search_pv(query = '{"_gte":{"patent_date":"2007-01-01"}}')
 
 Check out the:
 
-* [Getting started vignette](articles/articles/getting-started.html) or [rOpenSci blog post](https://ropensci.org/blog/blog/2017/09/19/patentsview) if you are a first-time user
-* In-depth tutorial on [writing queries](articles/articles/writing-queries.html)
-* List of [basic examples](articles/articles/examples.html)
-* Examples of data applications (e.g., a brief analysis of the [top assignees](articles/articles/top-assignees.html) in the field of databases)
+* [Getting started vignette](articles/getting-started.html) or [rOpenSci blog post](https://ropensci.org/blog/blog/2017/09/19/patentsview) if you are a first-time user
+* In-depth tutorial on [writing queries](articles/writing-queries.html)
+* List of [basic examples](articles/examples.html)
+* Examples of data applications (e.g., a brief analysis of the [top assignees](articles/top-assignees.html) in the field of databases)

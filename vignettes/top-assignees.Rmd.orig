@@ -1,6 +1,10 @@
 ---
 title: "Top assignees"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Top assignees}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

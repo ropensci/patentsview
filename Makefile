@@ -14,19 +14,21 @@ else
 	echo "[![ropensci\_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)" >> README.md
 endif
 
-# Document package
 doc:
 	Rscript -e "devtools::document()"
 
-# Test package
 test:
 	Rscript -e "devtools::test()"
 
-# Build site (not part of all)
+# Build pkgdown site
 site:
-	Rscript -e "pkgdown::build_site()"
+	Rscript -e "source('vignettes/build.R'); build_site_locally()"
 
-# Clean
+# "Half-render" the vigenttes for the ROpenSci builds. See the README in
+# the vignettes directory for details.
+half-render:
+	Rscript -e "source('vignettes/build.R'); half_render_vignettes()"
+
 clean:
 	rm -R README.md inst/doc docs
 

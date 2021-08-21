@@ -1,0 +1,163 @@
+---
+title: "Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+## Patents endpoint
+
+Which patents have been cited by more than 500 US patents?
+
+
+```r
+library(patentsview)
+
+search_pv(query = qry_funs$gt(patent_num_cited_by_us_patents = 500))
+#> $data
+#> #### A list with a single data frame on a patent level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame':	25 obs. of  3 variables:
+#>   ..$ patent_id    : chr [1:25] "3940844" ...
+#>   ..$ patent_number: chr [1:25] "3940844" ...
+#>   ..$ patent_title : chr [1:25] "Method of installing an insulating sleeve on"..
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 7,915
+```
+
+How many distinct inventors are represented by these highly-cited patents?
+
+
+```r
+# Setting subent_cnts = TRUE will give us the subentity counts. Since inventors 
+# are subentities for the patents endpoint, this means we will get their counts.
+search_pv(
+  query = qry_funs$gt(patent_num_cited_by_us_patents = 500),
+  fields = c("patent_number", "inventor_id"), 
+  subent_cnts = TRUE
+)
+#> $data
+#> #### A list with a single data frame (with list column(s) inside) on a patent level:
+#> 
+#> List of 1
+#>  $ patents:'data.frame':	25 obs. of  2 variables:
+#>   ..$ patent_number: chr [1:25] "3940844" ...
+#>   ..$ inventors    :List of 25
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_patent_count = 7,915, total_inventor_count = 11,263
+```
+
+Where geographically have Microsoft inventors been coming from over the past 20 years?
+
+
+```r
+# Write the query
+query <- with_qfuns(
+  and(
+    gte(patent_date = "2007-07-25"), # Dates are in yyyy-mm-dd format 
+    contains(assignee_organization = "microsoft")
+  )
+)
+
+# Create a field list
+inv_fields <- get_fields(endpoint = "patents", groups = "inventors")
+fields <- c(inv_fields, "patent_number")
+
+# Pull the data
+pv_out <- search_pv(query, fields = fields, all_pages = TRUE)
+
+# Unnest the inventor list column
+unnest_pv_data(pv_out$data, "patent_number")
+#> List of 2
+#>  $ inventors:'data.frame':	144495 obs. of  24 variables:
+#>   ..$ patent_number                 : chr [1:144495] "10001683" ...
+#>   ..$ inventor_city                 : chr [1:144495] "Mountain View" ...
+#>   ..$ inventor_country              : chr [1:144495] "US" ...
+#>   ..$ inventor_county               : logi [1:144495] NA ...
+#>   ..$ inventor_county_fips          : chr [1:144495] "6085" ...
+#>   ..$ inventor_first_name           : chr [1:144495] "Andriy" ...
+#>   ..$ inventor_first_seen_date      : chr [1:144495] "2014-04-22" ...
+#>   ..$ inventor_id                   : chr [1:144495] "fl:a_ln:pletenetskyy-1" ..
+#>   ..$ inventor_last_name            : chr [1:144495] "Pletenetskyy" ...
+#>   ..$ inventor_last_seen_date       : chr [1:144495] "2020-10-13" ...
+#>   ..$ inventor_lastknown_city       : chr [1:144495] "Mountain View" ...
+#>   ..$ inventor_lastknown_country    : chr [1:144495] "US" ...
+#>   ..$ inventor_lastknown_latitude   : chr [1:144495] "37.4139" ...
+#>   ..$ inventor_lastknown_location_id: chr [1:144495] "37.4139|-122.085" ...
+#>   ..$ inventor_lastknown_longitude  : chr [1:144495] "-122.085" ...
+#>   ..$ inventor_lastknown_state      : chr [1:144495] "CA" ...
+#>   ..$ inventor_latitude             : chr [1:144495] "37.4139" ...
+#>   ..$ inventor_location_id          : chr [1:144495] "37.4139|-122.085" ...
+#>   ..$ inventor_longitude            : chr [1:144495] "-122.085" ...
+#>   ..$ inventor_sequence             : chr [1:144495] "0" ...
+#>   ..$ inventor_state                : chr [1:144495] "CA" ...
+#>   ..$ inventor_state_fips           : chr [1:144495] "06" ...
+#>   ..$ inventor_total_num_patents    : chr [1:144495] "15" ...
+#>   ..$ inventor_key_id               : chr [1:144495] "489570" ...
+#>  $ patents  :'data.frame':	39051 obs. of  1 variable:
+#>   ..$ patent_number: chr [1:39051] "10001683" ...
+```
+
+## Inventors endpoint
+
+Which inventors have Chicago, IL listed as their location on at least one patent.[^1]
+
+
+```r
+search_pv(
+  query = '{"_and":[{"location_city":"Chicago"},{"location_state":"IL"}]}',
+  endpoint = "inventors"
+)
+#> $data
+#> #### A list with a single data frame on an inventor level:
+#> 
+#> List of 1
+#>  $ inventors:'data.frame':	25 obs. of  3 variables:
+#>   ..$ inventor_id        : chr [1:25] "fl:b_ln:gunderson-2" ...
+#>   ..$ inventor_first_name: chr [1:25] "Bjorn" ...
+#>   ..$ inventor_last_name : chr [1:25] "Gunderson" ...
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_inventor_count = 16,360
+```
+
+## Assignees endpoint
+
+Which assignees have an interest in beer?
+
+
+```r
+search_pv(
+  query = qry_funs$text_phrase(patent_title = "beer"), 
+  endpoint = "assignees"
+)
+#> $data
+#> #### A list with a single data frame on an assignee level:
+#> 
+#> List of 1
+#>  $ assignees:'data.frame':	25 obs. of  4 variables:
+#>   ..$ assignee_id          : chr [1:25] "6cdc5a48-9dd2-4d1c-8c35-27eaef76ffd1"..
+#>   ..$ assignee_first_name  : logi [1:25] NA ...
+#>   ..$ assignee_last_name   : logi [1:25] NA ...
+#>   ..$ assignee_organization: chr [1:25] "Rohm Co., Ltd." ...
+#> 
+#> $query_results
+#> #### Distinct entity counts across all downloadable pages of output:
+#> 
+#> total_assignee_count = 225
+```
+
+[^1]: Example taken from http://www.patentsview.org/api/inventor.html.

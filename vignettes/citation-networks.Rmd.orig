@@ -1,6 +1,10 @@
 ---
 title: "Citation networks"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Citation networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -115,8 +119,8 @@ full_network <-
       .$ind <- 
         group_by(., patent_number) %>% 
           group_indices()
-      group_by(., patent_number) %>%  
-        mutate(sqrt_num_cited = sqrt(n()))
+        group_by(., patent_number) %>%  
+          mutate(sqrt_num_cited = sqrt(n()))
     }) %>%
     inner_join(x = ., y = ., by = "cited_patent_number") %>%
     filter(ind.x > ind.y) %>%
