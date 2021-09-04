@@ -1,7 +1,7 @@
 Package: patentsview
 Type: Package
 Title: An R Client to the 'PatentsView' API
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: person("Christopher", "Baker", email = "chriscrewbaker@gmail.com",
     role = c("aut", "cre"))
 Encoding: UTF-8
@@ -23,5 +23,5 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-RoxygenNote: 7.0.2
     tidyr
+RoxygenNote: 7.1.1

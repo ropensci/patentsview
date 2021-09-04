@@ -1,3 +1,14 @@
+# patentsview 0.3.0 (2021-09-03)
+
+#### Misc
+
+* The package is now using the new HTTPS endpoints (#17)
+* The list of queryable fields was updated
+* `with_qfuns()` now find objects in the calling environment (@jcheng5, #20)
+* Vignettes are being pre-computed (#23)
+* An issue was fixed where query strings weren't being properly URL-encoded (#24)
+* Adhoc logic was added to handle API throttling
+
 # patentsview 0.2.2 (2019-01-23)
 
 #### Misc
