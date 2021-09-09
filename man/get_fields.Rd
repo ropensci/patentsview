@@ -15,7 +15,7 @@ returned. A value of \code{NULL} indicates that you want all of the
 endpoint's fields (i.e., do not filter the field list based on group
 membership). See the field tables located online to see which groups you
 can specify for a given endpoint (e.g., the
-\href{http://www.patentsview.org/api/patent.html#field_list}{patents
+\href{https://patentsview.org/apis/api-endpoints/patents}{patents
 endpoint table}), or use the \code{fieldsdf} table
 (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patents", "group"])}).}
 }

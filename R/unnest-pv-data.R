@@ -36,7 +36,7 @@ get_ok_pk <- function(endpoint) {
 #' columns in it into multiple data frames, one for each entity/subentity.
 #' The multiple data frames can be merged together using the primary key
 #' variable specified by the user (see the
-#' \href{http://r4ds.had.co.nz/relational-data.html}{relational data} chapter
+#' \href{https://r4ds.had.co.nz/relational-data.html}{relational data} chapter
 #' in "R for Data Science" for an in-depth introduction to joining tabular data).
 #'
 #' @param data The data returned by \code{\link{search_pv}}. This is the first

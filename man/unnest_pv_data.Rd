@@ -30,7 +30,7 @@ This function converts a single data frame that has subentity-level list
 columns in it into multiple data frames, one for each entity/subentity.
 The multiple data frames can be merged together using the primary key
 variable specified by the user (see the
-\href{http://r4ds.had.co.nz/relational-data.html}{relational data} chapter
+\href{https://r4ds.had.co.nz/relational-data.html}{relational data} chapter
 in "R for Data Science" for an in-depth introduction to joining tabular data).
 }
 \examples{

@@ -112,7 +112,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  A value of \code{NULL} indicates that the default fields should be
 #'  returned. Acceptable fields for a given endpoint can be found at the API's
 #'  online documentation (e.g., check out the field list for the
-#'  \href{http://www.patentsview.org/api/patent.html#field_list}{patents
+#'  \href{https://patentsview.org/apis/api-endpoints/patents}{patents
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
@@ -121,14 +121,14 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
 #' @param subent_cnts Do you want the total counts of unique subentities to be
 #'  returned? This is equivalent to the \code{include_subentity_total_counts}
-#'  parameter found \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
+#'  parameter found \href{https://patentsview.org/apis/api-query-languager}{here}.
 #' @param mtchd_subent_only Do you want only the subentities that match your
 #'  query to be returned? A value of \code{TRUE} indicates that the subentity
 #'  has to meet your query's requirements in order for it to be returned, while
 #'  a value of \code{FALSE} indicates that all subentity data will be returned,
 #'  even those records that don't meet your query's requirements. This is
 #'  equivalent to the \code{matched_subentities_only} parameter found
-#'  \href{http://www.patentsview.org/api/query-language.html#options_parameter}{here}.
+#'  \href{https://patentsview.org/apis/api-query-language}{here}.
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
 #'  value can be as high as 10,000 (e.g., \code{per_page = 10000}).
