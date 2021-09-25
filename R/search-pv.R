@@ -121,7 +121,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
 #' @param subent_cnts Do you want the total counts of unique subentities to be
 #'  returned? This is equivalent to the \code{include_subentity_total_counts}
-#'  parameter found \href{https://patentsview.org/apis/api-query-languager}{here}.
+#'  parameter found \href{https://patentsview.org/apis/api-query-language}{here}.
 #' @param mtchd_subent_only Do you want only the subentities that match your
 #'  query to be returned? A value of \code{TRUE} indicates that the subentity
 #'  has to meet your query's requirements in order for it to be returned, while

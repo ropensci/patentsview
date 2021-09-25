@@ -51,7 +51,7 @@ must be one of the following: "patents", "inventors", "assignees",
 
 \item{subent_cnts}{Do you want the total counts of unique subentities to be
 returned? This is equivalent to the \code{include_subentity_total_counts}
-parameter found \href{https://patentsview.org/apis/api-query-languager}{here}.}
+parameter found \href{https://patentsview.org/apis/api-query-language}{here}.}
 
 \item{mtchd_subent_only}{Do you want only the subentities that match your
 query to be returned? A value of \code{TRUE} indicates that the subentity
