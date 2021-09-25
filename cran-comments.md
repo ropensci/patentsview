@@ -1,8 +1,11 @@
 ## Test environments
 
-* Windows Server 2012 R2 on AppVeyor, R 3.5.2
-* Ubuntu 12.04.5 on Travis-CI, R 3.5.2, R-devel
-* OS X 10.13 (locally), R 3.5.2
+* Windows Server 2019 on Github, R 4.1.1
+* Windows Server 2008 on R-hub builder, R-devel
+* Ubuntu 20.04.3 on Github, R 4.1.1
+* Ubuntu 20.04.3 on Github, R-devel
+* Debian Linux on R-hub builder, R-devel
+* OS X 10.13 locally, R 3.6.2
 
 ## R CMD check results
 
