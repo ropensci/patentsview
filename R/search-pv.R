@@ -221,14 +221,14 @@ search_pv <- function(query,
   validate_endpoint(endpoint)
 
   if (is.list(query)) {
-    check_query(query, endpoint)
+    # check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
-  validate_misc_args(
-    query, fields, endpoint, method, subent_cnts, mtchd_subent_only, page,
-    per_page, sort
-  )
+  # validate_misc_args(
+  #   query, fields, endpoint, method, subent_cnts, mtchd_subent_only, page,
+  #   per_page, sort
+  # )
 
   arg_list <- to_arglist(
     fields, subent_cnts, mtchd_subent_only, page, per_page, sort

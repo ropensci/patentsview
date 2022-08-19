@@ -4,7 +4,6 @@ eps <- get_endpoints()
 
 test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
-  skip_on_ci()
 
   z <- vapply(eps, function(x) {
     Sys.sleep(3)
@@ -17,7 +16,6 @@ test_that("API returns expected df names for all endpoints", {
 
 test_that("DSL-based query returns expected results", {
   skip_on_cran()
-  skip_on_ci()
 
   query <- with_qfuns(
     and(
@@ -36,7 +34,6 @@ test_that("DSL-based query returns expected results", {
 
 test_that("search_pv can pull all fields for all endpoints except locations", {
   skip_on_cran()
-  skip_on_ci()
 
   eps_no_loc <- eps[eps != "locations"]
 
@@ -55,7 +52,6 @@ test_that("search_pv can pull all fields for all endpoints except locations", {
 test_that("search_pv can return subent_cnts", {
   # ...Though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
   skip_on_cran()
-  skip_on_ci()
 
   out_spv <- search_pv(
     "{\"patent_number\":\"5116621\"}",
@@ -67,7 +63,6 @@ test_that("search_pv can return subent_cnts", {
 
 test_that("Sort option works as expected", {
   skip_on_cran()
-  skip_on_ci()
 
   out_spv <- search_pv(
     qry_funs$gt(patent_date = "2015-01-01"),
@@ -84,7 +79,6 @@ test_that("Sort option works as expected", {
 
 test_that("search_pv can pull all fields by group for the locations endpoint", {
   skip_on_cran()
-  skip_on_ci()
 
   groups <- unique(fieldsdf[fieldsdf$endpoint == "locations", "group"])
 
@@ -102,7 +96,6 @@ test_that("search_pv can pull all fields by group for the locations endpoint", {
 
 test_that("search_pv properly encodes queries", {
   skip_on_cran()
-  skip_on_ci()
 
   # Covers https://github.com/ropensci/patentsview/issues/24
   result <- search_pv(
