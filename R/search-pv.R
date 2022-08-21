@@ -1,6 +1,7 @@
 #' @noRd
-get_base <- function(endpoint)
-  sprintf("https://api.patentsview.org/%s/query", endpoint)
+get_base <- function(endpoint) {
+  sprintf("https://search.patentsview.org/api/v1/%s/", to_singular(endpoint))
+}
 
 #' @noRd
 tojson_2 <- function(x, ...) {
@@ -16,10 +17,8 @@ to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
     fields = fields,
     sort = list(as.list(sort)),
     opts = list(
-      include_subentity_total_counts = subent_cnts,
-      matched_subentities_only = mtchd_subent_only,
-      page = page,
-      per_page = per_page
+      offset = (page - 1) * per_page,
+      size = per_page
     )
   )
 }
@@ -55,10 +54,11 @@ one_request <- function(method, query, base_url, arg_list, ...) {
 
   if (method == "GET") {
     get_url <- get_get_url(query, base_url, arg_list)
-    resp <- httr::GET(get_url, ua, ...)
+    resp <- httr::GET(get_url, httr::add_headers("X-Api-Key" = pview_key()), ua, ...)
   } else {
     body <- get_post_body(query, arg_list)
-    resp <- httr::POST(base_url, body = body, ua, ...)
+    # api change, they want a json object, not a string representation of one
+    resp <- httr::POST(base_url, httr::add_headers("X-Api-Key" = pview_key(), "Content-Type" = "application/json"), body = body, ua, ...)
   }
 
   if (httr::http_error(resp)) throw_er(resp)
@@ -68,8 +68,8 @@ one_request <- function(method, query, base_url, arg_list, ...) {
 
 #' @noRd
 request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
+  req_pages <- ceiling(ex_res$query_results[[1]] / arg_list$opts$size)
 
-  req_pages <- ceiling(ex_res$query_results[[1]] / 10000)
   if (req_pages < 1) {
     stop(
       "No records matched your query...Can't download multiple pages",
@@ -79,8 +79,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 
   tmp <- lapply(1:req_pages, function(i) {
     Sys.sleep(3)
-    arg_list$opts$per_page <- 10000
-    arg_list$opts$page <- i
+    arg_list$opts$size <- 1000
+    arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, ...)
     x$data[[1]]
   })
@@ -118,7 +118,9 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  out the fields available for a given endpoint.
 #' @param endpoint The web service resource you wish to search. \code{endpoint}
 #'  must be one of the following: "patents", "inventors", "assignees",
-#'  "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
+#'  "locations", "cpc_groups", "cpc_subgroups", "cpc_subsections", "uspc_mainclasses",
+#'  "uspc_subclasses","nber_categories", "nber_subcategories", "application_citations",
+#'  or "patent_citations"
 #' @param subent_cnts Do you want the total counts of unique subentities to be
 #'  returned? This is equivalent to the \code{include_subentity_total_counts}
 #'  parameter found \href{https://patentsview.org/apis/api-query-language}{here}.
@@ -131,7 +133,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  \href{https://patentsview.org/apis/api-query-language}{here}.
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
-#'  value can be as high as 10,000 (e.g., \code{per_page = 10000}).
+#'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
 #' @param all_pages Do you want to download all possible pages of output? If
 #'  \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are
 #'  ignored.
@@ -168,14 +170,13 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  }
 #'
 #' @examples
-#'
 #' \dontrun{
 #'
 #' search_pv(query = '{"_gt":{"patent_year":2010}}')
 #'
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
-#'   fields = get_fields("patents", c("patents", "assignees"))
+#'   fields = get_fields("patents", c("patents", "assignees_at_grant"))
 #' )
 #'
 #' search_pv(
@@ -186,17 +187,19 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$eq(inventor_last_name = "crew"),
+#'   query = qry_funs$eq(name_last = "crew"),
+#'   endpoint = "inventors",
 #'   all_pages = TRUE
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   query = qry_funs$contains(name_last = "smith"),
 #'   endpoint = "assignees"
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+#'   endpoint = "patents",
 #'   config = httr::timeout(40)
 #' )
 #' }
@@ -214,7 +217,6 @@ search_pv <- function(query,
                       method = "GET",
                       error_browser = NULL,
                       ...) {
-
   if (!is.null(error_browser))
     warning("error_browser parameter has been deprecated")
 
@@ -244,4 +246,15 @@ search_pv <- function(query,
   res$data[[1]] <- full_data
 
   res
+}
+
+#' @noRd
+pview_key <- function() {
+  api_key <- Sys.getenv("PATENTSVIEW_API_KEY")
+  if (identical(api_key, "")) {
+    stop("Please set env var PATENTSVIEW_API_KEY to your patentsview api key",
+      call. = FALSE
+    )
+  }
+  api_key
 }

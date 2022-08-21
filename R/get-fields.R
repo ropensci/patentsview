@@ -21,21 +21,21 @@
 #'
 #' @examples
 #' # Get all assignee-level fields for the patents endpoint:
-#' fields <- get_fields(endpoint = "patents", groups = "assignees")
+#' fields <- get_fields(endpoint = "patents", groups = "assignees_at_grant")
 #'
-#' #...Then pass to search_pv:
+#' # ...Then pass to search_pv:
 #' \dontrun{
 #'
 #' search_pv(
 #'   query = '{"_gte":{"patent_date":"2007-01-04"}}',
 #'   fields = fields
 #' )
-#'}
+#' }
 #' # Get all patent and assignee-level fields for the patents endpoint:
-#' fields <- get_fields(endpoint = "patents", groups = c("assignees", "patents"))
+#' fields <- get_fields(endpoint = "patents", groups = c("assignees_at_grant", "patents"))
 #'
 #' \dontrun{
-#' #...Then pass to search_pv:
+#' # ...Then pass to search_pv:
 #' search_pv(
 #'   query = '{"_gte":{"patent_date":"2007-01-04"}}',
 #'   fields = fields
@@ -55,19 +55,25 @@ get_fields <- function(endpoint, groups = NULL) {
 
 #' Get endpoints
 #'
-#' This function reminds the user what the 7 possible PatentsView API endpoints
+#' This function reminds the user what the 13 possible PatentsView API endpoints
 #' are.
 #'
-#' @return A character vector with the names of the 7 endpoints. Those endpoints are:
+#' @return A character vector with the names of the 13 endpoints. Those endpoints are:
 #'
 #' \itemize{
 #'    \item assignees
 #'    \item cpc_subsections
+#'    \item cpc_groups
+#'    \item cpc_subgroups
 #'    \item inventors
 #'    \item locations
+#'    \item nber_categories
 #'    \item nber_subcategories
 #'    \item patents
 #'    \item uspc_mainclasses
+#'    \item uspc_subclasses
+#'    \item application_citations
+#'    \item patent_citations
 #'  }
 #'
 #' @examples
@@ -75,7 +81,9 @@ get_fields <- function(endpoint, groups = NULL) {
 #' @export
 get_endpoints <- function() {
   c(
-    "assignees", "cpc_subsections", "inventors", "locations",
-    "nber_subcategories", "patents", "uspc_mainclasses"
+    "application_citations", "assignees", "cpc_groups", "cpc_subgroups",
+    "cpc_subsections", "inventors", "locations", "nber_categories",
+    "nber_subcategories", "patent_citations", "patents",
+    "uspc_subclasses", "uspc_mainclasses"
   )
 }

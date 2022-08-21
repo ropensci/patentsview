@@ -72,14 +72,14 @@ jobs:
           rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: Run examples
-        env:
-          _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: |
-          options(crayon.enabled = TRUE)
-          remotes::install_cran("devtools")
-          devtools::run_examples(run_dontrun = TRUE)
-        shell: Rscript {0}
+      # - name: Run examples
+      #   env:
+      #     _R_CHECK_CRAN_INCOMING_REMOTE_: false
+      #   run: |
+      #     options(crayon.enabled = TRUE)
+      #     remotes::install_cran("devtools")
+      #     devtools::run_examples(run_dontrun = TRUE)
+      #   shell: Rscript {0}
 
       - name: Upload check results
         if: failure()
