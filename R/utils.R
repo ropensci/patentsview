@@ -50,14 +50,16 @@ validate_pv_data <- function(data) {
 
 #' @noRd
 to_singular <- function(plural) {
-  # assignees is an exception, singular isn't assigne
-
-  if (endsWith(plural, "ies")) {
-    singular <- sub("ies$", "y", plural)
-  } else if (endsWith(plural, "es") && !endsWith(plural, "ees")) {
-    singular <- sub("es$", "", plural)
+  if (endsWith(plural, "ees")) {
+    sub("ees$", "ee", plural)
+  } else if (endsWith(plural, "ies")) {
+    sub("ies$", "y", plural)
+  } else if (endsWith(plural, "es")) {
+    sub("es$", "", plural)
+  } else if (endsWith(plural, "s")) {
+    sub("s$", "", plural)
   } else {
-    singular <- sub("s$", "", plural)
+    plural
   }
 }
 
@@ -65,10 +67,10 @@ to_singular <- function(plural) {
 #' @noRd
 to_plural <- function(singular) {
   if (endsWith(singular, "y")) {
-    plural <- sub("y$", "ies", singular)
+    sub("y$", "ies", singular)
   } else if (endsWith(singular, "s")) {
-    plural <- paste0(singular, "es")
+    paste0(singular, "es")
   } else {
-    plural <- paste0(singular, "s")
+    paste0(singular, "s")
   }
 }
