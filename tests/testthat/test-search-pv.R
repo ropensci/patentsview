@@ -6,9 +6,6 @@ context("search_pv")
 
 # TODO: add a test to see if all the requested fields come back - to test the new
 # version of the api more than to test the r packge!
-T
-# TODO: remove sleeps - builds are failing as they are getting throttled and search-pv doesn't
-# have the throttling changes yet.  This test works locally but not when builds run in parallel
 
 eps <- (get_endpoints())
 eps <- eps[eps != "locations"]
@@ -17,7 +14,6 @@ test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
 
   z <- vapply(eps, function(x) {
-    Sys.sleep(6)
     j <- search_pv(query = get_test_query(x), endpoint = x)
     names(j[[1]])
     print(names(j[[1]]))
@@ -29,7 +25,6 @@ test_that("API returns expected df names for all endpoints", {
 test_that("DSL-based query returns expected results", {
   skip_on_cran()
 
-  Sys.sleep(6)
   query <- with_qfuns(
     and(
       or(
@@ -50,7 +45,6 @@ test_that("search_pv can pull all fields for all endpoints", {
   skip_on_cran()
 
   z <- lapply(eps, function(x) {
-    Sys.sleep(6)
     print(x)
     search_pv(
       query = get_test_query(x),
@@ -68,7 +62,6 @@ test_that("search_pv can return subent_cnts", {
   # ...Though note this issue: https://github.com/CSSIP-AIR/PatentsView-API/issues/26
   skip_on_cran()
 
-  Sys.sleep(6)
   out_spv <- search_pv(
     "{\"patent_number\":\"5116621\"}",
     fields = get_fields("patents", c("patents", "inventors")),
@@ -82,7 +75,6 @@ test_that("Sort option works as expected", {
 
    # now only the assignee endpoint has lastknown_latitude
    # patent's assignee_at_grant and inventors_at_grant have a latitude 
-  Sys.sleep(6)
 
   out_spv <- search_pv(
     qry_funs$neq(assignee_id = 1),
@@ -104,7 +96,6 @@ test_that("search_pv can pull all fields by group for the locations endpoint", {
   groups <- unique(fieldsdf[fieldsdf$endpoint == "locations", "group"])
 
   z <- lapply(groups, function(x) {
-    Sys.sleep(6)
 
     # the locations endpoint isn't on the test server yet and probably won't be
     # queryable by patent number
@@ -125,7 +116,6 @@ test_that("search_pv properly encodes queries", {
 
   # Covers https://github.com/ropensci/patentsview/issues/24
   # need to use the assignee endpoint now and the field is full_text
-  Sys.sleep(6)
   result <- search_pv(
     query = with_qfuns(
       text_phrase(organization = "Johnson & Johnson")
@@ -133,4 +123,67 @@ test_that("search_pv properly encodes queries", {
   )
 
   expect_true(TRUE)
+})
+
+test_that("throttled requests are automatically retried", {
+  skip_on_cran()
+  skip_on_ci()
+
+  # See if we can get throttled!  We'll ask for 50 patent numbers and then call back
+  # for the citations of each - the new version of the api doesn't return citations
+  # from the patent endpoint.  This would be a semi legitimate use case though we'd probably
+  # call back for all the patents or groups of patents, rather than individually.
+
+  res <- search_pv(
+    '{"_gte":{"patent_date":"2007-01-04"}}',
+    per_page = 50
+  )
+
+  dl <- unnest_pv_data(res$data, "patent_number")
+
+  # Fire off the individual requests as fast as we can - the api should throttle us if we make
+  # more than 45 requests per minute.  The throttling reply contains a header
+  # of how many seconds to wait before retrying the request.  We're testing that search_pv
+  # handles this for us.
+
+  # Currently there is a commented out warning in search-pv when throttling occurs.
+  # Possibly add a new argument to suppress the warning, defaulted to true.  We could set it 
+  # to false here and do an expect_warning() here
+
+  # We'll combine the output of the 50 calls
+  built_singly <- data.frame()
+
+  for (i in 1:length(dl$patents$patent_number))
+  {
+    query <- qry_funs$eq(patent_number = dl$patents$patent_number[i])
+
+    res2 <- search_pv(
+      query = query,
+      endpoint = "patent_citations",
+      fields = c("patent_number", "cited_patent_number"),
+      sort = c("cited_patent_number" = "asc"),
+       per_page = 1000 # new maximum
+     )
+
+    built_singly <- rbind(built_singly, res2$data$patent_citations)
+  }
+
+  # Now we want to make a single call to get the same data and
+  # assert that the bulk results match the list of individual calls -
+  # to prove that the throttled call eventually went through properly
+
+  query_all <- qry_funs$eq(patent_number = dl$patents$patent_number)
+
+  result_all <- search_pv(
+    query = query_all,
+    fields = c("patent_number", "cited_patent_number"),
+    endpoint = "patent_citations",
+    sort = c("patent_number" = "asc", "cited_patent_number" = "asc"),
+    per_page = 1000, # new maximum
+    all_pages = TRUE # would there be more than one page of results?
+  )
+
+  all <- unnest_pv_data(result_all$data, "patent_number")
+
+  expect_identical(all$patent_citations, built_singly)
 })

@@ -61,6 +61,23 @@ one_request <- function(method, query, base_url, arg_list, ...) {
     resp <- httr::POST(base_url, httr::add_headers("X-Api-Key" = pview_key(), "Content-Type" = "application/json"), body = body, ua, ...)
   }
 
+  # sleep and retry on a 429 Too many requests.  The Retry-After header is the seconds to sleep
+  if (httr::status_code(resp) == 429) {
+    seconds <- httr::headers(resp)[["Retry-After"]]
+    s <- if (seconds == "1") "" else "s"
+    msg <- sprintf("The api's requests per minute limit has been reached.  Pausing for %s second%s before continuing.", seconds, s)
+
+    print(msg)
+    # warning(msg)
+    Sys.sleep(seconds)
+
+    if (method == "GET") {
+      resp <- httr::GET(get_url, httr::add_headers("X-Api-Key" = pview_key()), ua, ...)
+    } else {
+      resp <- httr::POST(base_url, httr::add_headers("X-Api-Key" = pview_key(), "Content-Type" = "application/json"), body = body, ua, ...)
+    }
+  }
+
   if (httr::http_error(resp)) throw_er(resp)
 
   process_resp(resp)
@@ -78,7 +95,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
   }
 
   tmp <- lapply(1:req_pages, function(i) {
-    Sys.sleep(3)
     arg_list$opts$size <- 1000
     arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, ...)
