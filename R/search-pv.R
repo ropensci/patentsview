@@ -144,16 +144,10 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  "locations", "cpc_groups", "cpc_subgroups", "cpc_subsections", "uspc_mainclasses",
 #'  "uspc_subclasses","nber_categories", "nber_subcategories", "application_citations",
 #'  or "patent_citations"
-#' @param subent_cnts Do you want the total counts of unique subentities to be
-#'  returned? This is equivalent to the \code{include_subentity_total_counts}
-#'  parameter found \href{https://patentsview.org/apis/api-query-language}{here}.
-#' @param mtchd_subent_only Do you want only the subentities that match your
-#'  query to be returned? A value of \code{TRUE} indicates that the subentity
-#'  has to meet your query's requirements in order for it to be returned, while
-#'  a value of \code{FALSE} indicates that all subentity data will be returned,
-#'  even those records that don't meet your query's requirements. This is
-#'  equivalent to the \code{matched_subentities_only} parameter found
-#'  \href{https://patentsview.org/apis/api-query-language}{here}.
+#' @param endpoint The web service resource you wish to search. Use
+#'  \code{get_endpoints()} to list the available endpoints.
+#' @param subent_cnts `r lifecycle::badge("deprecated")` Non-matched subentities
+#' will always be returned under the new version of the API
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
 #'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
@@ -169,7 +163,9 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #' @param method The HTTP method that you want to use to send the request.
 #'  Possible values include "GET" or "POST". Use the POST method when
 #'  your query is very long (say, over 2,000 characters in length).
-#' @param error_browser Deprecated
+#' @param error_browser `r lifecycle::badge("deprecated")`
+#' @param api_key API key. See \href{https://patentsview.org/apis/keyrequest}{
+#'  Here} for info on creating a key.
 #' @param ... Arguments passed along to httr's \code{\link[httr]{GET}} or
 #'  \code{\link[httr]{POST}} function.
 #'
@@ -183,8 +179,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'    the assignee-level would be returned in list columns.}
 #'
 #'    \item{query_results}{Entity counts across all pages of output (not just
-#'    the page returned to you). If you set \code{subent_cnts = TRUE}, you will
-#'    be returned both the counts of the primary entities and the subentities.}
+#'    the page returned to you).}
 #'
 #'    \item{request}{Details of the HTTP request that was sent to the server.
 #'    When you set \code{all_pages = TRUE}, you will only get a sample request.
@@ -232,7 +227,7 @@ search_pv <- function(query,
                       fields = NULL,
                       endpoint = "patents",
                       subent_cnts = FALSE,
-                      mtchd_subent_only = TRUE,
+                      mtchd_subent_only = lifecycle::deprecated(),
                       page = 1,
                       per_page = 25,
                       all_pages = FALSE,
@@ -240,8 +235,33 @@ search_pv <- function(query,
                       method = "GET",
                       error_browser = NULL,
                       ...) {
-  if (!is.null(error_browser))
-    warning("error_browser parameter has been deprecated")
+
+  if (identical(api_key, "")) {
+    stop2("Need API key")
+  }
+  if (!is.null(error_browser)) {
+    lifecycle::deprecate_warn(when = "0.2.0", what = "search_pv(error_browser)")
+  }
+  # Was previously defaulting to FALSE and we're still defaulting to FALSE to
+  # mirror the fact that the API doesn't support subent_cnts. Warn only if user
+  # tries to set subent_cnts to TRUE.
+  if (isTRUE(subent_cnts)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "search_pv(subent_cnts)",
+      details = "The new version of the API does not support subentity counts."
+    )
+  }
+  # Was previously defaulting to TRUE and now we're defaulting to FALSE, hence
+  # we're being more chatty here than with subent_cnts.
+  if (lifecycle::is_present(mtchd_subent_only)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "search_pv(mtchd_subent_only)",
+      details = "Non-matched subentities will always be returned under the new
+      version of the API"
+    )
+  }
 
   validate_endpoint(endpoint)
 

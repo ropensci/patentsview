@@ -17,6 +17,7 @@ Depends:
     R (>= 3.1)
 Imports:
     httr,
+    lifecycle,
     jsonlite,
     utils
 Suggests:
@@ -25,3 +26,4 @@ Suggests:
     testthat,
     tidyr
 RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
