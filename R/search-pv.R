@@ -95,14 +95,24 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
   matched_records <- ex_res$query_results[[1]]
   req_pages <- ceiling(matched_records / arg_list$opts$size)
   if (req_pages < 1) {
-    stop(
-      "No records matched your query...Can't download multiple pages",
-      .call = FALSE
+    stop2("No records matched your query...Can't download multiple pages")
+  }
+  if (matched_records > 10000) {
+    stop2(
+      "The API only allows you to download 10,000 records in a single query. ",
+      "Your query returned ", matched_records, " records. See <LINK> for ",
+      "how to get around this limitation."
+    )
+  }
+  if (req_pages > 10) {
+    stop2(
+      "The API only allows you to download 10 pages in a single query. ",
+      "Your query returned ", req_pages, " pages. See <LINK> for ",
+      "how to get around this limitation."
     )
   }
 
-  tmp <- lapply(1:req_pages, function(i) {
-    arg_list$opts$size <- 1000
+  tmp <- lapply(seq_len(req_pages), function(i) {
     arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, api_key, ...)
     x <- process_resp(x)
@@ -230,7 +240,7 @@ search_pv <- function(query,
                       subent_cnts = FALSE,
                       mtchd_subent_only = lifecycle::deprecated(),
                       page = 1,
-                      per_page = 25,
+                      per_page = 1000,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",

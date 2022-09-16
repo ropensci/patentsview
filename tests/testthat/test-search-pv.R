@@ -32,6 +32,20 @@ test_that("DSL-based query returns expected results", {
   expect_gt(out$query_results$total_hits, 1000)
 })
 
+test_that("You can download up to 9,000+ records", {
+  skip_on_cran()
+
+  # Should return 9,000+ rows
+  query <- with_qfuns(
+    and(
+        gte(patent_date = "2021-12-13"),
+        lte(patent_date = "2021-12-24")
+    )
+  )
+  out <- search_pv(query, per_page = 1000, all_pages = TRUE)
+  expect_gt(out$query_results$total_hits, 9000)
+})
+
 test_that("search_pv can pull all fields for all endpoints", {
   skip_on_cran()
 
@@ -93,8 +107,7 @@ test_that("Throttled requests are automatically retried", {
       query = qry_funs$eq(patent_number = patent_number),
       endpoint = "patent_citations",
       fields = c("patent_number", "cited_patent_number"),
-      sort = c("cited_patent_number" = "asc"),
-      per_page = 1000
+      sort = c("cited_patent_number" = "asc")
     )[["data"]][["patent_citations"]]
   })
   built_singly <- do.call(rbind, built_singly)
