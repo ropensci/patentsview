@@ -55,34 +55,15 @@ get_fields <- function(endpoint, groups = NULL) {
 
 #' Get endpoints
 #'
-#' This function reminds the user what the 13 possible PatentsView API endpoints
+#' This function reminds the user what the possible PatentsView API endpoints
 #' are.
 #'
-#' @return A character vector with the names of the 13 endpoints. Those endpoints are:
-#'
-#' \itemize{
-#'    \item assignees
-#'    \item cpc_subsections
-#'    \item cpc_groups
-#'    \item cpc_subgroups
-#'    \item inventors
-#'    \item locations
-#'    \item nber_categories
-#'    \item nber_subcategories
-#'    \item patents
-#'    \item uspc_mainclasses
-#'    \item uspc_subclasses
-#'    \item application_citations
-#'    \item patent_citations
-#'  }
-#'
-#' @examples
-#' get_endpoints()
+#' @return A character vector with the names of each endpoint.
 #' @export
 get_endpoints <- function() {
   c(
     "application_citations", "assignees", "cpc_groups", "cpc_subgroups",
-    "cpc_subsections", "inventors", "locations", "nber_categories",
+    "cpc_subsections", "inventors", "nber_categories",
     "nber_subcategories", "patent_citations", "patents",
     "uspc_subclasses", "uspc_mainclasses"
   )
