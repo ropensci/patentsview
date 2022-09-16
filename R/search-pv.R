@@ -49,14 +49,14 @@ get_post_body <- function(query, arg_list) {
 }
 
 #' @noRd
-one_request <- function(method, query, base_url, arg_list, ...) {
+one_request <- function(method, query, base_url, arg_list, api_key, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
     get_url <- get_get_url(query, base_url, arg_list)
     resp <- httr::GET(
       get_url,
-      httr::add_headers("X-Api-Key" = pview_key()),
+      httr::add_headers("X-Api-Key" = api_key),
       ua, ...
     )
   } else {
@@ -64,7 +64,7 @@ one_request <- function(method, query, base_url, arg_list, ...) {
     resp <- httr::POST(
       base_url,
       httr::add_headers(
-        "X-Api-Key" = pview_key(),
+        "X-Api-Key" = api_key,
         "Content-Type" = "application/json"
       ),
       body = body,
@@ -83,16 +83,17 @@ one_request <- function(method, query, base_url, arg_list, ...) {
       " before continuing."
     ))
     Sys.sleep(num_seconds)
-    one_request(method, query, base_url, arg_list, ...)
+
+    one_request(method, query, base_url, arg_list, api_key, ...)
   } else {
     resp
   }
 }
 
 #' @noRd
-request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
-  req_pages <- ceiling(ex_res$query_results[[1]] / arg_list$opts$size)
-
+request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ...) {
+  matched_records <- ex_res$query_results[[1]]
+  req_pages <- ceiling(matched_records / arg_list$opts$size)
   if (req_pages < 1) {
     stop(
       "No records matched your query...Can't download multiple pages",
@@ -103,7 +104,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
   tmp <- lapply(1:req_pages, function(i) {
     arg_list$opts$size <- 1000
     arg_list$opts$offset <- (i - 1) * arg_list$opts$size
-    x <- one_request(method, query, base_url, arg_list, ...)
+    x <- one_request(method, query, base_url, arg_list, api_key, ...)
     x <- process_resp(x)
     x$data[[1]]
   })
@@ -234,6 +235,7 @@ search_pv <- function(query,
                       sort = NULL,
                       method = "GET",
                       error_browser = NULL,
+                      api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
                       ...) {
 
   if (identical(api_key, "")) {
@@ -281,25 +283,14 @@ search_pv <- function(query,
 
   base_url <- get_base(endpoint)
 
-  res <- one_request(method, query, base_url, arg_list, ...)
+  res <- one_request(method, query, base_url, arg_list, api_key, ...)
   # TODO(cbaker): better naming here
   res <- process_resp(res)
 
   if (!all_pages) return(res)
 
-  full_data <- request_apply(res, method, query, base_url, arg_list, ...)
+  full_data <- request_apply(res, method, query, base_url, arg_list, api_key, ...)
   res$data[[1]] <- full_data
 
   res
-}
-
-#' @noRd
-pview_key <- function() {
-  api_key <- Sys.getenv("PATENTSVIEW_API_KEY")
-  if (identical(api_key, "")) {
-    stop("Please set env var PATENTSVIEW_API_KEY to your patentsview api key",
-      call. = FALSE
-    )
-  }
-  api_key
 }
