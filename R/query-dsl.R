@@ -1,4 +1,4 @@
-# Design adapated from http://adv-r.had.co.nz/dsl.html
+# Design adapted from http://adv-r.had.co.nz/dsl.html
 
 #' @noRd
 lapply2 <- function(...) sapply(..., USE.NAMES = TRUE, simplify = FALSE)

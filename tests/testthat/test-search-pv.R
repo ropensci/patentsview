@@ -1,7 +1,6 @@
 context("search_pv")
 
-# TODO: add a test to see if all the requested fields come back - to test the new
-# version of the api more than to test the r packge!
+# TODO: add a test to see if all the requested fields come back
 
 endpoints <- get_endpoints()
 
@@ -83,19 +82,10 @@ test_that("search_pv properly URL encodes queries", {
   expect_true(TRUE)
 })
 
-# See if we can get throttled!  We'll ask for 50 patent numbers and then call back
-# for the citations of each - the new version of the api doesn't return citations
-# from the patent endpoint.  This would be a semi legitimate use case though we'd probably
-# call back for all the patents or groups of patents, rather than individually.
-
-# Fire off the individual requests as fast as we can - the api should throttle us if we make
-# more than 45 requests per minute.  The throttling reply contains a header
-# of how many seconds to wait before retrying the request.  We're testing that search_pv
-# handles this for us.
-
-# Now we want to make a single call to get the same data and
-# assert that the bulk results match the list of individual calls -
-# to prove that the throttled call eventually went through properly
+# Below we request the same data in built_singly and result_all, with the only
+# difference being that we intentionally get throttled in built_singly by
+# sending one request per patent number (instead of all requests at once). If
+# the two responses match, then we've correctly handled throttling errors.
 test_that("Throttled requests are automatically retried", {
   skip_on_cran()
 

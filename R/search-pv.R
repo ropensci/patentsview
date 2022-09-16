@@ -150,11 +150,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
-#' @param endpoint The web service resource you wish to search. \code{endpoint}
-#'  must be one of the following: "patents", "inventors", "assignees",
-#'  "locations", "cpc_groups", "cpc_subgroups", "cpc_subsections", "uspc_mainclasses",
-#'  "uspc_subclasses","nber_categories", "nber_subcategories", "application_citations",
-#'  or "patent_citations"
 #' @param endpoint The web service resource you wish to search. Use
 #'  \code{get_endpoints()} to list the available endpoints.
 #' @param subent_cnts `r lifecycle::badge("deprecated")` Non-matched subentities
