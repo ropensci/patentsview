@@ -33,6 +33,8 @@ get_query_results <- function(prsd_resp) {
 
 #' @noRd
 process_resp <- function(resp) {
+  if (httr::http_error(resp)) throw_er(resp)
+
   prsd_resp <- parse_resp(resp)
   request <- get_request(resp)
   data <- get_data(prsd_resp)

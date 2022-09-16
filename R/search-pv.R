@@ -54,33 +54,39 @@ one_request <- function(method, query, base_url, arg_list, ...) {
 
   if (method == "GET") {
     get_url <- get_get_url(query, base_url, arg_list)
-    resp <- httr::GET(get_url, httr::add_headers("X-Api-Key" = pview_key()), ua, ...)
+    resp <- httr::GET(
+      get_url,
+      httr::add_headers("X-Api-Key" = pview_key()),
+      ua, ...
+    )
   } else {
     body <- get_post_body(query, arg_list)
-    # api change, they want a json object, not a string representation of one
-    resp <- httr::POST(base_url, httr::add_headers("X-Api-Key" = pview_key(), "Content-Type" = "application/json"), body = body, ua, ...)
+    resp <- httr::POST(
+      base_url,
+      httr::add_headers(
+        "X-Api-Key" = pview_key(),
+        "Content-Type" = "application/json"
+      ),
+      body = body,
+      ua, ...
+    )
   }
 
-  # sleep and retry on a 429 Too many requests.  The Retry-After header is the seconds to sleep
+  # Sleep and retry on a 429 (too many requests). The Retry-After header is the
+  # seconds to sleep
   if (httr::status_code(resp) == 429) {
-    seconds <- httr::headers(resp)[["Retry-After"]]
-    s <- if (seconds == "1") "" else "s"
-    msg <- sprintf("The api's requests per minute limit has been reached.  Pausing for %s second%s before continuing.", seconds, s)
-
-    print(msg)
-    # warning(msg)
-    Sys.sleep(seconds)
-
-    if (method == "GET") {
-      resp <- httr::GET(get_url, httr::add_headers("X-Api-Key" = pview_key()), ua, ...)
-    } else {
-      resp <- httr::POST(base_url, httr::add_headers("X-Api-Key" = pview_key(), "Content-Type" = "application/json"), body = body, ua, ...)
-    }
+    num_seconds <- httr::headers(resp)[["Retry-After"]]
+    maybe_an_s <- if (num_seconds == "1") "" else "s"
+    message(paste0(
+      "The API's requests per minute limit has been reached. ",
+      "Pausing for ", num_seconds, " second", maybe_an_s,
+      " before continuing."
+    ))
+    Sys.sleep(num_seconds)
+    one_request(method, query, base_url, arg_list, ...)
+  } else {
+    resp
   }
-
-  if (httr::http_error(resp)) throw_er(resp)
-
-  process_resp(resp)
 }
 
 #' @noRd
@@ -98,6 +104,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
     arg_list$opts$size <- 1000
     arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, ...)
+    x <- process_resp(x)
     x$data[[1]]
   })
 
@@ -255,6 +262,8 @@ search_pv <- function(query,
   base_url <- get_base(endpoint)
 
   res <- one_request(method, query, base_url, arg_list, ...)
+  # TODO(cbaker): better naming here
+  res <- process_resp(res)
 
   if (!all_pages) return(res)
 
