@@ -299,3 +299,41 @@ search_pv <- function(query,
 
   res
 }
+
+#' Get Linked Data
+#'
+#' Some of the endpoints now returns HATEOAS style links to get more data.
+#' ex "inventor": "https://search.patentsview.org/api/v1/inventor/252373/"
+#' 
+#' @param url The link that was returned by the API on a previous call
+#'
+#' @param api_key API key. See \href{https://patentsview.org/apis/keyrequest}{
+#'  Here} for info on creating a key.
+#'
+#' @return A character vector with field names, same as search_pv()
+#'
+#' @examples
+#' \dontrun{
+#'
+#' retrieve_linked_data(
+#'   "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
+#'  )
+#' }
+#'
+#' @export
+retrieve_linked_data <- function(url,
+                                 api_key = Sys.getenv("PATENTSVIEW_API_KEY")
+                                ) {
+
+  # Don't sent the API key to any domain other than patentsview.org
+  if (!grepl("^https://[^/]*\\.*patentsview.org/", url)) {
+    stop2("retrieve_linked_data is only for patentsview.org urls - sends API key")
+  }
+
+  # Go through one_request, it would resend on 429 too many requests 
+  # The API doesn't seeem to mind ?q=&f=&o=&s= appended to the url
+  res = one_request("GET", "", url, list(), api_key)
+  res <- process_resp(res)
+  res
+}
+
