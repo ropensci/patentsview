@@ -19,5 +19,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Christopher Baker \email{chriscrewbaker@gmail.com}
 
+Authors:
+\itemize{
+  \item Russ Allen \email{rrjallen@yahoo.com}
+}
+
 }
 \keyword{internal}
