@@ -154,6 +154,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #'  \code{get_endpoints()} to list the available endpoints.
 #' @param subent_cnts `r lifecycle::badge("deprecated")` Non-matched subentities
 #' will always be returned under the new version of the API
+#' @param mtchd_subent_only `r lifecycle::badge("deprecated")` This is always
+#' FALSE in the new version of the API.
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
 #'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).

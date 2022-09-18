@@ -52,6 +52,9 @@ out the fields available for a given endpoint.}
 \item{subent_cnts}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Non-matched subentities
 will always be returned under the new version of the API}
 
+\item{mtchd_subent_only}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This is always
+FALSE in the new version of the API.}
+
 \item{page}{The page number of the results that should be returned.}
 
 \item{per_page}{The number of records that should be returned per page. This
