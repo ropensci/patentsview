@@ -13,33 +13,6 @@ format_num <- function(x) {
 }
 
 #' @noRd
-validate_endpoint <- function(endpoint) {
-  ok_ends <- get_endpoints()
-
-  asrt(
-    all(endpoint %in% ok_ends, length(endpoint) == 1),
-    "endpoint must be one of the following: ", paste(ok_ends, collapse = ", ")
-  )
-}
-
-#' @noRd
-validate_groups <- function(groups) {
-  ok_grps <- unique(fieldsdf$group)
-  asrt(
-    all(groups %in% ok_grps),
-    "group must be one of the following: ", paste(ok_grps, collapse = ", ")
-  )
-}
-
-#' @noRd
-validate_pv_data <- function(data) {
-  asrt(
-    "pv_data_result" %in% class(data),
-    "Wrong input type for data...See example for correct input type"
-  )
-}
-
-#' @noRd
 to_singular <- function(plural) {
   if (endsWith(plural, "ees")) {
     sub("ees$", "ee", plural)
@@ -53,7 +26,6 @@ to_singular <- function(plural) {
     plural
   }
 }
-
 
 #' @noRd
 to_plural <- function(singular) {

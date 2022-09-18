@@ -11,8 +11,7 @@ tojson_2 <- function(x, ...) {
 }
 
 #' @noRd
-to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
-                       page, per_page, sort) {
+to_arglist <- function(fields, page, per_page, sort) {
   list(
     fields = fields,
     sort = list(as.list(sort)),
@@ -245,52 +244,18 @@ search_pv <- function(query,
                       api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
                       ...) {
 
-  if (identical(api_key, "")) {
-    stop2("Need API key")
-  }
-  if (!is.null(error_browser)) {
-    lifecycle::deprecate_warn(when = "0.2.0", what = "search_pv(error_browser)")
-  }
-  # Was previously defaulting to FALSE and we're still defaulting to FALSE to
-  # mirror the fact that the API doesn't support subent_cnts. Warn only if user
-  # tries to set subent_cnts to TRUE.
-  if (isTRUE(subent_cnts)) {
-    lifecycle::deprecate_warn(
-      when = "1.0.0",
-      what = "search_pv(subent_cnts)",
-      details = "The new version of the API does not support subentity counts."
-    )
-  }
-  # Was previously defaulting to TRUE and now we're defaulting to FALSE, hence
-  # we're being more chatty here than with subent_cnts.
-  if (lifecycle::is_present(mtchd_subent_only)) {
-    lifecycle::deprecate_warn(
-      when = "1.0.0",
-      what = "search_pv(mtchd_subent_only)",
-      details = "Non-matched subentities will always be returned under the new
-      version of the API"
-    )
-  }
-
-  validate_endpoint(endpoint)
+  validate_args(api_key, fields, endpoint, method, page, per_page, sort)
+  deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only)
 
   if (is.list(query)) {
-    # check_query(query, endpoint)
+    check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
-  # validate_misc_args(
-  #   query, fields, endpoint, method, subent_cnts, mtchd_subent_only, page,
-  #   per_page, sort
-  # )
-
-  arg_list <- to_arglist(
-    fields, subent_cnts, mtchd_subent_only, page, per_page, sort
-  )
-
+  arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
-
   res <- one_request(method, query, base_url, arg_list, api_key, ...)
+
   # TODO(cbaker): better naming here
   res <- process_resp(res)
 
