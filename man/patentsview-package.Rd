@@ -6,7 +6,10 @@
 \alias{patentsview-package}
 \title{patentsview: An R Client to the 'PatentsView' API}
 \description{
-Provides functions to simplify the 'PatentsView' API (<https://patentsview.org/apis/purpose>) query language, send GET and POST requests to the API's seven endpoints, and parse the data that comes back.
+Provides functions to simplify the 'PatentsView' API
+    (<https://patentsview.org/apis/purpose>) query language,
+    send GET and POST requests to the API's seven endpoints, and parse the data
+    that comes back.
 }
 \seealso{
 Useful links:
