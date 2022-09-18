@@ -248,7 +248,7 @@ search_pv <- function(query,
   deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only)
 
   if (is.list(query)) {
-    check_query(query, endpoint)
+    # check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
 
