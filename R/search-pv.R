@@ -251,20 +251,17 @@ search_pv <- function(query,
     # check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
-
   arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
-  res <- one_request(method, query, base_url, arg_list, api_key, ...)
 
-  # TODO(cbaker): better naming here
-  res <- process_resp(res)
+  result <- one_request(method, query, base_url, arg_list, api_key, ...)
+  result <- process_resp(result)
+  if (!all_pages) return(result)
 
-  if (!all_pages) return(res)
+  full_data <- request_apply(result, method, query, base_url, arg_list, api_key, ...)
+  result$data[[1]] <- full_data
 
-  full_data <- request_apply(res, method, query, base_url, arg_list, api_key, ...)
-  res$data[[1]] <- full_data
-
-  res
+  result
 }
 
 #' Get Linked Data
