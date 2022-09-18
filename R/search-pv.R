@@ -333,8 +333,7 @@ retrieve_linked_data <- function(url,
   }
 
   # Go through one_request, which handles resend on throttle errors
-  # The API doesn't seeem to mind ?q=&f=&o=&s= appended to the url
+  # The API doesn't seem to mind ?q=&f=&o=&s= appended to the URL
   res <- one_request("GET", "", url, list(), api_key, ...)
   process_resp(res)
 }
-
