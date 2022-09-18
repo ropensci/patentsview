@@ -1,4 +1,13 @@
 #' @noRd
+parse_resp <- function(resp) {
+  j <- httr::content(resp, as = "text", encoding = "UTF-8")
+  jsonlite::fromJSON(
+    j,
+    simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE
+  )
+}
+
+#' @noRd
 get_request <- function(resp) {
   gp <- structure(
     list(method = resp$req$method, url = resp$req$url),
@@ -38,7 +47,6 @@ process_resp <- function(resp) {
   prsd_resp <- parse_resp(resp)
   request <- get_request(resp)
   data <- get_data(prsd_resp)
-
   query_results <- get_query_results(prsd_resp)
 
   structure(
