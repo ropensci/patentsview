@@ -304,15 +304,14 @@ search_pv <- function(query,
 
 #' Get Linked Data
 #'
-#' Some of the endpoints now returns HATEOAS style links to get more data.
-#' ex "inventor": "https://search.patentsview.org/api/v1/inventor/252373/"
-#' 
-#' @param url The link that was returned by the API on a previous call
+#' Some of the endpoints now return HATEOAS style links to get more data. E.g.,
+#' the inventors endpoint may return a link such as:
+#' "https://search.patentsview.org/api/v1/inventor/252373/"
 #'
-#' @param api_key API key. See \href{https://patentsview.org/apis/keyrequest}{
-#'  Here} for info on creating a key.
+#' @param url The link that was returned by the API on a previous call.
 #'
-#' @return A character vector with field names, same as search_pv()
+#' @inherit search_pv return
+#' @inheritParams search_pv
 #'
 #' @examples
 #' \dontrun{
@@ -324,18 +323,18 @@ search_pv <- function(query,
 #'
 #' @export
 retrieve_linked_data <- function(url,
-                                 api_key = Sys.getenv("PATENTSVIEW_API_KEY")
+                                 api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
+                                 ...
                                 ) {
 
   # Don't sent the API key to any domain other than patentsview.org
-  if (!grepl("^https://[^/]*\\.*patentsview.org/", url)) {
-    stop2("retrieve_linked_data is only for patentsview.org urls - sends API key")
+  if (!grepl("^https://[^/]*\\.patentsview.org/", url)) {
+    stop2("retrieve_linked_data is only for patentsview.org urls")
   }
 
-  # Go through one_request, it would resend on 429 too many requests 
+  # Go through one_request, which handles resend on throttle errors
   # The API doesn't seeem to mind ?q=&f=&o=&s= appended to the url
-  res = one_request("GET", "", url, list(), api_key)
-  res <- process_resp(res)
-  res
+  res <- one_request("GET", "", url, list(), api_key, ...)
+  process_resp(res)
 }
 
