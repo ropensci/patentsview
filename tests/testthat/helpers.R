@@ -13,5 +13,6 @@ TEST_QUERIES <- c(
   "patents" = '{"patent_number":"5116621"}',
   "patent/us_patent_citations" = '{"patent_number":"5116621"}',
   "uspc_mainclasses" = '{"uspc_mainclass_id":"30"}',
-  "uspc_subclasses" = '{"uspc_subclass_id": "100/1"}'
+  "uspc_subclasses" = '{"uspc_subclass_id": "100/1"}',
+  "locations" = '{"location_name":"Chicago"}'
 )

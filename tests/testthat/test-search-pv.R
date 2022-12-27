@@ -135,7 +135,8 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
     "https://search.patentsview.org/api/v1/inventor/10/",
     "https://search.patentsview.org/api/v1/patent/10757852/",
     "https://search.patentsview.org/api/v1/uspc_mainclass/30/",
-    "https://search.patentsview.org/api/v1/uspc_subclass/30:100/"
+    "https://search.patentsview.org/api/v1/uspc_subclass/30:100/",
+    "https://search.patentsview.org/api/v1/location/00235947-16c8-11ed-9b5f-1234bde3cd05/",
   )
   dev_null <- lapply(single_item_queries, function(q) {
     j <- retrieve_linked_data(q)

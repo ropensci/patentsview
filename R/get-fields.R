@@ -64,6 +64,6 @@ get_endpoints <- function() {
   c(
     "patent/us_application_citations", "assignees", "cpc_subclasses", "cpc_groups",
     "cpc_classes", "inventors", "patent/us_patent_citations", "patents",
-    "uspc_subclasses", "uspc_mainclasses"
+    "uspc_subclasses", "uspc_mainclasses", "locations"
   )
 }
