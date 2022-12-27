@@ -10,8 +10,6 @@ TEST_QUERIES <- c(
   "cpc_subgroups" = '{"cpc_subgroup_id": "A01B1/00"}',
   "cpc_subsections" = '{"cpc_subsection_id": "A01"}',
   "inventors" = '{"_text_phrase":{"name_last":"Clinton"}}',
-  "nber_categories" = '{"nber_category_id": "1"}',
-  "nber_subcategories" = '{"nber_subcategory_id": "11"}',
   "patents" = '{"patent_number":"5116621"}',
   "patent_citations" = '{"patent_number":"5116621"}',
   "uspc_mainclasses" = '{"uspc_mainclass_id":"30"}',

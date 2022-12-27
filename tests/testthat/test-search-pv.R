@@ -133,8 +133,6 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
     "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/",
     "https://search.patentsview.org/api/v1/cpc_subsection/A01/",
     "https://search.patentsview.org/api/v1/inventor/10/",
-    "https://search.patentsview.org/api/v1/nber_category/1/",
-    "https://search.patentsview.org/api/v1/nber_subcategory/11/",
     "https://search.patentsview.org/api/v1/patent/10757852/",
     "https://search.patentsview.org/api/v1/uspc_mainclass/30/",
     "https://search.patentsview.org/api/v1/uspc_subclass/30:100/"
