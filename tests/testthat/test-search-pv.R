@@ -12,7 +12,9 @@ test_that("API returns expected df names for all endpoints", {
     names(out[[1]])
   }, FUN.VALUE = character(1), USE.NAMES = FALSE)
 
-  expect_equal(endpoints, df_names)
+  # remove nesting
+  plain_endpoints <- gsub("patent/", "", endpoints)
+  expect_equal(plain_endpoints, df_names)
 })
 
 test_that("DSL-based query returns expected results", {
