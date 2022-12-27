@@ -18,16 +18,24 @@
 #'
 #' @export
 get_ok_pk <- function(endpoint) {
-  es_eps <- c(
-    "uspc_mainclasses" = "uspc_mainclass_id",
-    "nber_subcategories" = "nber_subcategory_id",
-    "patents" = "patent_number"
-  )
-  ifelse(
-    endpoint %in% names(es_eps),
-    es_eps[[endpoint]],
-    gsub("s$", "_id", endpoint)
-  )
+
+# most of the nested endpoints use patent_id, patent/attorneys is the exception
+use_patent_id <- c(
+  # if endpoint passed
+  "patent/us_application_citations", "patent/us_patent_citations",
+  "patent/rel_app_texts", "patent/foreign_citations", "patent/rel_app_texts",
+
+  # if names(pv_out[["data"]]) passed
+  "us_application_citations", "us_patent_citations", "foreign_citations",
+  "rel_app_texts", "patents"
+)
+  if (endpoint %in% use_patent_id ) {
+    "patent_id"
+  } else {
+    key <- sub("^patent/", "", endpoint)
+    key <- to_singular(key)
+    paste0(key, "_id")
+  }
 }
 
 #' Unnest PatentsView data
