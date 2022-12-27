@@ -129,9 +129,9 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
 
   single_item_queries <- c(
     "https://search.patentsview.org/api/v1/assignee/10/",
-    "https://search.patentsview.org/api/v1/cpc_group/A01B/",
-    "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/",
-    "https://search.patentsview.org/api/v1/cpc_subsection/A01/",
+    "https://search.patentsview.org/api/v1/cpc_subclass/A01B/",
+    "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/",
+    "https://search.patentsview.org/api/v1/cpc_class/A01/",
     "https://search.patentsview.org/api/v1/inventor/10/",
     "https://search.patentsview.org/api/v1/patent/10757852/",
     "https://search.patentsview.org/api/v1/uspc_mainclass/30/",
