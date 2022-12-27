@@ -62,8 +62,8 @@ get_fields <- function(endpoint, groups = NULL) {
 #' @export
 get_endpoints <- function() {
   c(
-    "patent/us_application_citations", "assignees", "cpc_groups", "cpc_subgroups",
-    "cpc_subsections", "inventors", "patent/us_patent_citations", "patents",
+    "patent/us_application_citations", "assignees", "cpc_subclasses", "cpc_groups",
+    "cpc_classes", "inventors", "patent/us_patent_citations", "patents",
     "uspc_subclasses", "uspc_mainclasses"
   )
 }
