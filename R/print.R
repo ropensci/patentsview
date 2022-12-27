@@ -15,18 +15,11 @@ print.pv_data_result <- function(x, ...) {
 
   k <- vapply(names(df), function(y) class(df[, y]), FUN.VALUE = character(1))
 
-  dat_level <- c(
-    patents = "a patent", inventors = "an inventor",
-    assignees = "an assignee", locations = "a location",
-    cpc_subsections = "a CPC subsection", uspc_mainclasses = "a USPC main class",
-    nber_subcategories = "a NBER subcategory"
-  )
-
   lst <- ifelse("list" %in% k, " (with list column(s) inside) ", " ")
 
   cat(
     "#### A list with a single data frame", lst, "on ",
-    dat_level[[names(x)[1]]], " level:\n\n",
+    names(x)[1], " level:\n\n",
     sep = ""
   )
 

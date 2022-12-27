@@ -12,7 +12,7 @@ key for.}
 }
 \value{
 The name of a primary key (\code{pk}) that you could pass to
-  \code{\link{unnest_pv_data}}.
+\code{\link{unnest_pv_data}}.
 }
 \description{
 This function suggests a value that you could use for the \code{pk} argument

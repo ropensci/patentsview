@@ -2,8 +2,11 @@ Package: patentsview
 Type: Package
 Title: An R Client to the 'PatentsView' API
 Version: 0.3.0
-Authors@R: person("Christopher", "Baker", email = "chriscrewbaker@gmail.com",
-    role = c("aut", "cre"))
+Authors@R: c(
+      person("Christopher", "Baker", email = "chriscrewbaker@gmail.com", 
+        role = c("aut", "cre")),
+      person("Russ", "Allen", email = "rrjallen@yahoo.com", role = "aut")
+    )
 Encoding: UTF-8
 Description: Provides functions to simplify the 'PatentsView' API
     (<https://patentsview.org/apis/purpose>) query language,
@@ -17,6 +20,7 @@ Depends:
     R (>= 3.1)
 Imports:
     httr,
+    lifecycle,
     jsonlite,
     utils
 Suggests:
@@ -24,4 +28,5 @@ Suggests:
     rmarkdown,
     testthat,
     tidyr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)

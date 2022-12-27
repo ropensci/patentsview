@@ -9,32 +9,33 @@ search_pv(
   fields = NULL,
   endpoint = "patents",
   subent_cnts = FALSE,
-  mtchd_subent_only = TRUE,
+  mtchd_subent_only = lifecycle::deprecated(),
   page = 1,
-  per_page = 25,
+  per_page = 1000,
   all_pages = FALSE,
   sort = NULL,
   method = "GET",
   error_browser = NULL,
+  api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
   ...
 )
 }
 \arguments{
 \item{query}{The query that the API will use to filter records. \code{query}
- can come in any one of the following forms:
- \itemize{
-   \item A character string with valid JSON. \cr
-   E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
+can come in any one of the following forms:
+\itemize{
+\item A character string with valid JSON. \cr
+E.g., \code{'{"_gte":{"patent_date":"2007-01-04"}}'}
 
-   \item A list which will be converted to JSON by \code{search_pv}. \cr
-   E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
+\item A list which will be converted to JSON by \code{search_pv}. \cr
+E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
 
-   \item An object of class \code{pv_query}, which you create by calling one
-   of the functions found in the \code{\link{qry_funs}} list...See the
-   \href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
-   queries vignette} for details.\cr
-   E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
- }}
+\item An object of class \code{pv_query}, which you create by calling one
+of the functions found in the \code{\link{qry_funs}} list...See the
+\href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
+queries vignette} for details.\cr
+E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
+}}
 
 \item{fields}{A character vector of the fields that you want returned to you.
 A value of \code{NULL} indicates that the default fields should be
@@ -45,26 +46,19 @@ endpoint}) or by viewing the \code{fieldsdf} data frame
 (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 out the fields available for a given endpoint.}
 
-\item{endpoint}{The web service resource you wish to search. \code{endpoint}
-must be one of the following: "patents", "inventors", "assignees",
-"locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".}
+\item{endpoint}{The web service resource you wish to search. Use
+\code{get_endpoints()} to list the available endpoints.}
 
-\item{subent_cnts}{Do you want the total counts of unique subentities to be
-returned? This is equivalent to the \code{include_subentity_total_counts}
-parameter found \href{https://patentsview.org/apis/api-query-language}{here}.}
+\item{subent_cnts}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Non-matched subentities
+will always be returned under the new version of the API}
 
-\item{mtchd_subent_only}{Do you want only the subentities that match your
-query to be returned? A value of \code{TRUE} indicates that the subentity
-has to meet your query's requirements in order for it to be returned, while
-a value of \code{FALSE} indicates that all subentity data will be returned,
-even those records that don't meet your query's requirements. This is
-equivalent to the \code{matched_subentities_only} parameter found
-\href{https://patentsview.org/apis/api-query-language}{here}.}
+\item{mtchd_subent_only}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This is always
+FALSE in the new version of the API.}
 
 \item{page}{The page number of the results that should be returned.}
 
 \item{per_page}{The number of records that should be returned per page. This
-value can be as high as 10,000 (e.g., \code{per_page = 10000}).}
+value can be as high as 1,000 (e.g., \code{per_page = 1000}).}
 
 \item{all_pages}{Do you want to download all possible pages of output? If
 \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are
@@ -73,52 +67,53 @@ ignored.}
 \item{sort}{A named character vector where the name indicates the field to
 sort by and the value indicates the direction of sorting (direction should
 be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
-"asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
-"desc")}. \code{sort = NULL} (the default) means do not sort the results.
+ "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
+ "desc")}. \code{sort = NULL} (the default) means do not sort the results.
 You must include any fields that you wish to sort by in \code{fields}.}
 
 \item{method}{The HTTP method that you want to use to send the request.
 Possible values include "GET" or "POST". Use the POST method when
 your query is very long (say, over 2,000 characters in length).}
 
-\item{error_browser}{Deprecated}
+\item{error_browser}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
+
+\item{api_key}{API key. See \href{https://patentsview.org/apis/keyrequest}{
+Here} for info on creating a key.}
 
 \item{...}{Arguments passed along to httr's \code{\link[httr]{GET}} or
 \code{\link[httr]{POST}} function.}
 }
 \value{
 A list with the following three elements:
- \describe{
-   \item{data}{A list with one element - a named data frame containing the
-   data returned by the server. Each row in the data frame corresponds to a
-   single value for the primary entity. For example, if you search the
-   assignees endpoint, then the data frame will be on the assignee-level,
-   where each row corresponds to a single assignee. Fields that are not on
-   the assignee-level would be returned in list columns.}
+\describe{
+\item{data}{A list with one element - a named data frame containing the
+data returned by the server. Each row in the data frame corresponds to a
+single value for the primary entity. For example, if you search the
+assignees endpoint, then the data frame will be on the assignee-level,
+where each row corresponds to a single assignee. Fields that are not on
+the assignee-level would be returned in list columns.}
 
-   \item{query_results}{Entity counts across all pages of output (not just
-   the page returned to you). If you set \code{subent_cnts = TRUE}, you will
-   be returned both the counts of the primary entities and the subentities.}
+\item{query_results}{Entity counts across all pages of output (not just
+the page returned to you).}
 
-   \item{request}{Details of the HTTP request that was sent to the server.
-   When you set \code{all_pages = TRUE}, you will only get a sample request.
-   In other words, you will not be given multiple requests for the multiple
-   calls that were made to the server (one for each page of results).}
- }
+\item{request}{Details of the HTTP request that was sent to the server.
+When you set \code{all_pages = TRUE}, you will only get a sample request.
+In other words, you will not be given multiple requests for the multiple
+calls that were made to the server (one for each page of results).}
+}
 }
 \description{
 This function makes an HTTP request to the PatentsView API for data matching
 the user's query.
 }
 \examples{
-
 \dontrun{
 
 search_pv(query = '{"_gt":{"patent_year":2010}}')
 
 search_pv(
   query = qry_funs$gt(patent_year = 2010),
-  fields = get_fields("patents", c("patents", "assignees"))
+  fields = get_fields("patents", c("patents", "assignees_at_grant"))
 )
 
 search_pv(
@@ -129,17 +124,19 @@ search_pv(
 )
 
 search_pv(
-  query = qry_funs$eq(inventor_last_name = "crew"),
+  query = qry_funs$eq(name_last = "crew"),
+  endpoint = "inventors",
   all_pages = TRUE
 )
 
 search_pv(
-  query = qry_funs$contains(inventor_last_name = "smith"),
+  query = qry_funs$contains(name_last = "smith"),
   endpoint = "assignees"
 )
 
 search_pv(
-  query = qry_funs$contains(inventor_last_name = "smith"),
+  query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+  endpoint = "patents",
   config = httr::timeout(40)
 )
 }

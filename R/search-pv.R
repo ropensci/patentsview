@@ -1,6 +1,7 @@
 #' @noRd
-get_base <- function(endpoint)
-  sprintf("https://api.patentsview.org/%s/query", endpoint)
+get_base <- function(endpoint) {
+  sprintf("https://search.patentsview.org/api/v1/%s/", to_singular(endpoint))
+}
 
 #' @noRd
 tojson_2 <- function(x, ...) {
@@ -10,16 +11,13 @@ tojson_2 <- function(x, ...) {
 }
 
 #' @noRd
-to_arglist <- function(fields, subent_cnts, mtchd_subent_only,
-                       page, per_page, sort) {
+to_arglist <- function(fields, page, per_page, sort) {
   list(
     fields = fields,
     sort = list(as.list(sort)),
     opts = list(
-      include_subentity_total_counts = subent_cnts,
-      matched_subentities_only = mtchd_subent_only,
-      page = page,
-      per_page = per_page
+      offset = (page - 1) * per_page,
+      size = per_page
     )
   )
 }
@@ -50,38 +48,73 @@ get_post_body <- function(query, arg_list) {
 }
 
 #' @noRd
-one_request <- function(method, query, base_url, arg_list, ...) {
+one_request <- function(method, query, base_url, arg_list, api_key, ...) {
   ua <- httr::user_agent("https://github.com/ropensci/patentsview")
 
   if (method == "GET") {
     get_url <- get_get_url(query, base_url, arg_list)
-    resp <- httr::GET(get_url, ua, ...)
+    resp <- httr::GET(
+      get_url,
+      httr::add_headers("X-Api-Key" = api_key),
+      ua, ...
+    )
   } else {
     body <- get_post_body(query, arg_list)
-    resp <- httr::POST(base_url, body = body, ua, ...)
-  }
-
-  if (httr::http_error(resp)) throw_er(resp)
-
-  process_resp(resp)
-}
-
-#' @noRd
-request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
-
-  req_pages <- ceiling(ex_res$query_results[[1]] / 10000)
-  if (req_pages < 1) {
-    stop(
-      "No records matched your query...Can't download multiple pages",
-      .call = FALSE
+    resp <- httr::POST(
+      base_url,
+      httr::add_headers(
+        "X-Api-Key" = api_key,
+        "Content-Type" = "application/json"
+      ),
+      body = body,
+      ua, ...
     )
   }
 
-  tmp <- lapply(1:req_pages, function(i) {
-    Sys.sleep(3)
-    arg_list$opts$per_page <- 10000
-    arg_list$opts$page <- i
-    x <- one_request(method, query, base_url, arg_list, ...)
+  # Sleep and retry on a 429 (too many requests). The Retry-After header is the
+  # seconds to sleep
+  if (httr::status_code(resp) == 429) {
+    num_seconds <- httr::headers(resp)[["Retry-After"]]
+    maybe_an_s <- if (num_seconds == "1") "" else "s"
+    message(paste0(
+      "The API's requests per minute limit has been reached. ",
+      "Pausing for ", num_seconds, " second", maybe_an_s,
+      " before continuing."
+    ))
+    Sys.sleep(num_seconds)
+
+    one_request(method, query, base_url, arg_list, api_key, ...)
+  } else {
+    resp
+  }
+}
+
+#' @noRd
+request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ...) {
+  matched_records <- ex_res$query_results[[1]]
+  req_pages <- ceiling(matched_records / arg_list$opts$size)
+  if (req_pages < 1) {
+    stop2("No records matched your query...Can't download multiple pages")
+  }
+  if (matched_records > 10000) {
+    stop2(
+      "The API only allows you to download 10,000 records in a single query. ",
+      "Your query returned ", matched_records, " records. See <LINK> for ",
+      "how to get around this limitation."
+    )
+  }
+  if (req_pages > 10) {
+    stop2(
+      "The API only allows you to download 10 pages in a single query. ",
+      "Your query returned ", req_pages, " pages. See <LINK> for ",
+      "how to get around this limitation."
+    )
+  }
+
+  tmp <- lapply(seq_len(req_pages), function(i) {
+    arg_list$opts$offset <- (i - 1) * arg_list$opts$size
+    x <- one_request(method, query, base_url, arg_list, api_key, ...)
+    x <- process_resp(x)
     x$data[[1]]
   })
 
@@ -116,22 +149,15 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
-#' @param endpoint The web service resource you wish to search. \code{endpoint}
-#'  must be one of the following: "patents", "inventors", "assignees",
-#'  "locations", "cpc_subsections", "uspc_mainclasses", or "nber_subcategories".
-#' @param subent_cnts Do you want the total counts of unique subentities to be
-#'  returned? This is equivalent to the \code{include_subentity_total_counts}
-#'  parameter found \href{https://patentsview.org/apis/api-query-language}{here}.
-#' @param mtchd_subent_only Do you want only the subentities that match your
-#'  query to be returned? A value of \code{TRUE} indicates that the subentity
-#'  has to meet your query's requirements in order for it to be returned, while
-#'  a value of \code{FALSE} indicates that all subentity data will be returned,
-#'  even those records that don't meet your query's requirements. This is
-#'  equivalent to the \code{matched_subentities_only} parameter found
-#'  \href{https://patentsview.org/apis/api-query-language}{here}.
+#' @param endpoint The web service resource you wish to search. Use
+#'  \code{get_endpoints()} to list the available endpoints.
+#' @param subent_cnts `r lifecycle::badge("deprecated")` Non-matched subentities
+#' will always be returned under the new version of the API
+#' @param mtchd_subent_only `r lifecycle::badge("deprecated")` This is always
+#' FALSE in the new version of the API.
 #' @param page The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
-#'  value can be as high as 10,000 (e.g., \code{per_page = 10000}).
+#'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
 #' @param all_pages Do you want to download all possible pages of output? If
 #'  \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are
 #'  ignored.
@@ -144,7 +170,9 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #' @param method The HTTP method that you want to use to send the request.
 #'  Possible values include "GET" or "POST". Use the POST method when
 #'  your query is very long (say, over 2,000 characters in length).
-#' @param error_browser Deprecated
+#' @param error_browser `r lifecycle::badge("deprecated")`
+#' @param api_key API key. See \href{https://patentsview.org/apis/keyrequest}{
+#'  Here} for info on creating a key.
 #' @param ... Arguments passed along to httr's \code{\link[httr]{GET}} or
 #'  \code{\link[httr]{POST}} function.
 #'
@@ -158,8 +186,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'    the assignee-level would be returned in list columns.}
 #'
 #'    \item{query_results}{Entity counts across all pages of output (not just
-#'    the page returned to you). If you set \code{subent_cnts = TRUE}, you will
-#'    be returned both the counts of the primary entities and the subentities.}
+#'    the page returned to you).}
 #'
 #'    \item{request}{Details of the HTTP request that was sent to the server.
 #'    When you set \code{all_pages = TRUE}, you will only get a sample request.
@@ -168,14 +195,13 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #'  }
 #'
 #' @examples
-#'
 #' \dontrun{
 #'
 #' search_pv(query = '{"_gt":{"patent_year":2010}}')
 #'
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
-#'   fields = get_fields("patents", c("patents", "assignees"))
+#'   fields = get_fields("patents", c("patents", "assignees_at_grant"))
 #' )
 #'
 #' search_pv(
@@ -186,17 +212,19 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, ...) {
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$eq(inventor_last_name = "crew"),
+#'   query = qry_funs$eq(name_last = "crew"),
+#'   endpoint = "inventors",
 #'   all_pages = TRUE
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   query = qry_funs$contains(name_last = "smith"),
 #'   endpoint = "assignees"
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventor_last_name = "smith"),
+#'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+#'   endpoint = "patents",
 #'   config = httr::timeout(40)
 #' )
 #' }
@@ -206,42 +234,68 @@ search_pv <- function(query,
                       fields = NULL,
                       endpoint = "patents",
                       subent_cnts = FALSE,
-                      mtchd_subent_only = TRUE,
+                      mtchd_subent_only = lifecycle::deprecated(),
                       page = 1,
-                      per_page = 25,
+                      per_page = 1000,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",
                       error_browser = NULL,
+                      api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
                       ...) {
 
-  if (!is.null(error_browser))
-    warning("error_browser parameter has been deprecated")
-
-  validate_endpoint(endpoint)
+  validate_args(api_key, fields, endpoint, method, page, per_page, sort)
+  deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only)
 
   if (is.list(query)) {
-    check_query(query, endpoint)
+    # check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
-
-  validate_misc_args(
-    query, fields, endpoint, method, subent_cnts, mtchd_subent_only, page,
-    per_page, sort
-  )
-
-  arg_list <- to_arglist(
-    fields, subent_cnts, mtchd_subent_only, page, per_page, sort
-  )
-
+  arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
 
-  res <- one_request(method, query, base_url, arg_list, ...)
+  result <- one_request(method, query, base_url, arg_list, api_key, ...)
+  result <- process_resp(result)
+  if (!all_pages) return(result)
 
-  if (!all_pages) return(res)
+  full_data <- request_apply(result, method, query, base_url, arg_list, api_key, ...)
+  result$data[[1]] <- full_data
 
-  full_data <- request_apply(res, method, query, base_url, arg_list, ...)
-  res$data[[1]] <- full_data
+  result
+}
 
-  res
+#' Get Linked Data
+#'
+#' Some of the endpoints now return HATEOAS style links to get more data. E.g.,
+#' the inventors endpoint may return a link such as:
+#' "https://search.patentsview.org/api/v1/inventor/252373/"
+#'
+#' @param url The link that was returned by the API on a previous call.
+#'
+#' @inherit search_pv return
+#' @inheritParams search_pv
+#'
+#' @examples
+#' \dontrun{
+#'
+#' retrieve_linked_data(
+#'   "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
+#'  )
+#' }
+#'
+#' @export
+retrieve_linked_data <- function(url,
+                                 api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
+                                 ...
+                                ) {
+
+  # Don't sent the API key to any domain other than patentsview.org
+  if (!grepl("^https://[^/]*\\.patentsview.org/", url)) {
+    stop2("retrieve_linked_data is only for patentsview.org urls")
+  }
+
+  # Go through one_request, which handles resend on throttle errors
+  # The API doesn't seem to mind ?q=&f=&o=&s= appended to the URL
+  res <- one_request("GET", "", url, list(), api_key, ...)
+  process_resp(res)
 }

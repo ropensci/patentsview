@@ -7,22 +7,9 @@
 get_endpoints()
 }
 \value{
-A character vector with the names of the 7 endpoints. Those endpoints are:
-
-\itemize{
-   \item assignees
-   \item cpc_subsections
-   \item inventors
-   \item locations
-   \item nber_subcategories
-   \item patents
-   \item uspc_mainclasses
- }
+A character vector with the names of each endpoint.
 }
 \description{
-This function reminds the user what the 7 possible PatentsView API endpoints
+This function reminds the user what the possible PatentsView API endpoints
 are.
-}
-\examples{
-get_endpoints()
 }

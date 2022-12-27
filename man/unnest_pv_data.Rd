@@ -22,8 +22,8 @@ potential primary key for your data.}
 }
 \value{
 A list with multiple data frames, one for each entity/subentity.
-  Each data frame will have the \code{pk} column in it, so you can link the
-  tables together as needed.
+Each data frame will have the \code{pk} column in it, so you can link the
+tables together as needed.
 }
 \description{
 This function converts a single data frame that has subentity-level list
