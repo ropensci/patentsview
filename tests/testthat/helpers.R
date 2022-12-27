@@ -4,14 +4,14 @@
 # search query).
 
 TEST_QUERIES <- c(
-  "application_citations" = '{"patent_number": "10966293"}',
+  "patent/us_application_citations" = '{"patent_number": "10966293"}',
   "assignees" = '{"_text_phrase":{"name_last": "Clinton"}}',
   "cpc_groups" = '{"cpc_group_id": "A01B"}',
   "cpc_subgroups" = '{"cpc_subgroup_id": "A01B1/00"}',
   "cpc_subsections" = '{"cpc_subsection_id": "A01"}',
   "inventors" = '{"_text_phrase":{"name_last":"Clinton"}}',
   "patents" = '{"patent_number":"5116621"}',
-  "patent_citations" = '{"patent_number":"5116621"}',
+  "patent/us_patent_citations" = '{"patent_number":"5116621"}',
   "uspc_mainclasses" = '{"uspc_mainclass_id":"30"}',
   "uspc_subclasses" = '{"uspc_subclass_id": "100/1"}'
 )
