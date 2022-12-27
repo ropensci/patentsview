@@ -95,22 +95,22 @@ test_that("Throttled requests are automatically retried", {
   built_singly <- lapply(patent_numbers, function(patent_number) {
     search_pv(
       query = qry_funs$eq(patent_number = patent_number),
-      endpoint = "patent_citations",
+      endpoint = "patent/us_patent_citations",
       fields = c("patent_number", "cited_patent_number"),
       sort = c("cited_patent_number" = "asc")
-    )[["data"]][["patent_citations"]]
+    )[["data"]][["us_patent_citations"]]
   })
   built_singly <- do.call(rbind, built_singly)
 
   result_all <- search_pv(
     query = qry_funs$eq(patent_number = patent_numbers),
-    endpoint = "patent_citations",
+    endpoint = "patent/us_patent_citations",
     fields = c("patent_number", "cited_patent_number"),
     sort = c("patent_number" = "asc", "cited_patent_number" = "asc"),
     per_page = 1000,
     all_pages = TRUE
   )
-  result_all <- result_all$data$patent_citations
+  result_all <- result_all$data$us_patent_citations
 
   expect_identical(built_singly, result_all)
 })
@@ -143,8 +143,8 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
   })
 
   multi_item_queries <- c(
-    "https://search.patentsview.org/api/v1/application_citation/10966293/",
-    "https://search.patentsview.org/api/v1/patent_citation/10966293/"
+    "https://search.patentsview.org/api/v1/patent/us_application_citation/10966293/",
+    "https://search.patentsview.org/api/v1/patent/us_patent_citation/10966293/"
   )
   dev_null <- lapply(multi_item_queries, function(q) {
     j <- retrieve_linked_data(q)
