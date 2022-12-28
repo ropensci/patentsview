@@ -16,7 +16,6 @@ to_arglist <- function(fields, page, per_page, sort) {
     fields = fields,
     sort = list(as.list(sort)),
     opts = list(
-      offset = (page - 1) * per_page,
       size = per_page
     )
   )
@@ -98,13 +97,31 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
   }
 
   tmp <- lapply(seq_len(req_pages), function(i) {
-    arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, api_key, ...)
     x <- process_resp(x)
+
+    # now to page we need set the "after" attribute to where we left off
+    # we want the value of the primary sort field
+    s <- names(arg_list$sort[[1]])[[1]]
+    if (arg_list$sort[[1]][[1]] == "asc") {
+      index <- nrow(x$data[[1]])
+    } else {
+      index <- 1
+    }
+
+    arg_list$opts$after <<- x$data[[1]][[s]][[index]]
+
     x$data[[1]]
   })
 
   do.call("rbind", c(tmp, make.row.names = FALSE))
+}
+
+#' @noRd
+get_default_sort <- function(endpoint) {
+  default <- c("asc")
+  names(default) <- get_ok_pk(endpoint)
+  default
 }
 
 #' Search PatentsView
@@ -141,7 +158,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #' will always be returned under the new version of the API
 #' @param mtchd_subent_only `r lifecycle::badge("deprecated")` This is always
 #' FALSE in the new version of the API.
-#' @param page The page number of the results that should be returned.
+#' @param page `r lifecycle::badge("deprecated")` The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
 #'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
 #' @param all_pages Do you want to download all possible pages of output? If
@@ -221,7 +238,7 @@ search_pv <- function(query,
                       endpoint = "patents",
                       subent_cnts = FALSE,
                       mtchd_subent_only = lifecycle::deprecated(),
-                      page = 1,
+                      page = lifecycle::deprecated(),
                       per_page = 1000,
                       all_pages = FALSE,
                       sort = NULL,
@@ -237,6 +254,10 @@ search_pv <- function(query,
     # check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
+
+  # now for paging to work there needs to be a sort field
+  if (is.null(sort)) sort <- get_default_sort(endpoint)
+
   arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
 
