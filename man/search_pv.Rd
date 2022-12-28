@@ -10,7 +10,7 @@ search_pv(
   endpoint = "patents",
   subent_cnts = FALSE,
   mtchd_subent_only = lifecycle::deprecated(),
-  page = 1,
+  page = lifecycle::deprecated(),
   per_page = 1000,
   all_pages = FALSE,
   sort = NULL,
@@ -55,7 +55,7 @@ will always be returned under the new version of the API}
 \item{mtchd_subent_only}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This is always
 FALSE in the new version of the API.}
 
-\item{page}{The page number of the results that should be returned.}
+\item{page}{`r lifecycle::badge("deprecated")` The page number of the results that should be returned.}
 
 \item{per_page}{The number of records that should be returned per page. This
 value can be as high as 1,000 (e.g., \code{per_page = 1000}).}
