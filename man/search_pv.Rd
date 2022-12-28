@@ -55,7 +55,7 @@ will always be returned under the new version of the API}
 \item{mtchd_subent_only}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This is always
 FALSE in the new version of the API.}
 
-\item{page}{`r lifecycle::badge("deprecated")` The page number of the results that should be returned.}
+\item{page}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The page number of the results that should be returned.}
 
 \item{per_page}{The number of records that should be returned per page. This
 value can be as high as 1,000 (e.g., \code{per_page = 1000}).}
@@ -113,7 +113,7 @@ search_pv(query = '{"_gt":{"patent_year":2010}}')
 
 search_pv(
   query = qry_funs$gt(patent_year = 2010),
-  fields = get_fields("patents", c("patents", "assignees_at_grant"))
+  fields = get_fields("patents", c("patents", "assignees"))
 )
 
 search_pv(
@@ -124,18 +124,18 @@ search_pv(
 )
 
 search_pv(
-  query = qry_funs$eq(name_last = "crew"),
+  query = qry_funs$eq(inventor_name_last = "crew"),
   endpoint = "inventors",
   all_pages = TRUE
 )
 
 search_pv(
-  query = qry_funs$contains(name_last = "smith"),
+  query = qry_funs$contains(assignee_individual_name_last = "smith"),
   endpoint = "assignees"
 )
 
 search_pv(
-  query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+  query = qry_funs$contains(inventors.inventor_name_last = "smith"),
   endpoint = "patents",
   config = httr::timeout(40)
 )

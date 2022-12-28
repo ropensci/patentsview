@@ -31,7 +31,7 @@ possible fields for each endpoint).
 }
 \examples{
 # Get all assignee-level fields for the patents endpoint:
-fields <- get_fields(endpoint = "patents", groups = "assignees_at_grant")
+fields <- get_fields(endpoint = "patents", groups = "assignees")
 
 # ...Then pass to search_pv:
 \dontrun{
@@ -42,7 +42,7 @@ search_pv(
 )
 }
 # Get all patent and assignee-level fields for the patents endpoint:
-fields <- get_fields(endpoint = "patents", groups = c("assignees_at_grant", "patents"))
+fields <- get_fields(endpoint = "patents", groups = c("assignees", "patents"))
 
 \dontrun{
 # ...Then pass to search_pv:

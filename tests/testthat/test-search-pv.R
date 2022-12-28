@@ -64,13 +64,13 @@ test_that("Sort option works as expected", {
   skip_on_cran()
 
   out <- search_pv(
-    qry_funs$neq(assignee_id = 1),
+    qry_funs$gt(assignee_id = ""),
     fields = get_fields("assignees"),
     endpoint = "assignees",
-    sort = c("lastknown_latitude" = "desc"),
+    sort = c("assignee_lastknown_latitude" = "desc"),
     per_page = 100
   )
-  lat <- as.numeric(out$data$assignees$lastknown_latitude)
+  lat <- as.numeric(out$data$assignees$assignee_lastknown_latitude)
   expect_true(lat[1] >= lat[100])
 })
 
@@ -79,7 +79,7 @@ test_that("search_pv properly URL encodes queries", {
 
   # Covers https://github.com/ropensci/patentsview/issues/24
   # need to use the assignee endpoint now and the field is full_text
-  ampersand_query <- with_qfuns(text_phrase(organization = "Johnson & Johnson"))
+  ampersand_query <- with_qfuns(text_phrase(assignee_organization = "Johnson & Johnson"))
   dev_null <- search_pv(ampersand_query, endpoint = "assignees")
   expect_true(TRUE)
 })
@@ -92,23 +92,23 @@ test_that("Throttled requests are automatically retried", {
   skip_on_cran()
 
   res <- search_pv('{"_gte":{"patent_date":"2007-01-04"}}', per_page = 50)
-  patent_numbers <- res$data$patents$patent_number
+  patent_ids <- res$data$patents$patent_id
 
-  built_singly <- lapply(patent_numbers, function(patent_number) {
+  built_singly <- lapply(patent_ids, function(patent_id) {
     search_pv(
-      query = qry_funs$eq(patent_number = patent_number),
+      query = qry_funs$eq(patent_id = patent_id),
       endpoint = "patent/us_patent_citations",
-      fields = c("patent_number", "cited_patent_number"),
-      sort = c("cited_patent_number" = "asc")
+      fields = c("patent_id", "citation_patent_id"),
+      sort = c("citation_patent_id" = "asc")
     )[["data"]][["us_patent_citations"]]
   })
   built_singly <- do.call(rbind, built_singly)
 
   result_all <- search_pv(
-    query = qry_funs$eq(patent_number = patent_numbers),
+    query = qry_funs$eq(patent_id = patent_ids),
     endpoint = "patent/us_patent_citations",
-    fields = c("patent_number", "cited_patent_number"),
-    sort = c("patent_number" = "asc", "cited_patent_number" = "asc"),
+    fields = c("patent_id", "citation_patent_id"),
+    sort = c("patent_id" = "asc", "citation_patent_id" = "asc"),
     per_page = 1000,
     all_pages = TRUE
   )
