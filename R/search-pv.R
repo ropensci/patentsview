@@ -204,7 +204,7 @@ get_default_sort <- function(endpoint) {
 #'
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
-#'   fields = get_fields("patents", c("patents", "assignees_at_grant"))
+#'   fields = get_fields("patents", c("patents", "assignees"))
 #' )
 #'
 #' search_pv(
@@ -215,18 +215,18 @@ get_default_sort <- function(endpoint) {
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$eq(name_last = "crew"),
+#'   query = qry_funs$eq(inventor_name_last = "crew"),
 #'   endpoint = "inventors",
 #'   all_pages = TRUE
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(name_last = "smith"),
+#'   query = qry_funs$contains(assignee_individual_name_last = "smith"),
 #'   endpoint = "assignees"
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+#'   query = qry_funs$contains(inventors.inventor_name_last = "smith"),
 #'   endpoint = "patents",
 #'   config = httr::timeout(40)
 #' )
