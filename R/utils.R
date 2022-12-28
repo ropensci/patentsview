@@ -29,7 +29,14 @@ to_singular <- function(plural) {
 
 #' @noRd
 to_plural <- function(singular) {
-  if (endsWith(singular, "y")) {
+  # the wipo endpoint returns a wipo (singluar) entity
+  # for attorney we want attorneys, not attorneies
+
+  if(singular == "wipo") {
+     singular
+  } else if (endsWith(singular, "attorney")) {
+    paste0(singular, "s")
+  } else if (endsWith(singular, "y")) {
     sub("y$", "ies", singular)
   } else if (endsWith(singular, "s")) {
     paste0(singular, "es")

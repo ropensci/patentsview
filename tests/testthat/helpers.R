@@ -17,5 +17,7 @@ TEST_QUERIES <- c(
   "locations" = '{"location_name":"Chicago"}',
   "patent/attorneys" = '{"attorney_id":"005dd718f3b829bab9e7e7714b3804a5"}',
   "patent/foreign_citations" = '{"patent_id": "10000001"}',
-  "patent/rel_app_texts" = '{"patent_id": "10000007"}'
+  "patent/rel_app_texts" = '{"patent_id": "10000007"}',
+  "wipo" = '{"wipo_id": "1"}',
+  "ipcs" = '{"ipc_id":"1"}'
 )
