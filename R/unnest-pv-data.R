@@ -3,7 +3,7 @@
 #' This function suggests a value that you could use for the \code{pk} argument
 #' in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
 #' It will return a potential unique identifier for a given entity (i.e., a
-#' given endpoint). For example, it will return "patent_number" when
+#' given endpoint). For example, it will return "patent_id" when
 #' \code{endpoint = "patents"}.
 #'
 #' @param endpoint The endpoint which you would like to know a potential primary
@@ -54,7 +54,7 @@ use_patent_id <- c(
 #' @param pk The column/field name that will link the data frames together. This
 #'   should be the unique identifier for the primary entity. For example, if you
 #'   used the patents endpoint in your call to \code{search_pv}, you could
-#'   specify \code{pk = "patent_number"}. \strong{This identifier has to have
+#'   specify \code{pk = "patent_id"}. \strong{This identifier has to have
 #'   been included in your \code{fields} vector when you called
 #'   \code{search_pv}}. You can use \code{\link{get_ok_pk}} to suggest a
 #'   potential primary key for your data.
@@ -66,9 +66,9 @@ use_patent_id <- c(
 #' @examples
 #' \dontrun{
 #'
-#' fields <- c("patent_number", "patent_title", "inventor_city", "inventor_country")
+#' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-#' unnest_pv_data(data = res$data, pk = "patent_number")
+#' unnest_pv_data(data = res$data, pk = "patent_id")
 #' }
 #'
 #' @export
