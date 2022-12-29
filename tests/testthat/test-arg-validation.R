@@ -33,7 +33,7 @@ test_that("validate_args throws errors for all bad args", {
     search_pv(
       '{"patent_date":["1976-01-06"]}',
       fields = "patent_date",
-      sort = c("patent_number" = "asc")
+      sort = c("patent_id" = "asc")
     ),
     "sort"
   )

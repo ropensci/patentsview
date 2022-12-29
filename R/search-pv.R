@@ -166,8 +166,8 @@ get_default_sort <- function(endpoint) {
 #'  ignored.
 #' @param sort A named character vector where the name indicates the field to
 #'  sort by and the value indicates the direction of sorting (direction should
-#'  be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
-#'  "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
+#'  be either "asc" or "desc"). For example, \code{sort = c("patent_id" =
+#'  "asc")} or \cr\code{sort = c("patent_id" = "asc", "patent_date" =
 #'  "desc")}. \code{sort = NULL} (the default) means do not sort the results.
 #'  You must include any fields that you wish to sort by in \code{fields}.
 #' @param method The HTTP method that you want to use to send the request.
@@ -210,8 +210,8 @@ get_default_sort <- function(endpoint) {
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
 #'   method = "POST",
-#'   fields = "patent_number",
-#'   sort = c("patent_number" = "asc")
+#'   fields = "patent_id",
+#'   sort = c("patent_id" = "asc")
 #' )
 #'
 #' search_pv(
