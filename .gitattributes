@@ -5,3 +5,4 @@ src/* text=lf
 R/* text=lf
 docs/* linguist-documentation=true
 inst/* linguist-documentation=true
+man/* linguist-documentation=true
