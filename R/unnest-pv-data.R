@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' get_ok_pk(endpoint = "inventors") # Returns "inventor_id"
-#' get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
+#' get_ok_pk(endpoint = "cpc_groups") # Returns "cpc_group_id"
 #'
 #' @export
 get_ok_pk <- function(endpoint) {
@@ -66,7 +66,7 @@ use_patent_id <- c(
 #' @examples
 #' \dontrun{
 #'
-#' fields <- c("patent_id", "patent_title", "inventor_city", "inventor_country")
+#' fields <- c("patent_id", "patent_title", "inventors.inventor_city", "inventors.inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
 #' unnest_pv_data(data = res$data, pk = "patent_id")
 #' }

@@ -215,18 +215,18 @@ get_default_sort <- function(endpoint) {
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$eq(inventor_name_last = "crew"),
+#'   query = qry_funs$eq(inventor_name_last = "Crew"),
 #'   endpoint = "inventors",
 #'   all_pages = TRUE
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(assignee_individual_name_last = "smith"),
+#'   query = qry_funs$contains(assignee_individual_name_last = "Smith"),
 #'   endpoint = "assignees"
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventors.inventor_name_last = "smith"),
+#'   query = qry_funs$contains(inventors.inventor_name_last = "Smith"),
 #'   endpoint = "patents",
 #'   config = httr::timeout(40)
 #' )
@@ -286,7 +286,7 @@ search_pv <- function(query,
 #' \dontrun{
 #'
 #' retrieve_linked_data(
-#'   "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
+#'   "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
 #'  )
 #' }
 #'
