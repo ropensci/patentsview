@@ -2,6 +2,10 @@ context("search_pv")
 
 # TODO: add a test to see if all the requested fields come back
 
+add_base_url <- function(x) {
+  paste0("https://search.patentsview.org/api/v1/", x)
+}
+
 endpoints <- get_endpoints()
 
 test_that("API returns expected df names for all endpoints", {
@@ -132,31 +136,54 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
   skip_on_cran()
 
   single_item_queries <- c(
-    "https://search.patentsview.org/api/v1/assignee/00000ce5-b13f-4a23-a8fb-c14409ad7b68/",
-    "https://search.patentsview.org/api/v1/cpc_subclass/A01B/",
-    "https://search.patentsview.org/api/v1/cpc_class/A01/",
-    "https://search.patentsview.org/api/v1/inventor/0000n6xqianutadbzbgzwled7/",
-    "https://search.patentsview.org/api/v1/patent/10757852/",
-    "https://search.patentsview.org/api/v1/uspc_mainclass/30/",
-    "https://search.patentsview.org/api/v1/location/00235947-16c8-11ed-9b5f-1234bde3cd05/",
-    "https://search.patentsview.org/api/v1/wipo/1/"
+    "cpc_subclass/A01B/",
+    "cpc_class/A01/",
+    "patent/10757852/",
+    "uspc_mainclass/30/",
+    "wipo/1/"
   )
+
   dev_null <- lapply(single_item_queries, function(q) {
     print(q)
-    j <- retrieve_linked_data(q)
+    j <- retrieve_linked_data(add_base_url(q))
     expect_equal(j$query_results$total_hits, 1)
   })
 
   multi_item_queries <- c(
-    "https://search.patentsview.org/api/v1/patent/us_application_citation/10966293/",
-    "https://search.patentsview.org/api/v1/patent/us_patent_citation/10966293/",
+    "patent/us_application_citation/10966293/",
+    "patent/us_patent_citation/10966293/",
 
-    # next two mistakenly return multiple records- waiting for this to fail!
-    "https://search.patentsview.org/api/v1/uspc_subclass/30:100/",
-    "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
+    # The next two mistakenly return multiple records.
+    # This test will fail when the API is fixed.
+    "uspc_subclass/30:100/",
+    "cpc_group/G01S7:4811/"
   )
   dev_null <- lapply(multi_item_queries, function(q) {
-    j <- retrieve_linked_data(q)
+    j <- retrieve_linked_data(add_base_url(q))
     expect_true(j$query_results$total_hits > 1)
   })
+
+  # We'll make a call to get an inventor and assignee HATEOAS link
+  # in case their ids are not persistent
+  res <- search_pv('{"patent_id":"10000000"}',
+    fields = c("inventors.inventor_id", "assignees.assignee_id")
+  )
+
+  # another API bug that when fixed will cause this test to fail
+  expect_error(
+    assignee <- retrieve_linked_data(res$data$patents$assignees[[1]]$assignee)
+  )
+
+  inventor <- retrieve_linked_data(res$data$patents$inventors[[1]]$inventor)
+  expect_true(inventor$query_results$total_hits == 1)
+
+  # Query to get a location HATEOAS link in case location_ids are not persistent
+  res <- search_pv('{"location_name":"Chicago"}',
+    fields = c("location_id"),
+    endpoint = "locations"
+  )
+
+  location <- retrieve_linked_data(add_base_url(paste0("location/", res$data$locations$location_id, "/")))
+  expect_true(location$query_results$total_hits == 1)
 })
+
