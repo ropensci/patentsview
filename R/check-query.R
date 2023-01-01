@@ -25,9 +25,10 @@ one_check <- function(operator, field, value, f1) {
     stop2(value, " must be an integer")
 
   if (
-    (operator %in% c("_begins", "_contains") && !(f1$data_type == "string")) ||
-    (operator %in% c("_text_all", "_text_any", "_text_phrase") &&
-     !(f1$data_type == "fulltext")) ||
+    # The new version of the API blurrs the distinction between string/fulltext fields.
+    # It looks like the string/fulltext functions can be used interchangeably
+    (operator %in% c("_begins", "_contains", "_text_all", "_text_any", "_text_phrase") && 
+      !(f1$data_type == "fulltext" || f1$data_type == "string")) ||
     (f1$data_type %in% c("string", "fulltext") &&
       operator %in% c("_gt", "_gte", "_lt", "_lte"))
   )
@@ -42,11 +43,13 @@ check_query <- function(query, endpoint) {
   fltxt_opr <- c("_text_all", "_text_any", "_text_phrase")
   all_opr <- c(simp_opr, num_opr, str_opr, fltxt_opr)
 
-  flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$can_query == "y", ]
+  flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint, ]
 
   apply_checks <- function(x, endpoint) {
     x <- swap_null_nms(x)
-    if (names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
+
+    # troublesome next line:  'length(x) = 2 > 1' in coercion to 'logical(1)'
+    if (length(names(x)) > 1 || names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
       lapply(x, FUN = apply_checks)
     } else if (names(x) %in% all_opr) {
       f1 <- flds_flt[flds_flt$field == names(x[[1]]), ]

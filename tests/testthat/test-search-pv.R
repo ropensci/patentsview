@@ -70,7 +70,7 @@ test_that("Sort option works as expected", {
   skip_on_cran()
 
   out <- search_pv(
-    qry_funs$gt(assignee_id = ""),
+    qry_funs$neq(assignee_id = ""),
     fields = get_fields("assignees"),
     endpoint = "assignees",
     sort = c("assignee_lastknown_latitude" = "desc"),
@@ -85,9 +85,15 @@ test_that("search_pv properly URL encodes queries", {
 
   # Covers https://github.com/ropensci/patentsview/issues/24
   # need to use the assignee endpoint now and the field is full_text
-  ampersand_query <- with_qfuns(text_phrase(assignee_organization = "Johnson & Johnson"))
-  dev_null <- search_pv(ampersand_query, endpoint = "assignees")
+  text_query <- with_qfuns(text_phrase(assignee_organization = "Johnson & Johnson"))
+  phrase_search <- search_pv(text_query, endpoint = "assignees")
   expect_true(TRUE)
+
+  # also test that the string operator does not matter now
+  eq_query <- with_qfuns(eq(assignee_organization = "Johnson & Johnson"))
+  eq_search <- search_pv(eq_query, endpoint = "assignees")
+  expect_identical(eq_search$data, phrase_search$data)
+
 })
 
 # Below we request the same data in built_singly and result_all, with the only
