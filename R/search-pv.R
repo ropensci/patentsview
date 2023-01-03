@@ -256,7 +256,11 @@ search_pv <- function(query,
   }
 
   # now for paging to work there needs to be a sort field
-  if (is.null(sort)) sort <- get_default_sort(endpoint)
+  if (all_pages && is.null(sort)) {
+    sort <- get_default_sort(endpoint)
+    # insure we'll have the value of the sort field
+    if (!names(sort) %in% fields) fields <- c(fields, names(sort))
+  }
 
   arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
