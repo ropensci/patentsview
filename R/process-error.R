@@ -52,5 +52,7 @@ xheader_er_or_status <- function(resp) {
 #' @noRd
 get_x_status <- function(resp) {
   headers <- httr::headers(resp)
-  headers[grepl("x-status-reason", names(headers), ignore.case = TRUE)]
+
+  # we don't want to match the new x-status-reason-code
+  headers[grepl("x-status-reason$", names(headers), ignore.case = TRUE)]
 }

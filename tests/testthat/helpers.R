@@ -4,16 +4,20 @@
 # search query).
 
 TEST_QUERIES <- c(
-  "application_citations" = '{"patent_number": "10966293"}',
-  "assignees" = '{"_text_phrase":{"name_last": "Clinton"}}',
-  "cpc_groups" = '{"cpc_group_id": "A01B"}',
-  "cpc_subgroups" = '{"cpc_subgroup_id": "A01B1/00"}',
-  "cpc_subsections" = '{"cpc_subsection_id": "A01"}',
-  "inventors" = '{"_text_phrase":{"name_last":"Clinton"}}',
-  "nber_categories" = '{"nber_category_id": "1"}',
-  "nber_subcategories" = '{"nber_subcategory_id": "11"}',
-  "patents" = '{"patent_number":"5116621"}',
-  "patent_citations" = '{"patent_number":"5116621"}',
+  "patent/us_application_citations" = '{"patent_id": "10966293"}',
+  "assignees" = '{"_text_phrase":{"assignee_individual_name_last": "Clinton"}}',
+  "cpc_subclasses" = '{"cpc_subclass_id": "A01B"}',
+  "cpc_groups" = '{"cpc_group_id": "A01B1/00"}',
+  "cpc_classes" = '{"cpc_class_id": "A01"}',
+  "inventors" = '{"_text_phrase":{"inventor_name_last":"Clinton"}}',
+  "patents" = '{"patent_id":"5116621"}',
+  "patent/us_patent_citations" = '{"patent_id":"5116621"}',
   "uspc_mainclasses" = '{"uspc_mainclass_id":"30"}',
-  "uspc_subclasses" = '{"uspc_subclass_id": "100/1"}'
+  "uspc_subclasses" = '{"uspc_subclass_id": "100/1"}',
+  "locations" = '{"location_name":"Chicago"}',
+  "patent/attorneys" = '{"attorney_id":"005dd718f3b829bab9e7e7714b3804a5"}',
+  "patent/foreign_citations" = '{"patent_id": "10000001"}',
+  "patent/rel_app_texts" = '{"patent_id": "10000007"}',
+  "wipo" = '{"wipo_id": "1"}',
+  "ipcs" = '{"ipc_id":"1"}'
 )

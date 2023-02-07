@@ -27,10 +27,13 @@ validate_args <- function(api_key, fields, endpoint, method, page, per_page,
     all(method %in% c("GET", "POST"), length(method) == 1),
     "method must be either 'GET' or 'POST'"
   )
-  asrt(
-    all(is.numeric(page), length(page) == 1, page >= 1),
-    "page must be a numeric value greater than 1"
-  )
+  if (lifecycle::is_present(page)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "search_pv(page)",
+      details = "The new version of the API does not support the page attribute."
+    )
+  }
   asrt(
     all(is.numeric(per_page), length(per_page) == 1, per_page <= 1000),
     "per_page must be a numeric value less than or equal to 1,000"

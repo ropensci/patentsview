@@ -10,7 +10,7 @@ search_pv(
   endpoint = "patents",
   subent_cnts = FALSE,
   mtchd_subent_only = lifecycle::deprecated(),
-  page = 1,
+  page = lifecycle::deprecated(),
   per_page = 1000,
   all_pages = FALSE,
   sort = NULL,
@@ -55,7 +55,7 @@ will always be returned under the new version of the API}
 \item{mtchd_subent_only}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This is always
 FALSE in the new version of the API.}
 
-\item{page}{The page number of the results that should be returned.}
+\item{page}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The page number of the results that should be returned.}
 
 \item{per_page}{The number of records that should be returned per page. This
 value can be as high as 1,000 (e.g., \code{per_page = 1000}).}
@@ -66,8 +66,8 @@ ignored.}
 
 \item{sort}{A named character vector where the name indicates the field to
 sort by and the value indicates the direction of sorting (direction should
-be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
- "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
+be either "asc" or "desc"). For example, \code{sort = c("patent_id" =
+ "asc")} or \cr\code{sort = c("patent_id" = "asc", "patent_date" =
  "desc")}. \code{sort = NULL} (the default) means do not sort the results.
 You must include any fields that you wish to sort by in \code{fields}.}
 
@@ -113,29 +113,29 @@ search_pv(query = '{"_gt":{"patent_year":2010}}')
 
 search_pv(
   query = qry_funs$gt(patent_year = 2010),
-  fields = get_fields("patents", c("patents", "assignees_at_grant"))
+  fields = get_fields("patents", c("patents", "assignees"))
 )
 
 search_pv(
   query = qry_funs$gt(patent_year = 2010),
   method = "POST",
-  fields = "patent_number",
-  sort = c("patent_number" = "asc")
+  fields = "patent_id",
+  sort = c("patent_id" = "asc")
 )
 
 search_pv(
-  query = qry_funs$eq(name_last = "crew"),
+  query = qry_funs$eq(inventor_name_last = "Crew"),
   endpoint = "inventors",
   all_pages = TRUE
 )
 
 search_pv(
-  query = qry_funs$contains(name_last = "smith"),
+  query = qry_funs$contains(assignee_individual_name_last = "Smith"),
   endpoint = "assignees"
 )
 
 search_pv(
-  query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+  query = qry_funs$contains(inventors.inventor_name_last = "Smith"),
   endpoint = "patents",
   config = httr::timeout(40)
 )

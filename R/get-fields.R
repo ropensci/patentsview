@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' # Get all assignee-level fields for the patents endpoint:
-#' fields <- get_fields(endpoint = "patents", groups = "assignees_at_grant")
+#' fields <- get_fields(endpoint = "patents", groups = "assignees")
 #'
 #' # ...Then pass to search_pv:
 #' \dontrun{
@@ -32,7 +32,7 @@
 #' )
 #' }
 #' # Get all patent and assignee-level fields for the patents endpoint:
-#' fields <- get_fields(endpoint = "patents", groups = c("assignees_at_grant", "patents"))
+#' fields <- get_fields(endpoint = "patents", groups = c("assignees", "patents"))
 #'
 #' \dontrun{
 #' # ...Then pass to search_pv:
@@ -62,9 +62,10 @@ get_fields <- function(endpoint, groups = NULL) {
 #' @export
 get_endpoints <- function() {
   c(
-    "application_citations", "assignees", "cpc_groups", "cpc_subgroups",
-    "cpc_subsections", "inventors", "nber_categories",
-    "nber_subcategories", "patent_citations", "patents",
-    "uspc_subclasses", "uspc_mainclasses"
+    "patent/us_application_citations", "assignees", "cpc_subclasses", "cpc_groups",
+    "cpc_classes", "inventors", "patent/us_patent_citations", "patents",
+    "uspc_subclasses", "uspc_mainclasses", "locations",
+    "patent/attorneys", "patent/foreign_citations", "patent/rel_app_texts",
+    "wipo", "ipcs"
   )
 }
