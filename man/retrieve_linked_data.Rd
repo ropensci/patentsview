@@ -43,7 +43,7 @@ the inventors endpoint may return a link such as:
 \dontrun{
 
 retrieve_linked_data(
-  "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
+  "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
  )
 }
 

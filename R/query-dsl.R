@@ -149,8 +149,8 @@ qry_funs <- c(
 #'   qry_funs$gte(patent_date = "2007-01-01"),
 #'   qry_funs$text_phrase(patent_abstract = c("computer program")),
 #'   qry_funs$or(
-#'     qry_funs$eq(inventor_last_name = "ihaka"),
-#'     qry_funs$eq(inventor_first_name = "chris")
+#'     qry_funs$eq(inventors.inventor_last_name = "Ihaka"),
+#'     qry_funs$eq(inventors.inventor_first_name = "Chris")
 #'   )
 #' )
 #'
@@ -160,8 +160,8 @@ qry_funs <- c(
 #'    gte(patent_date = "2007-01-01"),
 #'    text_phrase(patent_abstract = c("computer program")),
 #'    or(
-#'      eq(inventor_last_name = "ihaka"),
-#'      eq(inventor_first_name = "chris")
+#'      eq(inventors.inventor_last_name = "Ihaka"),
+#'      eq(inventors.inventor_first_name = "Chris")
 #'    )
 #'  )
 #' )

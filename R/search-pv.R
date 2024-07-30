@@ -16,7 +16,6 @@ to_arglist <- function(fields, page, per_page, sort) {
     fields = fields,
     sort = list(as.list(sort)),
     opts = list(
-      offset = (page - 1) * per_page,
       size = per_page
     )
   )
@@ -96,29 +95,33 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
   if (req_pages < 1) {
     stop2("No records matched your query...Can't download multiple pages")
   }
-  if (matched_records > 10000) {
-    stop2(
-      "The API only allows you to download 10,000 records in a single query. ",
-      "Your query returned ", matched_records, " records. See <LINK> for ",
-      "how to get around this limitation."
-    )
-  }
-  if (req_pages > 10) {
-    stop2(
-      "The API only allows you to download 10 pages in a single query. ",
-      "Your query returned ", req_pages, " pages. See <LINK> for ",
-      "how to get around this limitation."
-    )
-  }
 
   tmp <- lapply(seq_len(req_pages), function(i) {
-    arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, api_key, ...)
     x <- process_resp(x)
+
+    # now to page we need set the "after" attribute to where we left off
+    # we want the value of the primary sort field
+    s <- names(arg_list$sort[[1]])[[1]]
+    if (arg_list$sort[[1]][[1]] == "asc") {
+      index <- nrow(x$data[[1]])
+    } else {
+      index <- 1
+    }
+
+    arg_list$opts$after <<- x$data[[1]][[s]][[index]]
+
     x$data[[1]]
   })
 
   do.call("rbind", c(tmp, make.row.names = FALSE))
+}
+
+#' @noRd
+get_default_sort <- function(endpoint) {
+  default <- c("asc")
+  names(default) <- get_ok_pk(endpoint)
+  default
 }
 
 #' Search PatentsView
@@ -155,7 +158,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #' will always be returned under the new version of the API
 #' @param mtchd_subent_only `r lifecycle::badge("deprecated")` This is always
 #' FALSE in the new version of the API.
-#' @param page The page number of the results that should be returned.
+#' @param page `r lifecycle::badge("deprecated")` The page number of the results that should be returned.
 #' @param per_page The number of records that should be returned per page. This
 #'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
 #' @param all_pages Do you want to download all possible pages of output? If
@@ -163,8 +166,8 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #'  ignored.
 #' @param sort A named character vector where the name indicates the field to
 #'  sort by and the value indicates the direction of sorting (direction should
-#'  be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
-#'  "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
+#'  be either "asc" or "desc"). For example, \code{sort = c("patent_id" =
+#'  "asc")} or \cr\code{sort = c("patent_id" = "asc", "patent_date" =
 #'  "desc")}. \code{sort = NULL} (the default) means do not sort the results.
 #'  You must include any fields that you wish to sort by in \code{fields}.
 #' @param method The HTTP method that you want to use to send the request.
@@ -201,29 +204,29 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #'
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
-#'   fields = get_fields("patents", c("patents", "assignees_at_grant"))
+#'   fields = get_fields("patents", c("patents", "assignees"))
 #' )
 #'
 #' search_pv(
 #'   query = qry_funs$gt(patent_year = 2010),
 #'   method = "POST",
-#'   fields = "patent_number",
-#'   sort = c("patent_number" = "asc")
+#'   fields = "patent_id",
+#'   sort = c("patent_id" = "asc")
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$eq(name_last = "crew"),
+#'   query = qry_funs$eq(inventor_name_last = "Crew"),
 #'   endpoint = "inventors",
 #'   all_pages = TRUE
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(name_last = "smith"),
+#'   query = qry_funs$contains(assignee_individual_name_last = "Smith"),
 #'   endpoint = "assignees"
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+#'   query = qry_funs$contains(inventors.inventor_name_last = "Smith"),
 #'   endpoint = "patents",
 #'   config = httr::timeout(40)
 #' )
@@ -235,7 +238,7 @@ search_pv <- function(query,
                       endpoint = "patents",
                       subent_cnts = FALSE,
                       mtchd_subent_only = lifecycle::deprecated(),
-                      page = 1,
+                      page = lifecycle::deprecated(),
                       per_page = 1000,
                       all_pages = FALSE,
                       sort = NULL,
@@ -248,9 +251,17 @@ search_pv <- function(query,
   deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only)
 
   if (is.list(query)) {
-    # check_query(query, endpoint)
+    check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
+
+  # now for paging to work there needs to be a sort field
+  if (all_pages && is.null(sort)) {
+    sort <- get_default_sort(endpoint)
+    # insure we'll have the value of the sort field
+    if (!names(sort) %in% fields) fields <- c(fields, names(sort))
+  }
+
   arg_list <- to_arglist(fields, page, per_page, sort)
   base_url <- get_base(endpoint)
 
@@ -279,7 +290,7 @@ search_pv <- function(query,
 #' \dontrun{
 #'
 #' retrieve_linked_data(
-#'   "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
+#'   "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
 #'  )
 #' }
 #'
