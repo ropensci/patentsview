@@ -1,6 +1,6 @@
 #' @noRd
 get_base <- function(endpoint) {
-  sprintf("https://search.patentsview.org/api/v1/%s/", to_singular(endpoint))
+  sprintf("https://search.patentsview.org/api/v1/%s/", endpoint)
 }
 
 #' @noRd
@@ -224,7 +224,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #'
 #' search_pv(
 #'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
-#'   endpoint = "patents",
+#'   endpoint = "patent",
 #'   config = httr::timeout(40)
 #' )
 #' }
@@ -232,7 +232,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #' @export
 search_pv <- function(query,
                       fields = NULL,
-                      endpoint = "patents",
+                      endpoint = "patent",
                       subent_cnts = FALSE,
                       mtchd_subent_only = lifecycle::deprecated(),
                       page = 1,
