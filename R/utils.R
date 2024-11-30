@@ -14,26 +14,37 @@ format_num <- function(x) {
 
 #' @noRd
 to_singular <- function(plural) {
-  if (endsWith(plural, "ees")) {
-    sub("ees$", "ee", plural)
-  } else if (endsWith(plural, "ies")) {
-    sub("ies$", "y", plural)
-  } else if (endsWith(plural, "es")) {
-    sub("es$", "", plural)
-  } else if (endsWith(plural, "s")) {
-    sub("s$", "", plural)
+  # ipcr and wipo are funky exceptions.  On assignees and other_references
+  # we only want to remove the "s", not the "es"
+
+  if (plural == "ipcr") {
+    singular <- "ipc"
+  } else if (plural == "wipo") {
+    singular <- plural
+  } else if (endsWith(plural, "classes")) {
+    singular <- sub("es$", "", plural)
   } else {
-    plural
+    singular <- sub("s$", "", plural)
   }
+  singular
 }
+
 
 #' @noRd
 to_plural <- function(singular) {
-  if (endsWith(singular, "y")) {
-    sub("y$", "ies", singular)
+  # wipo endpoint returns singular wipo as the entity
+
+  # remove the patent/ and publication/ from nested endpoints when present
+  singular <- sub("^(patent|publication)/", "", singular)
+
+  if (singular == "ipc") {
+    plural <- "ipcr"
+  } else if (singular == "wipo") {
+    plural <- singular
   } else if (endsWith(singular, "s")) {
-    paste0(singular, "es")
+    plural <- paste0(singular, "es")
   } else {
-    paste0(singular, "s")
+    plural <- paste0(singular, "s")
   }
+  plural
 }

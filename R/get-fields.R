@@ -61,10 +61,35 @@ get_fields <- function(endpoint, groups = NULL) {
 #' @return A character vector with the names of each endpoint.
 #' @export
 get_endpoints <- function() {
+  # now the endpoints are singular
+  # note that now there are two rel_app_texts, one under patents and one under publications
   c(
-    "application_citations", "assignees", "cpc_groups", "cpc_subgroups",
-    "cpc_subsections", "inventors", "nber_categories",
-    "nber_subcategories", "patent_citations", "patents",
-    "uspc_subclasses", "uspc_mainclasses"
+    "assignee",
+    "cpc_class",
+    "cpc_group",
+    "cpc_subclass",
+    "g_brf_sum_text",
+    "g_claim",
+    "g_detail_desc_text",
+    "g_draw_desc_text",
+    "inventor",
+    "ipc",
+    "location",
+    "patent",
+    "patent/attorney",
+    "patent/foreign_citation",
+    "patent/other_reference",
+    "patent/rel_app_text",
+    "patent/us_application_citation",
+    "patent/us_patent_citation",
+    "pg_brf_sum_text",
+    "pg_claim",
+    "pg_detail_desc_text",
+    "pg_draw_desc_text",
+    "publication",
+    "publication/rel_app_text",
+    "uspc_mainclass",
+    "uspc_subclass",
+    "wipo"
   )
 }

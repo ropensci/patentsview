@@ -1,9 +1,15 @@
 context("utils")
 
-test_that("we can convert endpoints to their singular form and back", {
+test_that("we can convert endpoints to their plural form and back", {
+  skip_on_cran()
+
   eps <- get_endpoints()
   z <- vapply(eps, function(x) {
-    to_plural(to_singular(x))
+    to_singular(to_plural(x))
   }, FUN.VALUE = character(1), USE.NAMES = FALSE)
-  expect_equal(eps, z)
+
+  # we now need to unnest the endpoints for the comparison to work
+  unnested_eps <- gsub("^(patent|publication)/", "", eps)
+
+  expect_equal(unnested_eps, z)
 })
