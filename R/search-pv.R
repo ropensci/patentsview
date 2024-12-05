@@ -223,7 +223,7 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
 #' )
 #'
 #' search_pv(
-#'   query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
+#'   query = qry_funs$contains(inventors_at_grant.name_last = "Smith"),
 #'   endpoint = "patent",
 #'   config = httr::timeout(40)
 #' )
