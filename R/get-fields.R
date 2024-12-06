@@ -48,7 +48,6 @@ get_fields <- function(endpoint, groups = NULL) {
   if (is.null(groups)) {
     fieldsdf[fieldsdf$endpoint == endpoint, "field"]
   } else {
-    groups <- replace(groups, groups == to_plural(endpoint), "")
     validate_groups(endpoint, groups = groups)
     fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group %in% groups, "field"]
   }

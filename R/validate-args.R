@@ -46,17 +46,12 @@ validate_args <- function(api_key, fields, endpoint, method, page, per_page,
 }
 
 #' @noRd
-error_groups <- function(endpoint, groups) {
-  error_grps <- sort(replace(groups, groups == "", endpoint))
-}
-
-#' @noRd
 validate_groups <- function(endpoint, groups) {
   ok_grps <- unique(fieldsdf[fieldsdf$endpoint == endpoint, "group"])
   asrt(
     all(groups %in% ok_grps),
     "for the ", endpoint, " endpoint, group must be one of the following: ",
-    paste(error_groups(endpoint, ok_grps), collapse = ", ")
+    paste(ok_grps, collapse = ", ")
   )
 }
 
