@@ -10,7 +10,7 @@ Authors@R: c(
 Encoding: UTF-8
 Description: Provides functions to simplify the 'PatentsView' API
     (<https://patentsview.org/apis/purpose>) query language,
-    send GET and POST requests to the API's seven endpoints, and parse the data
+    send GET and POST requests to the API's twenty seven endpoints, and parse the data
     that comes back.
 URL: https://docs.ropensci.org/patentsview/index.html
 BugReports: https://github.com/ropensci/patentsview/issues
@@ -28,5 +28,5 @@ Suggests:
     rmarkdown,
     testthat,
     tidyr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

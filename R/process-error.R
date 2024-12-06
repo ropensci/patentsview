@@ -11,7 +11,7 @@ throw_if_loc_error <- function(resp) {
     if (num_grps > 2) {
       stop2(
         "Your request resulted in a 500 error, likely because you have ",
-        "requested too many fields in your request (the locations endpoint ",
+        "requested too many fields in your request (the location endpoint ",
         "currently has restrictions on the number of fields/groups you can ",
         "request). Try slimming down your field list and trying again."
       )
@@ -19,10 +19,11 @@ throw_if_loc_error <- function(resp) {
   }
 }
 
+# Not sure this is still applicable
 #' @noRd
 hit_locations_ep <- function(url) {
   grepl(
-    "^https://api.patentsview.org/locations/",
+    "^https://search.patentsview.org/api/v1/location/",
     url,
     ignore.case = TRUE
   )
@@ -32,7 +33,7 @@ hit_locations_ep <- function(url) {
 get_num_groups <- function(url) {
   prsd_json_filds <- gsub(".*&f=([^&]*).*", "\\1", utils::URLdecode(url))
   fields <- jsonlite::fromJSON(prsd_json_filds)
-  grps <- fieldsdf[fieldsdf$endpoint == "locations" &
+  grps <- fieldsdf[fieldsdf$endpoint == "location" &
                      fieldsdf$field %in% fields, "group"]
   length(unique(grps))
 }
@@ -52,5 +53,5 @@ xheader_er_or_status <- function(resp) {
 #' @noRd
 get_x_status <- function(resp) {
   headers <- httr::headers(resp)
-  headers[grepl("x-status-reason", names(headers), ignore.case = TRUE)]
+  headers[grepl("x-status-reason$", names(headers), ignore.case = TRUE)]
 }

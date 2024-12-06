@@ -7,7 +7,7 @@
 search_pv(
   query,
   fields = NULL,
-  endpoint = "patents",
+  endpoint = "patent",
   subent_cnts = FALSE,
   mtchd_subent_only = lifecycle::deprecated(),
   page = 1,
@@ -113,7 +113,7 @@ search_pv(query = '{"_gt":{"patent_year":2010}}')
 
 search_pv(
   query = qry_funs$gt(patent_year = 2010),
-  fields = get_fields("patents", c("patents", "assignees_at_grant"))
+  fields = get_fields("patent", c("patents", "assignees"))
 )
 
 search_pv(
@@ -124,19 +124,19 @@ search_pv(
 )
 
 search_pv(
-  query = qry_funs$eq(name_last = "crew"),
-  endpoint = "inventors",
+  query = qry_funs$eq(inventor_name_last = "Crew"),
+  endpoint = "inventor",
   all_pages = TRUE
 )
 
 search_pv(
-  query = qry_funs$contains(name_last = "smith"),
-  endpoint = "assignees"
+  query = qry_funs$contains(assignee_individual_name_last = "Smith"),
+  endpoint = "assignee"
 )
 
 search_pv(
-  query = qry_funs$contains(inventors_at_grant.name_last = "smith"),
-  endpoint = "patents",
+  query = qry_funs$contains(inventors_at_grant.name_last = "Smith"),
+  endpoint = "patent",
   config = httr::timeout(40)
 )
 }
