@@ -92,7 +92,7 @@ extract_relevant_schema_info <- function(schema_elements) {
             endpoint = lookup[[schema_element]],
             field = x,
             data_type = data_type,
-            group = "",
+            group = names(api$components$schemas[[schema_element]]$properties),
             common_name = x
           )
         }
