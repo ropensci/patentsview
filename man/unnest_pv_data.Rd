@@ -36,9 +36,9 @@ in "R for Data Science" for an in-depth introduction to joining tabular data).
 \examples{
 \dontrun{
 
-fields <- c("patent_number", "patent_title", "inventor_city", "inventor_country")
+fields <- c("patent_id", "patent_title", "inventors.inventor_city", "inventors.inventor_country")
 res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-unnest_pv_data(data = res$data, pk = "patent_number")
+unnest_pv_data(data = res$data, pk = "patent_id")
 }
 
 }

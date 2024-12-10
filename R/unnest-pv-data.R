@@ -3,8 +3,8 @@
 #' This function suggests a value that you could use for the \code{pk} argument
 #' in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
 #' It will return a potential unique identifier for a given entity (i.e., a
-#' given endpoint). For example, it will return "patent_number" when
-#' \code{endpoint = "patents"}.
+#' given endpoint). For example, it will return "patent_id" when
+#' \code{endpoint = "patent"}.
 #'
 #' @param endpoint The endpoint which you would like to know a potential primary
 #'   key for.
@@ -13,21 +13,15 @@
 #'   \code{\link{unnest_pv_data}}.
 #'
 #' @examples
-#' get_ok_pk(endpoint = "inventors") # Returns "inventor_id"
-#' get_ok_pk(endpoint = "cpc_subsections") # Returns "cpc_subsection_id"
+#' get_ok_pk(endpoint = "inventor")
+#' get_ok_pk(endpoint = "cpc_subclass")
+#' get_ok_pk("publication/rel_app_text")
 #'
 #' @export
 get_ok_pk <- function(endpoint) {
-  es_eps <- c(
-    "uspc_mainclasses" = "uspc_mainclass_id",
-    "nber_subcategories" = "nber_subcategory_id",
-    "patents" = "patent_number"
-  )
-  ifelse(
-    endpoint %in% names(es_eps),
-    es_eps[[endpoint]],
-    gsub("s$", "_id", endpoint)
-  )
+  unnested_endpoint <- sub("^(patent|publication)/", "", endpoint)
+  possible_pks <- c("patent_id", "document_number", paste0(unnested_endpoint, "_id"))
+  fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field %in% possible_pks, "field"]
 }
 
 #' Unnest PatentsView data
@@ -58,9 +52,9 @@ get_ok_pk <- function(endpoint) {
 #' @examples
 #' \dontrun{
 #'
-#' fields <- c("patent_number", "patent_title", "inventor_city", "inventor_country")
+#' fields <- c("patent_id", "patent_title", "inventors.inventor_city", "inventors.inventor_country")
 #' res <- search_pv(query = '{"_gte":{"patent_year":2015}}', fields = fields)
-#' unnest_pv_data(data = res$data, pk = "patent_number")
+#' unnest_pv_data(data = res$data, pk = "patent_id")
 #' }
 #'
 #' @export
