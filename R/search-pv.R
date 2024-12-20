@@ -126,20 +126,6 @@ request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ..
   if (req_pages < 1) {
     stop2("No records matched your query...Can't download multiple pages")
   }
-  if (matched_records > 10000) {
-    stop2(
-      "The API only allows you to download 10,000 records in a single query. ",
-      "Your query returned ", matched_records, " records. See <LINK> for ",
-      "how to get around this limitation."
-    )
-  }
-  if (req_pages > 10) {
-    stop2(
-      "The API only allows you to download 10 pages in a single query. ",
-      "Your query returned ", req_pages, " pages. See <LINK> for ",
-      "how to get around this limitation."
-    )
-  }
 
   tmp <- lapply(seq_len(req_pages), function(i) {
     arg_list$opts$offset <- (i - 1) * arg_list$opts$size
