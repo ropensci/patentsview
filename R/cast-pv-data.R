@@ -91,9 +91,25 @@ cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 cast_pv_data <- function(data) {
   validate_pv_data(data)
 
-  endpoint <- names(data)
+  entity_name <- names(data)
 
-  typesdf <- fieldsdf[fieldsdf$endpoint == endpoint, c("field", "data_type")]
+  if (entity_name == "rel_app_texts") {
+    # blend the fields from both rel_app_texts entities
+    typesdf <- unique(fieldsdf[fieldsdf$group == entity_name, c("common_name", "data_type")])
+  } else {
+    # need to get the endpoint from entity_name
+    endpoint_df <- fieldsdf[fieldsdf$group == entity_name, ]
+    endpoint <- unique(endpoint_df$endpoint)
+
+    # watch out here- several endpoints return entities that are groups returned
+    # by the patent and publication endpoints (attorneys, inventors, assignees)
+    if(length(endpoint) > 1) {
+      endpoint <- endpoint[!endpoint %in% c("patent", "publication")]
+    }
+
+    typesdf <- fieldsdf[fieldsdf$endpoint == endpoint, c("common_name", "data_type")]
+
+  }
 
   df <- data[[1]]
 
@@ -103,7 +119,7 @@ cast_pv_data <- function(data) {
 
   df[] <- list_out
   out_data <- list(x = df)
-  names(out_data) <- endpoint
+  names(out_data) <- entity_name
 
   structure(
     out_data,
