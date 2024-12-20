@@ -11,15 +11,29 @@ tojson_2 <- function(x, ...) {
 }
 
 #' @noRd
-to_arglist <- function(fields, page, per_page, sort) {
+to_arglist <- function(fields, size, sort, after) {
+  opts <- list(size = size)
+  if (!is.null(after)) {
+    opts$after <- after
+  }
+
   list(
     fields = fields,
     sort = list(as.list(sort)),
-    opts = list(
-      offset = (page - 1) * per_page,
-      size = per_page
-    )
+    opts = opts
   )
+}
+
+#' @noRd
+set_sort_param <- function(before) {
+  # Fixes former bug
+  # for sort = c("patent_id" = "asc", "citation_patent_id" = "asc")
+  #  we sent  [{"patent_id":"asc","citation_patent_id":"asc"}]
+  # API wants [{"patent_id": "asc" },{"citation_patent_id": "asc" }]
+  # TODO(any): brute meet force- there must be a better way...
+  after <- tojson_2(before, auto_unbox = TRUE)
+  after <- gsub('","', '"},{"', after)
+  after
 }
 
 #' @noRd
@@ -28,9 +42,10 @@ get_get_url <- function(query, base_url, arg_list) {
     base_url,
     "?q=", utils::URLencode(query, reserved = TRUE),
     "&f=", tojson_2(arg_list$fields),
-    "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE),
-    "&s=", tojson_2(arg_list$sort, auto_unbox = TRUE)
+    "&s=", set_sort_param(arg_list$sort),
+    "&o=", tojson_2(arg_list$opts, auto_unbox = TRUE)
   )
+
   utils::URLencode(j)
 }
 
@@ -40,11 +55,14 @@ get_post_body <- function(query, arg_list) {
     "{",
     '"q":', query, ",",
     '"f":', tojson_2(arg_list$fields), ",",
-    '"o":', tojson_2(arg_list$opts, auto_unbox = TRUE), ",",
-    '"s":', tojson_2(arg_list$sort, auto_unbox = TRUE),
+    '"s":', set_sort_param(arg_list$sort), ",",
+    '"o":', tojson_2(arg_list$opts, auto_unbox = TRUE),
     "}"
   )
-  gsub('(,"[fs]":)([,}])', paste0("\\1", "{}", "\\2"), body)
+  # The API can now act weirdly if we pass f:{},s:{} as we did in the past.
+  # (Weirdly in that the post results may not equal the get results or posts error out)
+  # Now we'd remove "f":, and "s":,  We're guaranteed to have q: and at least "size":1000 as o:
+  gsub('("[fs]":,)', "", body)
 }
 
 #' @noRd
