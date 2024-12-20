@@ -178,25 +178,36 @@ get_default_sort <- function(endpoint) {
 #'    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 #'  }
 #' @param fields A character vector of the fields that you want returned to you.
-#'  A value of \code{NULL} indicates that the default fields should be
-#'  returned. Acceptable fields for a given endpoint can be found at the API's
+#'  A value of \code{NULL} indicates to the API that it should return the default fields
+#'  for that endpoint. Acceptable fields for a given endpoint can be found at the API's
 #'  online documentation (e.g., check out the field list for the
 #'  \href{https://patentsview.org/apis/api-endpoints/patents}{patents
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
+#'
+#'  Nested fields can be fully qualified, e.g., "application.filing_date" or the
+#'  group name can be used to retrieve all of its nested fields, E.g. "application".
+#'  The latter would be similar to passing \code{get_fields("patent", group = "application")}
+#'  except it's the API that decides what fields to return.
 #' @param endpoint The web service resource you wish to search. Use
 #'  \code{get_endpoints()} to list the available endpoints.
-#' @param subent_cnts `r lifecycle::badge("deprecated")` Non-matched subentities
-#' will always be returned under the new version of the API
+#' @param subent_cnts `r lifecycle::badge("deprecated")` This is always FALSE in the
+#' new version of the API as the total counts of unique subentities is no longer available.
 #' @param mtchd_subent_only `r lifecycle::badge("deprecated")` This is always
-#' FALSE in the new version of the API.
-#' @param page The page number of the results that should be returned.
-#' @param per_page The number of records that should be returned per page. This
-#'  value can be as high as 1,000 (e.g., \code{per_page = 1000}).
+#' FALSE in the new version of the API as non-matched subentities
+#' will always be returned.
+#' @param page `r lifecycle::badge("deprecated")` The new version of the API does not use
+#' \code{page} as a parameter for paging, it uses \code{after}.
+#' @param per_page `r lifecycle::badge("deprecated")` The API now uses \code{size}
+#' @param size The number of records that should be returned per page. This
+#'  value can be as high as 1,000 (e.g., \code{size = 1000}).
+#' @param after A list of sort key values that defaults to NULL.  This
+#' exposes the API's paging parameter for users who want to implement their own
+#' paging. It cannot be set when \code{all_pages = TRUE} as the R package manipulates it
+#' for users automatically. See \href{../articles/result-set-paging.html}{result set paging}
 #' @param all_pages Do you want to download all possible pages of output? If
-#'  \code{all_pages = TRUE}, the values of \code{page} and \code{per_page} are
-#'  ignored.
+#'  \code{all_pages = TRUE}, the value of \code{size} is ignored.
 #' @param sort A named character vector where the name indicates the field to
 #'  sort by and the value indicates the direction of sorting (direction should
 #'  be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
