@@ -45,11 +45,32 @@
 #' @export
 get_fields <- function(endpoint, groups = NULL) {
   validate_endpoint(endpoint)
+
+  # using API's shorthand notation, group names can be requested as fields instead of
+  # fully qualifying each nested field.  Fully qualified, all patent endpoint's attributes
+  # is over 4K, too big to be sent on a GET with a modest query
+
+  pk <- get_ok_pk(endpoint)
+  plural_entity <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field == pk, "group"]
+  top_level_attributes <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group == plural_entity, "field"]
+
   if (is.null(groups)) {
-    fieldsdf[fieldsdf$endpoint == endpoint, "field"]
+    c(
+      top_level_attributes,
+      unique(fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group != plural_entity, "group"])
+    )
   } else {
     validate_groups(endpoint, groups = groups)
-    fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group %in% groups, "field"]
+
+    # don't include pk if plural_entity group is requested (pk would be a member)
+    extra_field <- if (include_pk && !plural_entity %in% groups) pk else NULL
+    extra_fields <- if (plural_entity %in% groups) top_level_attributes else NULL
+
+    c(
+      extra_field,
+      extra_fields,
+      groups[!groups == plural_entity]
+    )
   }
 }
 
