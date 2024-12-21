@@ -65,8 +65,8 @@ get_ok_pk <- function(endpoint_or_entity) {
 #'   inside it. See examples.
 #' @param pk The column/field name that will link the data frames together. This
 #'   should be the unique identifier for the primary entity. For example, if you
-#'   used the patents endpoint in your call to \code{search_pv}, you could
-#'   specify \code{pk = "patent_number"}. \strong{This identifier has to have
+#'   used the patent endpoint in your call to \code{search_pv}, you could
+#'   specify \code{pk = "patent_id"}. \strong{This identifier has to have
 #'   been included in your \code{fields} vector when you called
 #'   \code{search_pv}}. You can use \code{\link{get_ok_pk}} to suggest a
 #'   potential primary key for your data.

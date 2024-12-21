@@ -29,8 +29,8 @@ get_top_level_attributes <- function(endpoint) {
 #' @return A character vector with field names.
 #'
 #' @examples
-#' # Get all assignee-level fields for the patent endpoint:
-#' fields <- get_fields(endpoint = "patent", groups = "assignees")
+#' # Get all top level (non-nested) fields for the patent endpoint:
+#' fields <- get_fields(endpoint = "patent", groups = c("patents"))
 #'
 #' # ...Then pass to search_pv:
 #' \dontrun{
@@ -40,7 +40,7 @@ get_top_level_attributes <- function(endpoint) {
 #'   fields = fields
 #' )
 #' }
-#' # Get all patent and assignee-level fields for the patent endpoint:
+#' # Get unnested patent and assignee-level fields for the patent endpoint:
 #' fields <- get_fields(endpoint = "patent", groups = c("assignees", "patents"))
 #'
 #' \dontrun{
