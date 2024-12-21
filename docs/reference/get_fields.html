@@ -98,7 +98,7 @@ possible fields for each endpoint).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fields</span><span class="op">(</span><span class="va">endpoint</span>, groups <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fields</span><span class="op">(</span><span class="va">endpoint</span>, groups <span class="op">=</span> <span class="cn">NULL</span>, include_pk <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,9 +114,15 @@ returned. A value of <code>NULL</code> indicates that you want all of the
 endpoint's fields (i.e., do not filter the field list based on group
 membership). See the field tables located online to see which groups you
 can specify for a given endpoint (e.g., the
-<a href="https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent" class="external-link">patent
+<a href="https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent" class="external-link">patents
 endpoint table</a>), or use the <code>fieldsdf</code> table
 (e.g., <code>unique(fieldsdf[fieldsdf$endpoint == "patent", "group"])</code>).</p></dd>
+
+
+<dt>include_pk</dt>
+<dd><p>Boolean on whether to include the endpoint's primary key,
+defaults to FALSE.  The primary key is needed if you plan on calling
+<code><a href="unnest_pv_data.html">unnest_pv_data</a></code> on the results of <code><a href="search_pv.html">search_pv</a></code></p></dd>
 
 </dl></div>
     <div id="value">
@@ -128,8 +134,8 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get all assignee-level fields for the patent endpoint:</span></span></span>
-<span class="r-in"><span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">get_fields</span><span class="op">(</span>endpoint <span class="op">=</span> <span class="st">"patent"</span>, groups <span class="op">=</span> <span class="st">"assignees"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get all top level (non-nested) fields for the patent endpoint:</span></span></span>
+<span class="r-in"><span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">get_fields</span><span class="op">(</span>endpoint <span class="op">=</span> <span class="st">"patent"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"patents"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ...Then pass to search_pv:</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -139,9 +145,8 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 <span class="r-in"><span>  fields <span class="op">=</span> <span class="va">fields</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="co"># Get all patent and assignee-level fields for the patent endpoint:</span></span></span>
+<span class="r-in"><span><span class="co"># Get unnested patent and assignee-level fields for the patent endpoint:</span></span></span>
 <span class="r-in"><span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">get_fields</span><span class="op">(</span>endpoint <span class="op">=</span> <span class="st">"patent"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"assignees"</span>, <span class="st">"patents"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> group must be one of the following: , assignee_years, inventor_years, applicants, application, assignees, attorneys, botanic, cpc_at_issue, cpc_current, examiners, figures, foreign_priority, gov_interest_contract_award_numbers, gov_interest_organizations, granted_pregrant_crosswalk, inventors, ipcr, pct_data, us_related_documents, us_term_of_grant, uspc_at_issue, wipo, us_parties</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># ...Then pass to search_pv:</span></span></span>
@@ -149,6 +154,19 @@ endpoint table</a>), or use the <code>fieldsdf</code> table
 <span class="r-in"><span>  query <span class="op">=</span> <span class="st">'{"_gte":{"patent_date":"2007-01-04"}}'</span>,</span></span>
 <span class="r-in"><span>  fields <span class="op">=</span> <span class="va">fields</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># Get the nested inventors fields and the primary key in order to call unnest_pv_data</span></span></span>
+<span class="r-in"><span><span class="co"># on the returned data.  unnest_pv_data would throw an error if the primary key was</span></span></span>
+<span class="r-in"><span><span class="co"># not present in the results.</span></span></span>
+<span class="r-in"><span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">get_fields</span><span class="op">(</span>endpoint <span class="op">=</span> <span class="st">"patent"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"inventors"</span><span class="op">)</span>, include_pk <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># ...Then pass to search_pv and unnest the results</span></span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="search_pv.html">search_pv</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="st">'{"_gte":{"patent_date":"2007-01-04"}}'</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="va">fields</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="unnest_pv_data.html">unnest_pv_data</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
