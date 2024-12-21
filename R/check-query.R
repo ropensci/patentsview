@@ -40,7 +40,7 @@ check_query <- function(query, endpoint) {
   num_opr <- c("_gt", "_gte", "_lt", "_lte")
   str_opr <- c("_begins", "_contains")
   fltxt_opr <- c("_text_all", "_text_any", "_text_phrase")
-  all_opr <- c(simp_opr, num_opr, str_opr, fltxt_opr)
+  all_opr <- c(simp_opr, num_opr, str_opr, fltxt_opr, "_in_range")
 
   flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$can_query == "y", ]
 
