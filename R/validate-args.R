@@ -69,7 +69,6 @@ validate_groups <- function(endpoint, groups) {
     all(groups %in% ok_grps),
     "for the ", endpoint, " endpoint, group must be one of the following: ",
     paste(ok_grps, collapse = ", ")
-    )
   )
 }
 
