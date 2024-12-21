@@ -1,3 +1,9 @@
+#' @noRd
+get_top_level_attributes <- function(endpoint) {
+  fieldsdf[fieldsdf$endpoint == endpoint & !grepl("\\.", fieldsdf$field), "field"]
+}
+
+
 #' Get list of retrievable fields
 #'
 #' This function returns a vector of fields that you can retrieve from a given
@@ -52,7 +58,7 @@ get_fields <- function(endpoint, groups = NULL) {
 
   pk <- get_ok_pk(endpoint)
   plural_entity <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field == pk, "group"]
-  top_level_attributes <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group == plural_entity, "field"]
+  top_level_attributes <- get_top_level_attributes(endpoint)
 
   if (is.null(groups)) {
     c(
