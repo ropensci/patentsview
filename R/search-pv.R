@@ -123,12 +123,8 @@ pad_patent_id <- function(patent_id) {
 request_apply <- function(ex_res, method, query, base_url, arg_list, api_key, ...) {
   matched_records <- ex_res$query_results[[1]]
   req_pages <- ceiling(matched_records / arg_list$opts$size)
-  if (req_pages < 1) {
-    stop2("No records matched your query...Can't download multiple pages")
-  }
 
   tmp <- lapply(seq_len(req_pages), function(i) {
-    arg_list$opts$offset <- (i - 1) * arg_list$opts$size
     x <- one_request(method, query, base_url, arg_list, api_key, ...)
     x <- process_resp(x)
 
@@ -287,23 +283,26 @@ search_pv <- function(query,
                       endpoint = "patent",
                       subent_cnts = FALSE,
                       mtchd_subent_only = lifecycle::deprecated(),
-                      page = 1,
-                      per_page = 1000,
+                      page = lifecycle::deprecated(),
+                      per_page = lifecycle::deprecated(),
+                      size = 1000,
+                      after = NULL,
                       all_pages = FALSE,
                       sort = NULL,
                       method = "GET",
                       error_browser = NULL,
                       api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
                       ...) {
-
-  validate_args(api_key, fields, endpoint, method, page, per_page, sort)
-  deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only)
+  validate_args(api_key, fields, endpoint, method, sort, after, size, all_pages)
+  deprecate_warn_all(error_browser, subent_cnts, mtchd_subent_only, page, per_page)
+  if (lifecycle::is_present(per_page)) size <- per_page
 
   if (is.list(query)) {
-    # check_query(query, endpoint)
+    check_query(query, endpoint)
     query <- jsonlite::toJSON(query, auto_unbox = TRUE)
   }
-  arg_list <- to_arglist(fields, page, per_page, sort)
+
+  arg_list <- to_arglist(fields, size, sort, after)
   base_url <- get_base(endpoint)
 
   result <- one_request(method, query, base_url, arg_list, api_key, ...)
