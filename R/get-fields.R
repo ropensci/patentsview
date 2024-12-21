@@ -22,6 +22,9 @@ get_top_level_attributes <- function(endpoint) {
 #'   \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patents
 #'   endpoint table}), or use the \code{fieldsdf} table
 #'   (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patent", "group"])}).
+#' @param include_pk Boolean on whether to include the endpoint's primary key,
+#'    defaults to FALSE.  The primary key is needed if you plan on calling
+#'    \code{\link{unnest_pv_data}} on the results of \code{\link{search_pv}}
 #'
 #' @return A character vector with field names.
 #'
@@ -46,6 +49,19 @@ get_top_level_attributes <- function(endpoint) {
 #'   query = '{"_gte":{"patent_date":"2007-01-04"}}',
 #'   fields = fields
 #' )
+#' }
+#' # Get the nested inventors fields and the primary key in order to call unnest_pv_data
+#' # on the returned data.  unnest_pv_data would throw an error if the primary key was
+#' # not present in the results.
+#' fields <- get_fields(endpoint = "patent", groups = c("inventors"), include_pk = TRUE)
+#'
+#' \dontrun{
+#' # ...Then pass to search_pv and unnest the results
+#' results <- search_pv(
+#'   query = '{"_gte":{"patent_date":"2007-01-04"}}',
+#'   fields = fields
+#' )
+#' unnest_pv_data(results$data)
 #' }
 #'
 #' @export
