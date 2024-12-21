@@ -8,14 +8,23 @@ validate_endpoint <- function(endpoint) {
 }
 
 #' @noRd
-validate_args <- function(api_key, fields, endpoint, method, page, per_page,
-                          sort) {
+validate_args <- function(api_key, fields, endpoint, method,
+                          sort, after, size, all_pages) {
   asrt(
     !identical(api_key, ""),
     "The new version of the API requires an API key"
   )
 
   flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint, "field"]
+
+  # Now the API allows the group name to be requested as in fields to get all of
+  # the group's nested fields.  ex.: "assignees" on the patent endpoint gets you all 
+  # of the assignee fields. Note that "patents" can't be requested 
+  groups <- unique(fieldsdf[fieldsdf$endpoint == endpoint, c("group")])
+  pk <- get_ok_pk(endpoint)
+  plural_entity <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field == pk, "group"]
+  flds_flt <- append(flds_flt, groups[!groups == plural_entity])
+
   asrt(
     all(fields %in% flds_flt),
     "Bad field(s): ", paste(fields[!(fields %in% flds_flt)], collapse = ", ")
