@@ -97,4 +97,21 @@ deprecate_warn_all <- function(error_browser, subent_cnts, mtchd_subent_only) {
       version of the API"
     )
   }
+
+  if (lifecycle::is_present(per_page)) {
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "search_pv(per_page)",
+      details = "The new version of the API uses 'size' instead of 'per_page'",
+      with = "search_pv(size)"
+    )
+  }
+
+  if (lifecycle::is_present(page)) {
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "search_pv(page)",
+      details = "The new version of the API does not support the page parameter"
+    )
+  }
 }
