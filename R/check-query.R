@@ -46,7 +46,10 @@ check_query <- function(query, endpoint) {
 
   apply_checks <- function(x, endpoint) {
     x <- swap_null_nms(x)
-    if (names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
+
+    # troublesome next line:  'length(x) = 2 > 1' in coercion to 'logical(1)'
+    # if (names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
+    if (length(names(x)) > 1 || names(x) %in% c("_not", "_and", "_or") || is.na(names(x))) {
       lapply(x, FUN = apply_checks)
     } else if (names(x) %in% all_opr) {
       f1 <- flds_flt[flds_flt$field == names(x[[1]]), ]
