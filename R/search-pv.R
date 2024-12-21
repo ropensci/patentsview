@@ -70,6 +70,8 @@ patentsview_error_body <- function(resp) {
   if (httr2::resp_status(resp) == 400) c(httr2::resp_header(resp, "X-Status-Reason")) else NULL
 }
 
+#' @noRd
+one_request <- function(method, query, base_url, arg_list, api_key, ...) {
   if (method == "GET") {
     get_url <- get_get_url(query, base_url, arg_list)
     req <- httr2::request(get_url) |>
