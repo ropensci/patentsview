@@ -4,24 +4,50 @@
 #' in \code{\link{unnest_pv_data}}, based on the endpoint you searched.
 #' It will return a potential unique identifier for a given entity (i.e., a
 #' given endpoint). For example, it will return "patent_id" when
-#' \code{endpoint = "patent"}.
+#' \code{endpoint_or_entity = "patent"}.  It would return the same value if
+#' the entity name "patents" was passed via \code{get_ok_pk(names(pv_return$data))}
+#' where pv_return was returned from \code{\link{search_pv}}.
 #'
-#' @param endpoint The endpoint which you would like to know a potential primary
-#'   key for.
+#' @param endpoint_or_entity The endpoint or entity name for which you
+#' would like to know a potential primary key for.
 #'
 #' @return The name of a primary key (\code{pk}) that you could pass to
 #'   \code{\link{unnest_pv_data}}.
 #'
 #' @examples
-#' get_ok_pk(endpoint = "inventor")
-#' get_ok_pk(endpoint = "cpc_subclass")
-#' get_ok_pk("publication/rel_app_text")
+#' get_ok_pk(endpoint_or_entity = "inventor") # Returns "inventor_id"
+#' get_ok_pk(endpoint_or_entity = "cpc_group") # Returns "cpc_group_id"
 #'
 #' @export
-get_ok_pk <- function(endpoint) {
+get_ok_pk <- function(endpoint_or_entity) {
+  endpoint_df <- fieldsdf[fieldsdf$endpoint == endpoint_or_entity, ]
+  if (nrow(endpoint_df) > 0) {
+    endpoint <- endpoint_or_entity
+  } else {
+    endpoint_df <- fieldsdf[fieldsdf$group == endpoint_or_entity, ]
+    endpoint <- unique(endpoint_df$endpoint)
+
+    # watch out here- several endpoints return entities that are groups returned
+    # by the patent and publication endpoints (attourneys, inventors, assignees)
+    if(length(endpoint) > 1) {
+      endpoint <- endpoint[!endpoint %in% c("patent", "publication")]
+      endpoint_df <- fieldsdf[fieldsdf$endpoint == endpoint, ]
+    }
+  }
+
   unnested_endpoint <- sub("^(patent|publication)/", "", endpoint)
   possible_pks <- c("patent_id", "document_number", paste0(unnested_endpoint, "_id"))
-  fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field %in% possible_pks, "field"]
+  pk <- endpoint_df[endpoint_df$field %in% possible_pks, "field"]
+
+  # we're unable to determine the pk if an entity name of rel_app_texts was passed
+  asrt(
+    length(pk) == 1,
+    "The primary key cannot be determined for ", endpoint_or_entity,
+    ". Try using the endpoint's name instead ",
+    paste(unique(fieldsdf[fieldsdf$group == endpoint_or_entity, "endpoint"]), collapse = ", ")
+  )
+
+  pk
 }
 
 #' Unnest PatentsView data
@@ -58,11 +84,19 @@ get_ok_pk <- function(endpoint) {
 #' }
 #'
 #' @export
-unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
-
+unnest_pv_data <- function(data, pk = NULL) {
   validate_pv_data(data)
 
   df <- data[[1]]
+
+  if (is.null(pk)) {
+    # now there are two endpoints that return rel_app_texts entities with different pks
+    if (names(data) == "rel_app_texts") {
+      pk <- if ("document_number" %in% names(df)) "document_number" else "patent_id"
+    } else {
+      pk = get_ok_pk(names(data))
+    }
+  }
 
   asrt(
     pk %in% colnames(df),
@@ -75,14 +109,12 @@ unnest_pv_data <- function(data, pk = get_ok_pk(names(data))) {
   sub_ent_df <- df[, !prim_ent_var, drop = FALSE]
   sub_ents <- colnames(sub_ent_df)
 
-  ok_pk <- get_ok_pk(names(data))
-
   out_sub_ent <- lapply2(sub_ents, function(x) {
     temp <- sub_ent_df[[x]]
     asrt(
       length(unique(df[, pk])) == length(temp), pk,
       " cannot act as a primary key because it is not a unique identifier.\n\n",
-      "Try using ", ok_pk, " instead."
+      "Try using ", pk, " instead."
     )
     names(temp) <- df[, pk]
     xn <- do.call("rbind", temp)
