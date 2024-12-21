@@ -49,7 +49,7 @@ get_top_level_attributes <- function(endpoint) {
 #' }
 #'
 #' @export
-get_fields <- function(endpoint, groups = NULL) {
+get_fields <- function(endpoint, groups = NULL, include_pk = FALSE) {
   validate_endpoint(endpoint)
 
   # using API's shorthand notation, group names can be requested as fields instead of
