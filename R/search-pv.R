@@ -307,11 +307,62 @@ search_pv <- function(query,
 
   result <- one_request(method, query, base_url, arg_list, api_key, ...)
   result <- process_resp(result)
-  if (!all_pages) return(result)
 
-  full_data <- request_apply(result, method, query, base_url, arg_list, api_key, ...)
-  result$data[[1]] <- full_data
+  if (all_pages && result$query_result$total_hits == 0) {
+    stop2("No records matched your query...Can't download multiple pages")
+  }
 
+  # return if we don't need to make additional API requests
+  if (!all_pages ||
+    result$query_result$total_hits == 0 ||
+    result$query_result$total_hits == nrow(result$data[[1]])) {
+    return(result)
+  }
+
+  # Here we ignore the user's sort and instead have the API sort by the primary
+  # key for the requested endpoint.  
+  primary_sort_key <- get_default_sort(endpoint)
+
+  # We check what fields we got back from the first call. If the user didn't
+  # specify fields, we'd get back the API's defaults.  We may need to request
+  # additional fields from the API so we can apply the users sort and then remove
+  # the additional fields.
+  returned_fields <- names(result$data[[1]])
+
+  if (!is.null(sort)) {
+    sort_fields <- names(sort)
+    additional_fields <- sort_fields[!(sort_fields %in% returned_fields)]
+    if (is.null(fields)) {
+      fields <- returned_fields # the default fields
+    } else {
+      fields <- fields # user passed
+    }
+    fields <- append(fields, additional_fields)
+  } else {
+    additional_fields <- c()
+  }
+
+  arg_list <- to_arglist(fields, size, primary_sort_key, after)
+  paged_data <- request_apply(result, method, query, base_url, arg_list, api_key, ...)
+
+  # apply the user's sort using order()
+  # was data.table::setorderv(paged_data, names(sort), ifelse(as.vector(sort) == "asc", 1, -1))
+
+  sort_order <- mapply(function(col, direction) {
+    if (direction == "asc") {
+      return(paged_data[[col]])
+    } else {
+      return(-rank(paged_data[[col]], ties.method = "min"))  # Invert for descending order
+    }
+  }, col = names(sort), direction = as.vector(sort), SIMPLIFY = FALSE)
+
+  # Final sorting
+  paged_data <- paged_data[do.call(order, sort_order), , drop = FALSE]
+
+  # remove the fields we added in order to do the user's sort ourselves
+  paged_data <- paged_data[, !names(paged_data) %in% additional_fields]
+
+  result$data[[1]] <- paged_data
   result
 }
 
