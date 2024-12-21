@@ -54,12 +54,31 @@ create_not_fun <- function(fun) {
   }
 }
 
+#' @noRd
+create_in_range_fun <- function(fun) {
+  force(fun)
+  function(...) {
+    value_p <- list(...)
+    field <- names(value_p)
+    value <- unlist(value_p)
+    names(value) <- NULL
+
+    # throw an error if the length isn't two
+    asrt(length(value) == 2, fun, " expects a range of exactly two arguments")
+
+    low <- create_one_fun(field = field, value = value[1], fun = "gte")
+    high <- create_one_fun(field = field, value = value[2], fun = "lte")
+    z <- list(`_and` = list(low, high))
+
+    structure(z, class = c(class(z), "pv_query"))
+  }
+}
+
 #' List of query functions
 #'
 #' A list of functions that make it easy to write PatentsView queries. See the
-#' details section below for a list of the 14 functions, as well as the
-#' \href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
-#' queries vignette} for further details.
+#' details section below for a list of the 15 functions, as well as the
+#' \href{../articles/writing-queries.html}{writing queries vignette} for further details.
 #'
 #' @details
 #'
@@ -109,6 +128,13 @@ create_not_fun <- function(fun) {
 #'    \item \code{not} - The comparison is not true
 #'  }
 #'
+#' \strong{4. Convenience function} \cr
+#'
+#' There is 1 convenience function:
+#' \itemize{
+#'    \item \code{in_range} - Builds a <= x <= b query
+#'  }
+#'
 #' @return An object of class \code{pv_query}. This is basically just a simple
 #'   list with a print method attached to it.
 #'
@@ -117,6 +143,10 @@ create_not_fun <- function(fun) {
 #'
 #' qry_funs$not(qry_funs$eq(patent_date = "2001-01-01"))
 #'
+#' qry_funs$in_range(patent_year = c(2010, 2021))
+#'
+#' qry_funs$in_range(patent_date = c("1976-01-01", "1983-02-28"))
+
 #' @export
 qry_funs <- c(
   lapply2(
@@ -126,7 +156,8 @@ qry_funs <- c(
     ), create_key_fun
   ),
   lapply2(c("and", "or"), create_array_fun),
-  lapply2("not", create_not_fun)
+  lapply2("not", create_not_fun),
+  lapply2("in_range", create_in_range_fun)
 )
 
 #' With qry_funs
