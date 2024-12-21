@@ -19,7 +19,7 @@ get_top_level_attributes <- function(endpoint) {
 #'   endpoint's fields (i.e., do not filter the field list based on group
 #'   membership). See the field tables located online to see which groups you
 #'   can specify for a given endpoint (e.g., the
-#'   \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patent
+#'   \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patents
 #'   endpoint table}), or use the \code{fieldsdf} table
 #'   (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patent", "group"])}).
 #'

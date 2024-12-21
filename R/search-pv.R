@@ -171,7 +171,7 @@ get_default_sort <- function(endpoint) {
 #'
 #'    \item An object of class \code{pv_query}, which you create by calling one
 #'    of the functions found in the \code{\link{qry_funs}} list...See the
-#'    \href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
+#'    \href{../articles/writing-queries.html}{writing
 #'    queries vignette} for details.\cr
 #'    E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 #'  }
@@ -179,7 +179,7 @@ get_default_sort <- function(endpoint) {
 #'  A value of \code{NULL} indicates to the API that it should return the default fields
 #'  for that endpoint. Acceptable fields for a given endpoint can be found at the API's
 #'  online documentation (e.g., check out the field list for the
-#'  \href{https://patentsview.org/apis/api-endpoints/patents}{patents
+#'  \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference#patent}{patents
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
