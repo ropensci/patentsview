@@ -208,25 +208,25 @@ get_default_sort <- function(endpoint) {
 #'  \code{all_pages = TRUE}, the value of \code{size} is ignored.
 #' @param sort A named character vector where the name indicates the field to
 #'  sort by and the value indicates the direction of sorting (direction should
-#'  be either "asc" or "desc"). For example, \code{sort = c("patent_number" =
-#'  "asc")} or \cr\code{sort = c("patent_number" = "asc", "patent_date" =
+#'  be either "asc" or "desc"). For example, \code{sort = c("patent_id" =
+#'  "asc")} or \cr\code{sort = c("patent_id" = "asc", "patent_date" =
 #'  "desc")}. \code{sort = NULL} (the default) means do not sort the results.
 #'  You must include any fields that you wish to sort by in \code{fields}.
 #' @param method The HTTP method that you want to use to send the request.
 #'  Possible values include "GET" or "POST". Use the POST method when
 #'  your query is very long (say, over 2,000 characters in length).
 #' @param error_browser `r lifecycle::badge("deprecated")`
-#' @param api_key API key. See \href{https://patentsview.org/apis/keyrequest}{
-#'  Here} for info on creating a key.
-#' @param ... Arguments passed along to httr's \code{\link[httr]{GET}} or
-#'  \code{\link[httr]{POST}} function.
+#' @param api_key API key, it defaults to Sys.getenv("PATENTSVIEW_API_KEY"). Request a key
+#' \href{https://patentsview.org/apis/keyrequest}{here}.
+#' @param ... Curl options passed along to httr2's \code{\link[httr2]{req_options}}
+#'  when we do GETs or POSTs.
 #'
 #' @return A list with the following three elements:
 #'  \describe{
 #'    \item{data}{A list with one element - a named data frame containing the
 #'    data returned by the server. Each row in the data frame corresponds to a
 #'    single value for the primary entity. For example, if you search the
-#'    assignees endpoint, then the data frame will be on the assignee-level,
+#'    assignee endpoint, then the data frame will be on the assignee-level,
 #'    where each row corresponds to a single assignee. Fields that are not on
 #'    the assignee-level would be returned in list columns.}
 #'
