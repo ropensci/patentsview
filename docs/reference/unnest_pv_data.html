@@ -100,7 +100,7 @@ in "R for Data Science" for an in-depth introduction to joining tabular data).</
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">unnest_pv_data</span><span class="op">(</span><span class="va">data</span>, pk <span class="op">=</span> <span class="fu"><a href="get_ok_pk.html">get_ok_pk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">unnest_pv_data</span><span class="op">(</span><span class="va">data</span>, pk <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -115,8 +115,8 @@ inside it. See examples.</p></dd>
 <dt>pk</dt>
 <dd><p>The column/field name that will link the data frames together. This
 should be the unique identifier for the primary entity. For example, if you
-used the patents endpoint in your call to <code>search_pv</code>, you could
-specify <code>pk = "patent_number"</code>. <strong>This identifier has to have
+used the patent endpoint in your call to <code>search_pv</code>, you could
+specify <code>pk = "patent_id"</code>. <strong>This identifier has to have
 been included in your <code>fields</code> vector when you called
 <code>search_pv</code></strong>. You can use <code><a href="get_ok_pk.html">get_ok_pk</a></code> to suggest a
 potential primary key for your data.</p></dd>
