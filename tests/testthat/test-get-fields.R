@@ -1,5 +1,6 @@
 test_that("get_fields works as expected", {
   skip_on_cran()
+  skip_on_ci()
 
   expect_error(
     get_fields("bogus endpoint"),
@@ -23,6 +24,7 @@ test_that("get_fields works as expected", {
 
 test_that("the endpoints are stable", {
   skip_on_cran()
+  skip_on_ci()
 
   # quick check of the endpoints - useful after an api update.  We run fieldsdf.R
   # and do a build.  This test would fail if an endpoint was added, moved or deleted

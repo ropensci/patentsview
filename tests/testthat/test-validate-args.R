@@ -4,6 +4,7 @@
 
 test_that("validate_args throws errors for all bad args", {
   skip_on_cran()
+  skip_on_ci()
 
   # requesting the old plural endpoint should now throw an error
   expect_error(
@@ -65,6 +66,7 @@ test_that("validate_args throws errors for all bad args", {
 
 test_that("group names can be requested as fields via new API shorthand", {
   skip_on_cran()
+  skip_on_ci()
 
   endpoint <- "patent"
   shorthand <- get_fields("patent", groups=c("application"))

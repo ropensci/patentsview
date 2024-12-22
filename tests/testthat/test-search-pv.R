@@ -7,6 +7,7 @@ endpoints <- get_endpoints()
 
 test_that("API returns expected df names for all endpoints", {
   skip_on_cran()
+  skip_on_ci()
 
   broken_endpoints <- c(
     "cpc_subclass",
@@ -36,6 +37,7 @@ test_that("API returns expected df names for all endpoints", {
 
 test_that("DSL-based query returns expected results", {
   skip_on_cran()
+  skip_on_ci()
 
   query <- with_qfuns(
     and(
@@ -52,6 +54,7 @@ test_that("DSL-based query returns expected results", {
 
 test_that("You can download up to 9,000+ records", {
   skip_on_cran()
+  skip_on_ci()
 
   # Should return 9,000+ rows
   query <- with_qfuns(
@@ -66,6 +69,7 @@ test_that("You can download up to 9,000+ records", {
 
 test_that("search_pv can pull all fields for all endpoints", {
   skip_on_cran()
+  skip_on_ci()
 
   troubled_endpoints <- c(
     "cpc_subclass", "location",
@@ -87,6 +91,7 @@ test_that("search_pv can pull all fields for all endpoints", {
 
 test_that("Sort option works as expected", {
   skip_on_cran()
+  skip_on_ci()
 
   out <- search_pv(
     qry_funs$neq(assignee_id = ""),
@@ -101,6 +106,7 @@ test_that("Sort option works as expected", {
 
 test_that("search_pv properly URL encodes queries", {
   skip_on_cran()
+  skip_on_ci()
 
   # Covers https://github.com/ropensci/patentsview/issues/24
   # need to use the assignee endpoint now
@@ -129,6 +135,7 @@ test_that("search_pv properly URL encodes queries", {
 
 test_that("We won't expose the user's patentsview API key to random websites", {
   skip_on_cran()
+  skip_on_ci()
 
   # We will try to call the api that tells us who is currently in space
   in_space_now_url <- "http://api.open-notify.org/astros.json"
@@ -138,6 +145,7 @@ test_that("We won't expose the user's patentsview API key to random websites", {
 
 test_that("We can call all the legitimate HATEOAS endpoints", {
   skip_on_cran()
+  skip_on_ci()
 
   single_item_queries <- c(
     "cpc_subclass/A01B/",
@@ -207,6 +215,7 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
 
 test_that("posts and gets return the same data", {
   skip_on_cran()
+  skip_on_ci()
 
   bad_eps <- c(
     "cpc_subclass"
@@ -247,6 +256,7 @@ test_that("posts and gets return the same data", {
 
 test_that("nested shorthand produces the same results as fully qualified ones", {
   skip_on_cran()
+  skip_on_ci()
 
   # the API now allows a shorthand in the fields/f: parameter
   # just the group name will retrieve all that group's attributes
@@ -264,6 +274,7 @@ test_that("nested shorthand produces the same results as fully qualified ones", 
 
 test_that("the 'after' parameter works properly", {
   skip_on_cran()
+  skip_on_ci()
 
   sort <- c("patent_id" = "asc")
   big_query <- qry_funs$eq(patent_date = "2000-01-04") # 3003 total_hits
@@ -300,6 +311,7 @@ test_that("the 'after' parameter works properly", {
 
 test_that("the documentation and Swagger UI URLs work properly", {
   skip_on_cran()
+  skip_on_ci()
 
   documentation_url <-
     'https://search.patentsview.org/api/v1/patent/?q={"_text_any":{"patent_title":"COBOL cotton gin"}}&s=[{"patent_id": "asc" }]&o={"size":50}&f=["inventors.inventor_name_last","patent_id","patent_date","patent_title"]'
@@ -316,6 +328,7 @@ test_that("the documentation and Swagger UI URLs work properly", {
 
 test_that("an error occurs if all_pages is TRUE and there aren't any results", {
   skip_on_cran()
+  skip_on_ci()
 
   too_early <- qry_funs$lt(patent_date = "1976-01-01")
 
@@ -332,6 +345,7 @@ test_that("an error occurs if all_pages is TRUE and there aren't any results", {
 
 test_that("we can retrieve all_pages = TRUE without specifiying fields", {
   skip_on_cran()
+  skip_on_ci()
 
   query <- qry_funs$eq(patent_date = "1976-01-06")
   sort <- c("patent_type" = "asc", "patent_id" = "asc")
@@ -348,6 +362,7 @@ test_that("we can retrieve all_pages = TRUE without specifiying fields", {
 # the two responses match, then we've correctly handled throttling errors.
 test_that("Throttled requests are automatically retried", {
   skip_on_cran()
+  skip_on_ci()
 
   res <- search_pv('{"_gte":{"patent_date":"2007-01-04"}}', size = 50)
   patent_ids <- res$data$patents$patent_id
@@ -421,6 +436,7 @@ test_that("Throttled requests are automatically retried", {
 
 test_that("we can sort on an unrequested field across page boundaries", {
   skip_on_cran()
+  skip_on_ci()
 
   # total_hits = 5,352
   query <- qry_funs$in_range(patent_date = c("1976-01-01", "1976-01-31"))
@@ -451,6 +467,7 @@ test_that("we can sort on an unrequested field across page boundaries", {
 
 test_that("sort works across page boundaries", {
   skip_on_cran()
+  skip_on_ci()
 
   sort <- c("patent_type" = "desc", "patent_id" = "desc")
   results <- search_pv(

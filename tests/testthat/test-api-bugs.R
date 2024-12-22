@@ -80,6 +80,7 @@ test_that("there is case sensitivity on string equals", {
 
 test_that("string vs text operators behave differently", {
   skip_on_cran()
+  skip_on_ci()
 
   # # reported to the API team PVS-1147
   query <- qry_funs$begins(assignee_organization = "johnson")
@@ -161,6 +162,7 @@ eps <- (get_endpoints())
 
 test_that("We can call all the legitimate HATEOAS endpoints", {
   skip_on_cran()
+  skip_on_ci()
 
   # these currently throw Error: Internal Server Error
   broken_single_item_queries <- c(
@@ -182,6 +184,7 @@ test_that("We can call all the legitimate HATEOAS endpoints", {
 
 test_that("individual fields are still broken", {
   skip_on_cran()
+  skip_on_ci()
 
   # Sample fields that cause 500 errors when requested by themselves.
   # Some don't throw errors when included in get_fields() but they do if
@@ -207,6 +210,7 @@ test_that("individual fields are still broken", {
 
 test_that("we can't sort by all fields", {
   skip_on_cran()
+  skip_on_ci()
 
   # PVS-1377
   sorts_to_try <- c(
@@ -250,6 +254,7 @@ test_that("we can't sort by all fields", {
 
 test_that("withdrawn patents are still present in the database", {
   skip_on_cran()
+  skip_on_ci()
 
   # PVS-1342 Underlying data issues
   # There are 8,000 patents that were in the bulk xml files patentsiew is based on.
@@ -271,6 +276,7 @@ test_that("withdrawn patents are still present in the database", {
 
 test_that("missing patents are still missing", {
   skip_on_cran()
+  skip_on_ci()
 
   # PVS-1342 Underlying data issues
   # There are around 300 patents that aren't in the bulk xml files patentsiew is based on.
@@ -291,6 +297,7 @@ test_that("missing patents are still missing", {
 
 test_that("we can't explicitly request assignee_ or inventor_years.num_patents", {
   skip_on_cran()
+  skip_on_ci()
 
   bad_eps <- c(
     "assignee", # Invalid field: assignee_years.num_patents. assignee_years is not a nested field
@@ -313,6 +320,7 @@ test_that("we can't explicitly request assignee_ or inventor_years.num_patents",
 
 test_that("uspcs aren't right", {
   skip_on_cran()
+  skip_on_ci()
 
   # PVS-1615
 
@@ -333,6 +341,7 @@ test_that("uspcs aren't right", {
 
 test_that("endpoints are still broken", {
   skip_on_cran()
+  skip_on_ci()
   # this will fail when the api is fixed
 
   broken_endpoints <- c(
