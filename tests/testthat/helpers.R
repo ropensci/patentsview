@@ -1,5 +1,5 @@
 # Vector of queries (one for each endpoint) that are used during testing. We
-# need this b/c in the new version of the api, only three of the endpoints are
+# need this b/c in the new version of the api, only ten of the endpoints are
 # searchable by patent number (i.e., we can't use a generic patent number
 # search query).  further, now patent_number has been patent_id
 
@@ -32,3 +32,22 @@ TEST_QUERIES <- c(
   "uspc_subclass" = '{"uspc_subclass_id": "100/1"}',
   "wipo" = '{"wipo_id": "1"}'
 )
+
+to_plural <- function(x) {
+   pk <- get_ok_pk(x)
+   fieldsdf[fieldsdf$endpoint == x & fieldsdf$field == pk, "group"]
+}
+
+to_singular <- function(entity) {
+    endpoint_df <- fieldsdf[fieldsdf$group == entity, ]
+    endpoint <- unique(endpoint_df$endpoint)
+
+    # watch out here- several endpoints return entities that are groups returned
+    # by the patent and publication endpoints (attorneys, inventors, assignees)
+    if(length(endpoint) > 1) {
+      endpoint <- endpoint[!endpoint %in% c("patent", "publication")]
+    }
+
+    # can't distinguish rel_app_texts between patent/rel_app_text and publication/rel_app_text
+    endpoint
+}
