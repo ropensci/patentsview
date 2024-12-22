@@ -1,5 +1,6 @@
 test_that("cast_pv_data casts patent fields as expected", {
   skip_on_cran()
+  skip_on_ci()
 
   pv_out <- search_pv(
     query = '{"patent_id":"5116621"}', fields = get_fields("patent")
@@ -58,6 +59,7 @@ test_that("cast_pv_data casts assignee fields as expected", {
 
 test_that("we can cast a bool", {
   skip_on_cran()
+  skip_on_ci()
 
   # TODO(any): remove when the API returns this as a boolean
   fields <- c("rule_47_flag")

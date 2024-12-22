@@ -1,5 +1,6 @@
 test_that("We can print the returns from all endpoints ", {
   skip_on_cran()
+  skip_on_ci()
 
   eps <- get_endpoints()
   bad_eps <- c("cpc_subclass", "uspc_subclass", "uspc_mainclass", "wipo")
@@ -20,6 +21,7 @@ test_that("We can print the returns from all endpoints ", {
 
 test_that("we can print a query, its request, and unnested data", {
   skip_on_cran()
+  skip_on_ci()
 
   x <- "patent"
   q <- qry_funs$eq(patent_id = "11530080")
