@@ -1,7 +1,6 @@
 
 test_that("errors are thrown on invalid queries", {
   skip_on_cran()
-  skip_on_ci()
 
   expect_error(
     search_pv(qry_funs$eq("shoe_size" = 11.5)),
@@ -67,7 +66,6 @@ test_that("errors are thrown on invalid queries", {
 
 test_that("a valid nested field can be queried", {
   skip_on_cran()
-  skip_on_ci()
 
   results <- search_pv(qry_funs$eq("application.rule_47_flag" = FALSE))
 
@@ -76,7 +74,6 @@ test_that("a valid nested field can be queried", {
 
 test_that("the _eq message is thrown when appropriate", {
   skip_on_cran()
-  skip_on_ci()
 
   expect_message(
     search_pv(list(patent_date = "2007-03-06")),
@@ -86,7 +83,6 @@ test_that("the _eq message is thrown when appropriate", {
 
 test_that("a query with an and operator returns results", {
   skip_on_cran()
-  skip_on_ci()
 
   patents_query <-
     with_qfuns(
