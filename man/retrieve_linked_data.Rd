@@ -19,7 +19,7 @@ in the documentation or a Request URL from the \href{https://search.patentsview.
 Set to TRUE for Request URLs from Swagger UI.}
 
 \item{api_key}{API key, it defaults to Sys.getenv("PATENTSVIEW_API_KEY"). Request a key
-\href{https://patentsview.org/apis/keyrequest}{here}.}
+\href{https://patentsview-support.atlassian.net/servicedesk/customer/portals}{here}.}
 
 \item{...}{Curl options passed along to httr2's \code{\link[httr2]{req_options}} function.}
 }
