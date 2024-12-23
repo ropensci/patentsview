@@ -179,7 +179,7 @@ get_default_sort <- function(endpoint) {
 #'  A value of \code{NULL} indicates to the API that it should return the default fields
 #'  for that endpoint. Acceptable fields for a given endpoint can be found at the API's
 #'  online documentation (e.g., check out the field list for the
-#'  \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference#patent}{patents
+#'  \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patents
 #'  endpoint}) or by viewing the \code{fieldsdf} data frame
 #'  (\code{View(fieldsdf)}). You can also use \code{\link{get_fields}} to list
 #'  out the fields available for a given endpoint.
@@ -217,7 +217,7 @@ get_default_sort <- function(endpoint) {
 #'  your query is very long (say, over 2,000 characters in length).
 #' @param error_browser `r lifecycle::badge("deprecated")`
 #' @param api_key API key, it defaults to Sys.getenv("PATENTSVIEW_API_KEY"). Request a key
-#' \href{https://patentsview.org/apis/keyrequest}{here}.
+#' \href{https://patentsview-support.atlassian.net/servicedesk/customer/portals}{here}.
 #' @param ... Curl options passed along to httr2's \code{\link[httr2]{req_options}}
 #'  when we do GETs or POSTs.
 #'
