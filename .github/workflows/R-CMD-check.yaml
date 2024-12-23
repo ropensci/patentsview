@@ -28,6 +28,8 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       PATENTSVIEW_API_KEY: ${{ secrets.PATENTSVIEW_API_KEY }}
+      EXAMPLES_PARAM: ${{ github.event_name == 'push' && 'run_dontrun = TRUE' || 'run_dontrun = FALSE' }}
+      NOT_CRAN_VALUE: ${{ github.event_name == 'push' && 'TRUE' || 'FALSE' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -71,6 +73,8 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
+          NOT_CRAN: ${{ env.NOT_CRAN_VALUE }}
+
         run: |
           options(crayon.enabled = TRUE)
           rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
@@ -79,10 +83,11 @@ jobs:
       - name: Run examples
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
+
         run: |
           options(crayon.enabled = TRUE)
           remotes::install_cran("devtools")
-          devtools::run_examples()
+          devtools::run_examples( ${{ env.EXAMPLES_PARAM }} )
         shell: Rscript {0}
 
       - name: Upload check results
