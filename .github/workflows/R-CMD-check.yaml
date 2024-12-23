@@ -28,8 +28,6 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       PATENTSVIEW_API_KEY: ${{ secrets.PATENTSVIEW_API_KEY }}
-      EXAMPLES_PARAM: ${{ github.event_name == 'push' && 'run_dontrun = TRUE' || 'run_dontrun = FALSE' }}
-      NOT_CRAN_VALUE: ${{ github.event_name == 'push' && 'TRUE' || 'FALSE' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +37,15 @@ jobs:
           r-version: ${{ matrix.config.r }}
 
       - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Check Secrets Access
+        run: |
+          if [[ "x${{ secrets.PATENTSVIEW_API_KEY }}" != "x" ]]; then
+            echo "Access to secrets"
+          else
+            echo "No access to secrets"
+            exit 1
+          fi
 
       - name: Query dependencies
         run: |
@@ -73,7 +80,6 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-          NOT_CRAN: ${{ env.NOT_CRAN_VALUE }}
 
         run: |
           options(crayon.enabled = TRUE)
@@ -87,7 +93,7 @@ jobs:
         run: |
           options(crayon.enabled = TRUE)
           remotes::install_cran("devtools")
-          devtools::run_examples( ${{ env.EXAMPLES_PARAM }} )
+          devtools::run_examples(run_dontrun = TRUE)
         shell: Rscript {0}
 
       - name: Upload check results
