@@ -2,7 +2,6 @@ eps <- get_endpoints()
 
 test_that("we can unnest all entities", {
   skip_on_cran()
-  skip_on_ci()
 
   # TODO(any): add back fields = get_fields(x)
   # API throws 500s if some nested fields are included
@@ -49,7 +48,6 @@ test_that("we can unnest all entities", {
 
 test_that("endpoint's pks match their entity's pks", {
   skip_on_cran()
-  skip_on_ci()
 
   # the overloaded_entities endpoints return the same entity, rel_app_texts,
   # so we can't determine the endpoint from the entity like we can

@@ -1,6 +1,5 @@
 test_that("we can cast the endpoints that return the same entity", {
   skip_on_cran()
-  skip_on_ci()
 
   endpoints <- c("patent/rel_app_text", "publication/rel_app_text")
 

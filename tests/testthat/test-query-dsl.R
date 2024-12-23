@@ -1,6 +1,5 @@
 test_that("between works as expected", {
   skip_on_cran()
-  skip_on_ci()
 
   query <- qry_funs$in_range(patent_date = c("1976-01-06", "1976-01-13"))
 
@@ -11,7 +10,6 @@ test_that("between works as expected", {
 
 test_that("with_qfuns() works as advertised", {
   skip_on_cran() # wouldn't necessarily have to skip!
-  skip_on_ci() # wouldn't necessarily have to skip!
 
   a <- with_qfuns(
     and(
@@ -30,7 +28,6 @@ test_that("with_qfuns() works as advertised", {
 
 test_that("argument check works on in_range", {
   skip_on_cran() # wouldn't necessarily have to skip!
-  skip_on_ci() # wouldn't necessarily have to skip!
 
   expect_error(
     qq <- qry_funs$in_range("patent_id", c("10000000", "10000002")),
