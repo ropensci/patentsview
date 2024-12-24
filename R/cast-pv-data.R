@@ -5,26 +5,40 @@ as_is <- function(x) x
 get_cast_fun <- function(data_type) {
   # Some fields aren't documented, so we don't know what their data type is. Use
   # string type for these.
+  # new version of the API: state of string vs fulltext is in flux. Latter currently unused
   if (length(data_type) != 1) data_type <- "string"
-  switch(
-    data_type,
+  switch(data_type,
     "string" = as_is,
     "date" = as.Date,
-    "float" = as.numeric,
-    "integer" = as.integer,
+    "number" = as_is,
+    "integer" = as_is,
     "int" = as.integer,
-    "fulltext" = as_is
+    "fulltext" = as_is,
+    "boolean" = as_is,
+    "bool" = as.logical
   )
 }
 
 #' @noRd
 lookup_cast_fun <- function(name, typesdf) {
-  data_type <- typesdf[typesdf$field == name, "data_type"]
+  data_type <- typesdf[typesdf$common_name == name, "data_type"]
   get_cast_fun(data_type = data_type)
 }
 
 #' @noRd
 cast_one.character <- function(one, name, typesdf) {
+  cast_fun <- lookup_cast_fun(name, typesdf)
+  cast_fun(one)
+}
+
+#' @noRd
+cast_one.double <- function(one, name, typesdf) {
+  cast_fun <- lookup_cast_fun(name, typesdf)
+  cast_fun(one)
+}
+
+#' @noRd
+cast_one.integer <- function(one, name, typesdf) {
   cast_fun <- lookup_cast_fun(name, typesdf)
   cast_fun(one)
 }
@@ -69,7 +83,7 @@ cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 #' \dontrun{
 #'
 #' fields <- c("patent_date", "patent_title", "patent_year")
-#' res <- search_pv(query = "{\"patent_number\":\"5116621\"}", fields = fields)
+#' res <- search_pv(query = "{\"patent_id\":\"5116621\"}", fields = fields)
 #' cast_pv_data(data = res$data)
 #' }
 #'
@@ -77,9 +91,25 @@ cast_one <- function(one, name, typesdf) UseMethod("cast_one")
 cast_pv_data <- function(data) {
   validate_pv_data(data)
 
-  endpoint <- names(data)
+  entity_name <- names(data)
 
-  typesdf <- fieldsdf[fieldsdf$endpoint == endpoint, c("field", "data_type")]
+  if (entity_name == "rel_app_texts") {
+    # blend the fields from both rel_app_texts entities
+    typesdf <- unique(fieldsdf[fieldsdf$group == entity_name, c("common_name", "data_type")])
+  } else {
+    # need to get the endpoint from entity_name
+    endpoint_df <- fieldsdf[fieldsdf$group == entity_name, ]
+    endpoint <- unique(endpoint_df$endpoint)
+
+    # watch out here- several endpoints return entities that are groups returned
+    # by the patent and publication endpoints (attorneys, inventors, assignees)
+    if(length(endpoint) > 1) {
+      endpoint <- endpoint[!endpoint %in% c("patent", "publication")]
+    }
+
+    typesdf <- fieldsdf[fieldsdf$endpoint == endpoint, c("common_name", "data_type")]
+
+  }
 
   df <- data[[1]]
 
@@ -89,7 +119,7 @@ cast_pv_data <- function(data) {
 
   df[] <- list_out
   out_data <- list(x = df)
-  names(out_data) <- endpoint
+  names(out_data) <- entity_name
 
   structure(
     out_data,

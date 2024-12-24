@@ -2,18 +2,26 @@
 % Please edit documentation in R/search-pv.R
 \name{retrieve_linked_data}
 \alias{retrieve_linked_data}
-\title{Get Linked Data}
+\title{Retrieve Linked Data}
 \usage{
-retrieve_linked_data(url, api_key = Sys.getenv("PATENTSVIEW_API_KEY"), ...)
+retrieve_linked_data(
+  url,
+  encoded_url = FALSE,
+  api_key = Sys.getenv("PATENTSVIEW_API_KEY"),
+  ...
+)
 }
 \arguments{
-\item{url}{The link that was returned by the API on a previous call.}
+\item{url}{A link that was returned by the API on a previous call, an example
+in the documentation or a Request URL from the \href{https://search.patentsview.org/swagger-ui/}{API's Swagger UI page}.}
 
-\item{api_key}{API key. See \href{https://patentsview.org/apis/keyrequest}{
-Here} for info on creating a key.}
+\item{encoded_url}{boolean to indicate whether the url has been URL encoded, defaults to FALSE.
+Set to TRUE for Request URLs from Swagger UI.}
 
-\item{...}{Arguments passed along to httr's \code{\link[httr]{GET}} or
-\code{\link[httr]{POST}} function.}
+\item{api_key}{API key, it defaults to Sys.getenv("PATENTSVIEW_API_KEY"). Request a key
+\href{https://patentsview-support.atlassian.net/servicedesk/customer/portals}{here}.}
+
+\item{...}{Curl options passed along to httr2's \code{\link[httr2]{req_options}} function.}
 }
 \value{
 A list with the following three elements:
@@ -21,30 +29,42 @@ A list with the following three elements:
 \item{data}{A list with one element - a named data frame containing the
 data returned by the server. Each row in the data frame corresponds to a
 single value for the primary entity. For example, if you search the
-assignees endpoint, then the data frame will be on the assignee-level,
+assignee endpoint, then the data frame will be on the assignee-level,
 where each row corresponds to a single assignee. Fields that are not on
 the assignee-level would be returned in list columns.}
 
 \item{query_results}{Entity counts across all pages of output (not just
 the page returned to you).}
 
-\item{request}{Details of the HTTP request that was sent to the server.
-When you set \code{all_pages = TRUE}, you will only get a sample request.
-In other words, you will not be given multiple requests for the multiple
-calls that were made to the server (one for each page of results).}
+\item{request}{Details of the GET HTTP request that was sent to the server.}
 }
 }
 \description{
 Some of the endpoints now return HATEOAS style links to get more data. E.g.,
-the inventors endpoint may return a link such as:
-"https://search.patentsview.org/api/v1/inventor/252373/"
+the patent endpoint may return a link such as:
+"https://search.patentsview.org/api/v1/inventor/fl:th_ln:jefferson-1/"
 }
 \examples{
 \dontrun{
 
 retrieve_linked_data(
-  "https://search.patentsview.org/api/v1/cpc_subgroup/G01S7:4811/"
- )
+  "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
+)
+
+endpoint_url <- "https://search.patentsview.org/api/v1/patent/"
+q_param <- '?q={"_text_any":{"patent_title":"COBOL cotton gin"}}'
+s_and_o_params <- '&s=[{"patent_id": "asc" }]&o={"size":50}'
+f_param <- '&f=["inventors.inventor_name_last","patent_id","patent_date","patent_title"]'
+# (URL broken up to avoid a long line warning in this Rd)
+
+retrieve_linked_data(
+  paste0(endpoint_url, q_param, s_and_o_params, f_param)
+)
+
+retrieve_linked_data(
+  "https://search.patentsview.org/api/v1/patent/?q=\%7B\%22patent_date\%22\%3A\%221976-01-06\%22\%7D",
+  encoded_url = TRUE
+)
 }
 
 }

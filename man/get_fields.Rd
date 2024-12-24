@@ -4,7 +4,7 @@
 \alias{get_fields}
 \title{Get list of retrievable fields}
 \usage{
-get_fields(endpoint, groups = NULL)
+get_fields(endpoint, groups = NULL, include_pk = FALSE)
 }
 \arguments{
 \item{endpoint}{The API endpoint whose field list you want to get. See
@@ -15,9 +15,13 @@ returned. A value of \code{NULL} indicates that you want all of the
 endpoint's fields (i.e., do not filter the field list based on group
 membership). See the field tables located online to see which groups you
 can specify for a given endpoint (e.g., the
-\href{https://search.patentsview.org/docs/docs/Search\%20API/SearchAPIReference/#patent}{patent
+\href{https://search.patentsview.org/docs/docs/Search\%20API/SearchAPIReference/#patent}{patents
 endpoint table}), or use the \code{fieldsdf} table
 (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patent", "group"])}).}
+
+\item{include_pk}{Boolean on whether to include the endpoint's primary key,
+defaults to FALSE.  The primary key is needed if you plan on calling
+\code{\link{unnest_pv_data}} on the results of \code{\link{search_pv}}}
 }
 \value{
 A character vector with field names.
@@ -30,8 +34,8 @@ entity group(s) as well (which is recommended, given the large number of
 possible fields for each endpoint).
 }
 \examples{
-# Get all assignee-level fields for the patent endpoint:
-fields <- get_fields(endpoint = "patent", groups = "assignees")
+# Get all top level (non-nested) fields for the patent endpoint:
+fields <- get_fields(endpoint = "patent", groups = c("patents"))
 
 # ...Then pass to search_pv:
 \dontrun{
@@ -41,7 +45,7 @@ search_pv(
   fields = fields
 )
 }
-# Get all patent and assignee-level fields for the patent endpoint:
+# Get unnested patent and assignee-level fields for the patent endpoint:
 fields <- get_fields(endpoint = "patent", groups = c("assignees", "patents"))
 
 \dontrun{
@@ -50,6 +54,19 @@ search_pv(
   query = '{"_gte":{"patent_date":"2007-01-04"}}',
   fields = fields
 )
+}
+# Get the nested inventors fields and the primary key in order to call unnest_pv_data
+# on the returned data.  unnest_pv_data would throw an error if the primary key was
+# not present in the results.
+fields <- get_fields(endpoint = "patent", groups = c("inventors"), include_pk = TRUE)
+
+\dontrun{
+# ...Then pass to search_pv and unnest the results
+results <- search_pv(
+  query = '{"_gte":{"patent_date":"2007-01-04"}}',
+  fields = fields
+)
+unnest_pv_data(results$data)
 }
 
 }

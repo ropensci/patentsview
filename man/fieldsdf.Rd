@@ -22,7 +22,7 @@ fieldsdf
 A data frame containing the names of retrievable fields for each of the
 endpoints. You can find this data on the API's online documentation for each
 endpoint as well (e.g., the
-\href{https://patentsview.org/apis/api-endpoints/patents}{patents endpoint
+\href{https://search.patentsview.org/docs/docs/Search\%20API/SearchAPIReference/#patent}{patent endpoint
 field list table}).
 }
 \keyword{datasets}
