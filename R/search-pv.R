@@ -347,19 +347,20 @@ search_pv <- function(query,
   arg_list <- to_arglist(fields, size, primary_sort_key, after)
   paged_data <- request_apply(result, method, query, base_url, arg_list, api_key, ...)
 
-  # apply the user's sort using order()
+  # we apply the user's sort, if they supplied one, using order()
   # was data.table::setorderv(paged_data, names(sort), ifelse(as.vector(sort) == "asc", 1, -1))
+  if (!is.null(sort)) {
+    sort_order <- mapply(function(col, direction) {
+      if (direction == "asc") {
+        return(paged_data[[col]])
+      } else {
+        return(-rank(paged_data[[col]], ties.method = "min"))  # Invert for descending order
+      }
+    }, col = names(sort), direction = as.vector(sort), SIMPLIFY = FALSE)
 
-  sort_order <- mapply(function(col, direction) {
-    if (direction == "asc") {
-      return(paged_data[[col]])
-    } else {
-      return(-rank(paged_data[[col]], ties.method = "min"))  # Invert for descending order
-    }
-  }, col = names(sort), direction = as.vector(sort), SIMPLIFY = FALSE)
-
-  # Final sorting
-  paged_data <- paged_data[do.call(order, sort_order), , drop = FALSE]
+    # Final sorting
+    paged_data <- paged_data[do.call(order, sort_order), , drop = FALSE]
+  }
 
   # remove the fields we added in order to do the user's sort ourselves
   paged_data <- paged_data[, !names(paged_data) %in% additional_fields]
