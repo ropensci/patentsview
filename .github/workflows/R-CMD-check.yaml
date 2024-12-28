@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Confirm crew102 triggered the build
         run: |
-          if [ "${{ github.actor }}" == "crew102" ]; then
+          if [ "${{ github.event.sender.login }}" == "crew102" ]; then
             echo "Actor is crew102"
           else
             echo "Actor is ${{ github.actor }}, failing build."
