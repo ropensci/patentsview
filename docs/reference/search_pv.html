@@ -98,8 +98,10 @@ the user's query.</p>
 <span>  endpoint <span class="op">=</span> <span class="st">"patent"</span>,</span>
 <span>  subent_cnts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  mtchd_subent_only <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  page <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  per_page <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  page <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  per_page <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  after <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  all_pages <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  sort <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"GET"</span>,</span>
@@ -119,7 +121,7 @@ E.g., <code>'{"_gte":{"patent_date":"2007-01-04"}}'</code></p></li>
 E.g., <code>list("_gte" = list("patent_date" = "2007-01-04"))</code></p></li>
 <li><p>An object of class <code>pv_query</code>, which you create by calling one
 of the functions found in the <code><a href="qry_funs.html">qry_funs</a></code> list...See the
-<a href="https://docs.ropensci.org/patentsview/articles/writing-queries.html" class="external-link">writing
+<a href="../articles/writing-queries.html">writing
 queries vignette</a> for details.<br>
 E.g., <code>qry_funs$gte(patent_date = "2007-01-04")</code></p></li>
 </ul></dd>
@@ -127,13 +129,17 @@ E.g., <code>qry_funs$gte(patent_date = "2007-01-04")</code></p></li>
 
 <dt>fields</dt>
 <dd><p>A character vector of the fields that you want returned to you.
-A value of <code>NULL</code> indicates that the default fields should be
-returned. Acceptable fields for a given endpoint can be found at the API's
+A value of <code>NULL</code> indicates to the API that it should return the default fields
+for that endpoint. Acceptable fields for a given endpoint can be found at the API's
 online documentation (e.g., check out the field list for the
-<a href="https://patentsview.org/apis/api-endpoints/patents" class="external-link">patents
+<a href="https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent" class="external-link">patents
 endpoint</a>) or by viewing the <code>fieldsdf</code> data frame
 (<code>View(fieldsdf)</code>). You can also use <code><a href="get_fields.html">get_fields</a></code> to list
-out the fields available for a given endpoint.</p></dd>
+out the fields available for a given endpoint.</p>
+<p>Nested fields can be fully qualified, e.g., "application.filing_date" or the
+group name can be used to retrieve all of its nested fields, E.g. "application".
+The latter would be similar to passing <code>get_fields("patent", group = "application")</code>
+except it's the API that decides what fields to return.</p></dd>
 
 
 <dt>endpoint</dt>
@@ -142,35 +148,47 @@ out the fields available for a given endpoint.</p></dd>
 
 
 <dt>subent_cnts</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Non-matched subentities
-will always be returned under the new version of the API</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> This is always FALSE in the
+new version of the API as the total counts of unique subentities is no longer available.</p></dd>
 
 
 <dt>mtchd_subent_only</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> This is always
-FALSE in the new version of the API.</p></dd>
+FALSE in the new version of the API as non-matched subentities
+will always be returned.</p></dd>
 
 
 <dt>page</dt>
-<dd><p>The page number of the results that should be returned.</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> The new version of the API does not use
+<code>page</code> as a parameter for paging, it uses <code>after</code>.</p></dd>
 
 
 <dt>per_page</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> The API now uses <code>size</code></p></dd>
+
+
+<dt>size</dt>
 <dd><p>The number of records that should be returned per page. This
-value can be as high as 1,000 (e.g., <code>per_page = 1000</code>).</p></dd>
+value can be as high as 1,000 (e.g., <code>size = 1000</code>).</p></dd>
+
+
+<dt>after</dt>
+<dd><p>A list of sort key values that defaults to NULL.  This
+exposes the API's paging parameter for users who want to implement their own
+paging. It cannot be set when <code>all_pages = TRUE</code> as the R package manipulates it
+for users automatically. See <a href="../articles/result-set-paging.html">result set paging</a></p></dd>
 
 
 <dt>all_pages</dt>
 <dd><p>Do you want to download all possible pages of output? If
-<code>all_pages = TRUE</code>, the values of <code>page</code> and <code>per_page</code> are
-ignored.</p></dd>
+<code>all_pages = TRUE</code>, the value of <code>size</code> is ignored.</p></dd>
 
 
 <dt>sort</dt>
 <dd><p>A named character vector where the name indicates the field to
 sort by and the value indicates the direction of sorting (direction should
-be either "asc" or "desc"). For example, <code>sort = c("patent_number" =
- "asc")</code> or <br><code>sort = c("patent_number" = "asc", "patent_date" =
+be either "asc" or "desc"). For example, <code>sort = c("patent_id" =
+ "asc")</code> or <br><code>sort = c("patent_id" = "asc", "patent_date" =
  "desc")</code>. <code>sort = NULL</code> (the default) means do not sort the results.
 You must include any fields that you wish to sort by in <code>fields</code>.</p></dd>
 
@@ -186,13 +204,13 @@ your query is very long (say, over 2,000 characters in length).</p></dd>
 
 
 <dt>api_key</dt>
-<dd><p>API key. See <a href="https://patentsview.org/apis/keyrequest" class="external-link">
-Here</a> for info on creating a key.</p></dd>
+<dd><p>API key, it defaults to Sys.getenv("PATENTSVIEW_API_KEY"). Request a key
+<a href="https://patentsview-support.atlassian.net/servicedesk/customer/portals" class="external-link">here</a>.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Arguments passed along to httr's <code><a href="https://httr.r-lib.org/reference/GET.html" class="external-link">GET</a></code> or
-<code><a href="https://httr.r-lib.org/reference/POST.html" class="external-link">POST</a></code> function.</p></dd>
+<dd><p>Curl options passed along to httr2's <code><a href="https://httr2.r-lib.org/reference/req_options.html" class="external-link">req_options</a></code>
+when we do GETs or POSTs.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -203,7 +221,7 @@ Here</a> for info on creating a key.</p></dd>
 <dd><p>A list with one element - a named data frame containing the
 data returned by the server. Each row in the data frame corresponds to a
 single value for the primary entity. For example, if you search the
-assignees endpoint, then the data frame will be on the assignee-level,
+assignee endpoint, then the data frame will be on the assignee-level,
 where each row corresponds to a single assignee. Fields that are not on
 the assignee-level would be returned in list columns.</p></dd>
 
@@ -236,8 +254,8 @@ calls that were made to the server (one for each page of results).</p></dd>
 <span class="r-in"><span><span class="fu">search_pv</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  query <span class="op">=</span> <span class="va">qry_funs</span><span class="op">$</span><span class="fu">gt</span><span class="op">(</span>patent_year <span class="op">=</span> <span class="fl">2010</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"POST"</span>,</span></span>
-<span class="r-in"><span>  fields <span class="op">=</span> <span class="st">"patent_number"</span>,</span></span>
-<span class="r-in"><span>  sort <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"patent_number"</span> <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="st">"patent_id"</span>,</span></span>
+<span class="r-in"><span>  sort <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"patent_id"</span> <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">search_pv</span><span class="op">(</span></span></span>
@@ -252,9 +270,14 @@ calls that were made to the server (one for each page of results).</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">search_pv</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  query <span class="op">=</span> <span class="va">qry_funs</span><span class="op">$</span><span class="fu">contains</span><span class="op">(</span>inventors_at_grant.name_last <span class="op">=</span> <span class="st">"Smith"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="va">qry_funs</span><span class="op">$</span><span class="fu">contains</span><span class="op">(</span>inventors.inventor_name_last <span class="op">=</span> <span class="st">"Smith"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  endpoint <span class="op">=</span> <span class="st">"patent"</span>,</span></span>
-<span class="r-in"><span>  config <span class="op">=</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/timeout.html" class="external-link">timeout</a></span><span class="op">(</span><span class="fl">40</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  timeout <span class="op">=</span> <span class="fl">40</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">search_pv</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="va">qry_funs</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span>patent_id <span class="op">=</span> <span class="st">"11530080"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="st">"application"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>

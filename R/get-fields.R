@@ -1,3 +1,9 @@
+#' @noRd
+get_top_level_attributes <- function(endpoint) {
+  fieldsdf[fieldsdf$endpoint == endpoint & !grepl("\\.", fieldsdf$field), "field"]
+}
+
+
 #' Get list of retrievable fields
 #'
 #' This function returns a vector of fields that you can retrieve from a given
@@ -13,15 +19,18 @@
 #'   endpoint's fields (i.e., do not filter the field list based on group
 #'   membership). See the field tables located online to see which groups you
 #'   can specify for a given endpoint (e.g., the
-#'   \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patent
+#'   \href{https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/#patent}{patents
 #'   endpoint table}), or use the \code{fieldsdf} table
 #'   (e.g., \code{unique(fieldsdf[fieldsdf$endpoint == "patent", "group"])}).
+#' @param include_pk Boolean on whether to include the endpoint's primary key,
+#'    defaults to FALSE.  The primary key is needed if you plan on calling
+#'    \code{\link{unnest_pv_data}} on the results of \code{\link{search_pv}}
 #'
 #' @return A character vector with field names.
 #'
 #' @examples
-#' # Get all assignee-level fields for the patent endpoint:
-#' fields <- get_fields(endpoint = "patent", groups = "assignees")
+#' # Get all top level (non-nested) fields for the patent endpoint:
+#' fields <- get_fields(endpoint = "patent", groups = c("patents"))
 #'
 #' # ...Then pass to search_pv:
 #' \dontrun{
@@ -31,7 +40,7 @@
 #'   fields = fields
 #' )
 #' }
-#' # Get all patent and assignee-level fields for the patent endpoint:
+#' # Get unnested patent and assignee-level fields for the patent endpoint:
 #' fields <- get_fields(endpoint = "patent", groups = c("assignees", "patents"))
 #'
 #' \dontrun{
@@ -41,15 +50,49 @@
 #'   fields = fields
 #' )
 #' }
+#' # Get the nested inventors fields and the primary key in order to call unnest_pv_data
+#' # on the returned data.  unnest_pv_data would throw an error if the primary key was
+#' # not present in the results.
+#' fields <- get_fields(endpoint = "patent", groups = c("inventors"), include_pk = TRUE)
+#'
+#' \dontrun{
+#' # ...Then pass to search_pv and unnest the results
+#' results <- search_pv(
+#'   query = '{"_gte":{"patent_date":"2007-01-04"}}',
+#'   fields = fields
+#' )
+#' unnest_pv_data(results$data)
+#' }
 #'
 #' @export
-get_fields <- function(endpoint, groups = NULL) {
+get_fields <- function(endpoint, groups = NULL, include_pk = FALSE) {
   validate_endpoint(endpoint)
+
+  # using API's shorthand notation, group names can be requested as fields instead of
+  # fully qualifying each nested field.  Fully qualified, all patent endpoint's attributes
+  # is over 4K, too big to be sent on a GET with a modest query
+
+  pk <- get_ok_pk(endpoint)
+  plural_entity <- fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$field == pk, "group"]
+  top_level_attributes <- get_top_level_attributes(endpoint)
+
   if (is.null(groups)) {
-    fieldsdf[fieldsdf$endpoint == endpoint, "field"]
+    c(
+      top_level_attributes,
+      unique(fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group != plural_entity, "group"])
+    )
   } else {
     validate_groups(endpoint, groups = groups)
-    fieldsdf[fieldsdf$endpoint == endpoint & fieldsdf$group %in% groups, "field"]
+
+    # don't include pk if plural_entity group is requested (pk would be a member)
+    extra_field <- if (include_pk && !plural_entity %in% groups) pk else NULL
+    extra_fields <- if (plural_entity %in% groups) top_level_attributes else NULL
+
+    c(
+      extra_field,
+      extra_fields,
+      groups[!groups == plural_entity]
+    )
   }
 }
 
