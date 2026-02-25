@@ -161,39 +161,39 @@ display_inventors
 #> 30   8347213
 #> 31   8717367
 #> 32   8717367
-#>                                                                        inventor
-#> 1       https://search.patentsview.org:80/api/v1/inventor/fl:st_ln:jefferson-2/
-#> 2             https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:fay-2/
-#> 3          https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:bonola-1/
-#> 4       https://search.patentsview.org:80/api/v1/inventor/fl:lo_ln:jefferson-2/
-#> 5      https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-1/
-#> 6     https://search.patentsview.org:80/api/v1/inventor/fl:jo_ln:washington-11/
-#> 7          https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:bonola-1/
-#> 8       https://search.patentsview.org:80/api/v1/inventor/fl:lo_ln:jefferson-2/
-#> 9  https://search.patentsview.org:80/api/v1/inventor/ifajrttz5x29w1n3bk7z8if29/
-#> 10      https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:jefferson-1/
-#> 11      https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:jefferson-1/
-#> 12     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 13     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 14     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 15     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 16          https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:burke-2/
-#> 17     https://search.patentsview.org:80/api/v1/inventor/fl:ro_ln:washington-2/
-#> 18     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 19     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 20       https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:amundsen-2/
-#> 21          https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:kolis-1/
-#> 22      https://search.patentsview.org:80/api/v1/inventor/fl:ma_ln:jefferson-2/
-#> 23     https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:washington-2/
-#> 24          https://search.patentsview.org:80/api/v1/inventor/fl:ge_ln:burke-2/
-#> 25     https://search.patentsview.org:80/api/v1/inventor/fl:ro_ln:washington-2/
-#> 26          https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:tilly-1/
-#> 27       https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:dimambro-1/
-#> 28      https://search.patentsview.org:80/api/v1/inventor/fl:al_ln:jefferson-1/
-#> 29        https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:clifton-3/
-#> 30      https://search.patentsview.org:80/api/v1/inventor/fl:br_ln:jefferson-1/
-#> 31        https://search.patentsview.org:80/api/v1/inventor/fl:th_ln:clifton-3/
-#> 32      https://search.patentsview.org:80/api/v1/inventor/fl:br_ln:jefferson-1/
+#>                                                                     inventor
+#> 1       https://search.patentsview.org/api/v1/inventor/fl:st_ln:jefferson-2/
+#> 2             https://search.patentsview.org/api/v1/inventor/fl:th_ln:fay-2/
+#> 3          https://search.patentsview.org/api/v1/inventor/fl:th_ln:bonola-1/
+#> 4       https://search.patentsview.org/api/v1/inventor/fl:lo_ln:jefferson-2/
+#> 5      https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-1/
+#> 6     https://search.patentsview.org/api/v1/inventor/fl:jo_ln:washington-11/
+#> 7          https://search.patentsview.org/api/v1/inventor/fl:th_ln:bonola-1/
+#> 8       https://search.patentsview.org/api/v1/inventor/fl:lo_ln:jefferson-2/
+#> 9  https://search.patentsview.org/api/v1/inventor/ifajrttz5x29w1n3bk7z8if29/
+#> 10      https://search.patentsview.org/api/v1/inventor/fl:th_ln:jefferson-1/
+#> 11      https://search.patentsview.org/api/v1/inventor/fl:th_ln:jefferson-1/
+#> 12     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 13     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 14     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 15     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 16          https://search.patentsview.org/api/v1/inventor/fl:ge_ln:burke-8/
+#> 17     https://search.patentsview.org/api/v1/inventor/fl:ro_ln:washington-2/
+#> 18     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 19     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 20       https://search.patentsview.org/api/v1/inventor/fl:th_ln:amundsen-2/
+#> 21          https://search.patentsview.org/api/v1/inventor/fl:ge_ln:kolis-1/
+#> 22      https://search.patentsview.org/api/v1/inventor/fl:ma_ln:jefferson-2/
+#> 23     https://search.patentsview.org/api/v1/inventor/fl:ge_ln:washington-2/
+#> 24          https://search.patentsview.org/api/v1/inventor/fl:ge_ln:burke-8/
+#> 25     https://search.patentsview.org/api/v1/inventor/fl:ro_ln:washington-2/
+#> 26          https://search.patentsview.org/api/v1/inventor/fl:th_ln:tilly-1/
+#> 27       https://search.patentsview.org/api/v1/inventor/fl:th_ln:dimambro-1/
+#> 28      https://search.patentsview.org/api/v1/inventor/fl:al_ln:jefferson-1/
+#> 29        https://search.patentsview.org/api/v1/inventor/fl:th_ln:clifton-3/
+#> 30      https://search.patentsview.org/api/v1/inventor/fl:br_ln:jefferson-1/
+#> 31        https://search.patentsview.org/api/v1/inventor/fl:th_ln:clifton-3/
+#> 32      https://search.patentsview.org/api/v1/inventor/fl:br_ln:jefferson-1/
 #>                  inventor_id inventor_name_first    inventor_name_last
 #> 1       fl:st_ln:jefferson-2          Stanley T.             Jefferson
 #> 2             fl:th_ln:fay-2              Thomas                   FAY
@@ -210,7 +210,7 @@ display_inventors
 #> 13     fl:ge_ln:washington-2              George            Washington
 #> 14     fl:ge_ln:washington-2              George            Washington
 #> 15     fl:ge_ln:washington-2              George            Washington
-#> 16          fl:ge_ln:burke-2           George E.            Burke, Jr.
+#> 16          fl:ge_ln:burke-8           George E.            Burke, Jr.
 #> 17     fl:ro_ln:washington-2           Rodney B.            Washington
 #> 18     fl:ge_ln:washington-2              George            Washington
 #> 19     fl:ge_ln:washington-2              George            Washington
@@ -218,7 +218,7 @@ display_inventors
 #> 21          fl:ge_ln:kolis-1              George                 Kolis
 #> 22      fl:ma_ln:jefferson-2             Matthew             Jefferson
 #> 23     fl:ge_ln:washington-2              George            Washington
-#> 24          fl:ge_ln:burke-2           George E.            Burke, Jr.
+#> 24          fl:ge_ln:burke-8           George E.            Burke, Jr.
 #> 25     fl:ro_ln:washington-2           Rodney B.            Washington
 #> 26          fl:th_ln:tilly-1              Thomas                 Tilly
 #> 27       fl:th_ln:dimambro-1           Thomas M.              DiMambro
@@ -295,7 +295,7 @@ display_inventors
 #> 32             CA               US                 2
 ```
 Some rows act as you'd expect, like patent 4078607's Thomas Jefferson.  In others, two inventors
-combine to meet the search cititeria, like 6905071's
+combine to meet the search criteria, like 6905071's
  **Thomas** Amundsen and Matthew **Jefferson**.  This might be a match we didn't intend.
 
 Now we'll hit the inventor endpoint with a similar query, as the jupyter notebook suggests.
@@ -341,6 +341,7 @@ id_query <- qry_funs$eq(inventors.inventor_id=actual_inventors$inventors$invento
 patent_fields <-c("patent_id", "inventors.inventor_name_first", "inventors.inventor_name_last",
   "inventors.inventor_id")
 pat_res <- search_pv(id_query, fields=patent_fields, sort=c(patent_id = "asc"))
+#> Error in f1$data_type == "date" && !is_date(value): 'length = 2' in coercion to 'logical(1)'
 
 dl <- unnest_pv_data(pat_res$data)
 
@@ -353,53 +354,137 @@ display_inventors <-
 
 display_inventors
 #>    patent_id               inventor_id inventor_name_first
-#> 1   10568228     fl:ge_ln:washington-1      George Elliott
-#> 2   12263952 ifajrttz5x29w1n3bk7z8if29              George
-#> 3    4078607      fl:th_ln:jefferson-1              Thomas
-#> 4    4104193      fl:th_ln:jefferson-1              Thomas
-#> 5    5643452     fl:ge_ln:washington-2              George
-#> 6    5645778     fl:ge_ln:washington-2              George
-#> 7    5736046     fl:ge_ln:washington-2              George
-#> 8    5897817     fl:ge_ln:washington-2              George
-#> 9    6218441     fl:ge_ln:washington-2              George
-#> 10   6881337     fl:ge_ln:washington-2              George
-#> 11   7144505     fl:ge_ln:washington-2              George
+#> 1   10180440      fl:st_ln:jefferson-2          Stanley T.
+#> 2   10180440            fl:th_ln:fay-2              Thomas
+#> 3   10374815         fl:th_ln:bonola-1           Thomas J.
+#> 4   10374815      fl:lo_ln:jefferson-2             Lorri L
+#> 5   10568228     fl:ge_ln:washington-1      George Elliott
+#> 6   10664808    fl:jo_ln:washington-11                Joel
+#> 7   11032709         fl:th_ln:bonola-1           Thomas J.
+#> 8   11032709      fl:lo_ln:jefferson-2             Lorri L
+#> 9   12263952 ifajrttz5x29w1n3bk7z8if29              George
+#> 10   4078607      fl:th_ln:jefferson-1              Thomas
+#> 11   4104193      fl:th_ln:jefferson-1              Thomas
+#> 12   5643452     fl:ge_ln:washington-2              George
+#> 13   5645778     fl:ge_ln:washington-2              George
+#> 14   5736046     fl:ge_ln:washington-2              George
+#> 15   5897817     fl:ge_ln:washington-2              George
+#> 16   5914971          fl:ge_ln:burke-8           George E.
+#> 17   5914971     fl:ro_ln:washington-2           Rodney B.
+#> 18   6218441     fl:ge_ln:washington-2              George
+#> 19   6881337     fl:ge_ln:washington-2              George
+#> 20   6905071       fl:th_ln:amundsen-2              Thomas
+#> 21   6905071          fl:ge_ln:kolis-1              George
+#> 22   6905071      fl:ma_ln:jefferson-2             Matthew
+#> 23   7144505     fl:ge_ln:washington-2              George
+#> 24   7598629          fl:ge_ln:burke-8           George E.
+#> 25   7598629     fl:ro_ln:washington-2           Rodney B.
+#> 26   7971908          fl:th_ln:tilly-1              Thomas
+#> 27   7971908       fl:th_ln:dimambro-1           Thomas M.
+#> 28   7971908      fl:al_ln:jefferson-1           Alfred A.
+#> 29   8347213        fl:th_ln:clifton-3           Thomas M.
+#> 30   8347213      fl:br_ln:jefferson-1          Bradley C.
+#> 31   8717367        fl:th_ln:clifton-3           Thomas M.
+#> 32   8717367      fl:br_ln:jefferson-1          Bradley C.
 #>       inventor_name_last inventor_gender_code
-#> 1             Washington                    M
-#> 2  Fitzgerald Washington                    M
-#> 3              Jefferson                    M
-#> 4              Jefferson                    M
+#> 1              Jefferson                    M
+#> 2                    FAY                    M
+#> 3                 Bonola                    M
+#> 4              Jefferson                    F
 #> 5             Washington                    M
 #> 6             Washington                    M
-#> 7             Washington                    M
-#> 8             Washington                    M
-#> 9             Washington                    M
-#> 10            Washington                    M
-#> 11            Washington                    M
+#> 7                 Bonola                    M
+#> 8              Jefferson                    F
+#> 9  Fitzgerald Washington                    M
+#> 10             Jefferson                    M
+#> 11             Jefferson                    M
+#> 12            Washington                    M
+#> 13            Washington                    M
+#> 14            Washington                    M
+#> 15            Washington                    M
+#> 16            Burke, Jr.                    M
+#> 17            Washington                    M
+#> 18            Washington                    M
+#> 19            Washington                    M
+#> 20              Amundsen                    M
+#> 21                 Kolis                    M
+#> 22             Jefferson                    M
+#> 23            Washington                    M
+#> 24            Burke, Jr.                    M
+#> 25            Washington                    M
+#> 26                 Tilly                    M
+#> 27              DiMambro                    M
+#> 28             Jefferson                    M
+#> 29               Clifton                    M
+#> 30             Jefferson                    M
+#> 31               Clifton                    M
+#> 32             Jefferson                    M
 #>                    inventor_location_id inventor_city inventor_state
-#> 1  ea0f11fa-16c7-11ed-9b5f-1234bde3cd05     Oak Creek             WI
-#> 2  ebd2597d-16c7-11ed-9b5f-1234bde3cd05    Blythewood             SC
-#> 3  4e49a0a0-16c8-11ed-9b5f-1234bde3cd05       Houston             TX
-#> 4  4e49a0a0-16c8-11ed-9b5f-1234bde3cd05       Houston             TX
-#> 5  f4141084-16c7-11ed-9b5f-1234bde3cd05         Miami             FL
-#> 6  ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
-#> 7  f4141084-16c7-11ed-9b5f-1234bde3cd05         Miami             FL
-#> 8  ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
-#> 9  ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
-#> 10 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
-#> 11 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 1  a26e22db-16c8-11ed-9b5f-1234bde3cd05     Palo Alto             CA
+#> 2  8f94a78e-16c8-11ed-9b5f-1234bde3cd05  Fort Collins             CO
+#> 3  d22da190-16c7-11ed-9b5f-1234bde3cd05       Cypress             TX
+#> 4  ca22ab34-16c7-11ed-9b5f-1234bde3cd05       Tomball             TX
+#> 5  ea0f11fa-16c7-11ed-9b5f-1234bde3cd05     Oak Creek             WI
+#> 6  4affd925-16c8-11ed-9b5f-1234bde3cd05 San Francisco             CA
+#> 7  a26e22db-16c8-11ed-9b5f-1234bde3cd05     Palo Alto             CA
+#> 8  cddcf1ae-16c7-11ed-9b5f-1234bde3cd05        Spring             TX
+#> 9  ebd2597d-16c7-11ed-9b5f-1234bde3cd05    Blythewood             SC
+#> 10 4e49a0a0-16c8-11ed-9b5f-1234bde3cd05       Houston             TX
+#> 11 4e49a0a0-16c8-11ed-9b5f-1234bde3cd05       Houston             TX
+#> 12 f4141084-16c7-11ed-9b5f-1234bde3cd05         Miami             FL
+#> 13 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 14 f4141084-16c7-11ed-9b5f-1234bde3cd05         Miami             FL
+#> 15 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 16 04726932-16c8-11ed-9b5f-1234bde3cd05       Raleigh             NC
+#> 17 04726932-16c8-11ed-9b5f-1234bde3cd05       Raleigh             NC
+#> 18 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 19 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 20 f9f15056-16c7-11ed-9b5f-1234bde3cd05  Turnersville             NJ
+#> 21 fc83ee3c-16c7-11ed-9b5f-1234bde3cd05    Pennsauken             NJ
+#> 22 09c79f9e-16c8-11ed-9b5f-1234bde3cd05      Seaville             NJ
+#> 23 ec3c5775-16c7-11ed-9b5f-1234bde3cd05       Miramar             FL
+#> 24 04726932-16c8-11ed-9b5f-1234bde3cd05       Raleigh             NC
+#> 25 04726932-16c8-11ed-9b5f-1234bde3cd05       Raleigh             NC
+#> 26 f7b45376-16c7-11ed-9b5f-1234bde3cd05       Algonac             MI
+#> 27 f442979f-16c7-11ed-9b5f-1234bde3cd05          Troy             MI
+#> 28 f7cdbded-16c7-11ed-9b5f-1234bde3cd05    Southfield             MI
+#> 29 0712f582-16c8-11ed-9b5f-1234bde3cd05        Boston             MA
+#> 30 4affd925-16c8-11ed-9b5f-1234bde3cd05 San Francisco             CA
+#> 31 0712f582-16c8-11ed-9b5f-1234bde3cd05        Boston             MA
+#> 32 4affd925-16c8-11ed-9b5f-1234bde3cd05 San Francisco             CA
 #>    inventor_country inventor_sequence
 #> 1                US                 1
-#> 2                US                 0
-#> 3                US                 2
-#> 4                US                 2
-#> 5                US                 5
-#> 6                US                 2
-#> 7                US                 5
-#> 8                US                 2
-#> 9                US                 7
-#> 10               US                 7
-#> 11               US                 4
+#> 2                US                 2
+#> 3                US                 8
+#> 4                US                 6
+#> 5                US                 1
+#> 6                US                 0
+#> 7                US                 8
+#> 8                US                 6
+#> 9                US                 0
+#> 10               US                 2
+#> 11               US                 2
+#> 12               US                 5
+#> 13               US                 2
+#> 14               US                 5
+#> 15               US                 2
+#> 16               US                 4
+#> 17               US                 2
+#> 18               US                 7
+#> 19               US                 7
+#> 20               US                 4
+#> 21               US                 8
+#> 22               US                11
+#> 23               US                 4
+#> 24               US                 2
+#> 25               US                 1
+#> 26               US                 4
+#> 27               US                 1
+#> 28               US                 2
+#> 29               US                 3
+#> 30               US                 2
+#> 31               US                 3
+#> 32               US                 2
 ```
 
 ## Acknowledgment

@@ -121,7 +121,7 @@ display_inventors
 
 ```
 Some rows act as you'd expect, like patent 4078607's Thomas Jefferson.  In others, two inventors
-combine to meet the search cititeria, like 6905071's
+combine to meet the search criteria, like 6905071's
  **Thomas** Amundsen and Matthew **Jefferson**.  This might be a match we didn't intend.
 
 Now we'll hit the inventor endpoint with a similar query, as the jupyter notebook suggests.
