@@ -62,7 +62,8 @@ info, including:
     vignette](https://docs.ropensci.org/patentsview/articles/getting-started.html)
     for first-time users. The package was also introduced in an
     [rOpenSci blog
-    post](https://ropensci.org/blog/2017/09/19/patentsview/).
+    post](https://docs.ropensci.org/patentsview/articles/ropensci-blog-post.html),
+    rewritten for the new version of the API.
 -   An in-depth tutorial on [writing
     queries](https://docs.ropensci.org/patentsview/articles/writing-queries.html)
 -   A list of [basic

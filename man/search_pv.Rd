@@ -35,7 +35,7 @@ E.g., \code{list("_gte" = list("patent_date" = "2007-01-04"))}
 
 \item An object of class \code{pv_query}, which you create by calling one
 of the functions found in the \code{\link{qry_funs}} list...See the
-\href{../articles/writing-queries.html}{writing
+\href{https://docs.ropensci.org/patentsview/articles/writing-queries.html}{writing
 queries vignette} for details.\cr
 E.g., \code{qry_funs$gte(patent_date = "2007-01-04")}
 }}
@@ -80,7 +80,7 @@ value can be as high as 1,000 (e.g., \code{size = 1000}).}
 \item{after}{A list of sort key values that defaults to NULL.  This
 exposes the API's paging parameter for users who want to implement their own
 paging. It cannot be set when \code{all_pages = TRUE} as the R package manipulates it
-for users automatically. See \href{../articles/result-set-paging.html}{result set paging}}
+for users automatically. See \href{https://docs.ropensci.org/patentsview/articles/result-set-paging.html}{result set paging}}
 
 \item{all_pages}{Do you want to download all possible pages of output? If
 \code{all_pages = TRUE}, the value of \code{size} is ignored.}
