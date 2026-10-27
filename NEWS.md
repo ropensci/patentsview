@@ -1,3 +1,12 @@
+# patentsview (development version)
+
+### New features
+
+* The base URL of the API can be set with `options(patentsview.base_url = )` or the
+  environment variable `PATENTSVIEW_BASE_URL` (scheme and host, for example
+  `https://search.patentsview.org`, the default), so the package can query any
+  service that answers the PatentSearch API. The option wins over the variable.
+
 # patentsview 1.0.0
 
 ### Breaking changes
