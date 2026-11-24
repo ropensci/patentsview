@@ -12,7 +12,7 @@ test_that("API returns extra fields not requested", {
   vcr::local_cassette("bug-extra-fields-returned")
   # Bypass repair_resp() by using retrieve_linked_data()
   url <- paste0(
-    "https://search.patentsview.org/api/v1/patent/",
+    get_base("patent"),
     "?q=%7B%22patent_id%22%3A%225116621%22%7D",
     "&f=%5B%22patent_id%22%5D&s=&o=%7B%22size%22%3A1000%7D"
   )
@@ -45,7 +45,7 @@ test_that("patent/foreign_citation returns unadvertised 'patent' field", {
   fields <- get_fields("patent/foreign_citation")
   # Bypass repair_resp() by using retrieve_linked_data()
   url <- paste0(
-    "https://search.patentsview.org/api/v1/patent/foreign_citation",
+    sub("/$", "", get_base("patent/foreign_citation")),
     "?q=%7B%22patent_id%22%3A%2210000001%22%7D",
     "&f=", URLencode(jsonlite::toJSON(fields)),
     "&s=&o=%7B%22size%22%3A1000%7D"

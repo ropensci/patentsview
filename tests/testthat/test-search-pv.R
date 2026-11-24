@@ -54,7 +54,7 @@ test_that("can retrieve HATEOAS links", {
 
   vcr::local_cassette("hateoas")
   out <- retrieve_linked_data(
-    "https://search.patentsview.org/api/v1/cpc_group/G01S7:4811/"
+    paste0(get_base("cpc_group"), "G01S7:4811/")
   )
   expect_equal(out$query_results$total_hits, 1)
 })
@@ -119,4 +119,19 @@ test_that("can connect to API", {
 
   out <- search_pv('{"patent_id":"5116621"}', fields = "patent_id")
   expect_equal(out$query_results$total_hits, 1)
+})
+
+test_that("the base URL can be set with an option or the environment", {
+  old_opt <- options(patentsview.base_url = NULL)
+  old_env <- Sys.getenv("PATENTSVIEW_BASE_URL", NA)
+  on.exit({
+    options(old_opt)
+    if (is.na(old_env)) Sys.unsetenv("PATENTSVIEW_BASE_URL") else Sys.setenv(PATENTSVIEW_BASE_URL = old_env)
+  })
+  Sys.unsetenv("PATENTSVIEW_BASE_URL")
+  expect_equal(get_base("patent"), "https://search.patentsview.org/api/v1/patent/")
+  Sys.setenv(PATENTSVIEW_BASE_URL = "https://example.org/")
+  expect_equal(get_base("patent"), "https://example.org/api/v1/patent/")
+  options(patentsview.base_url = "https://example.net")
+  expect_equal(get_base("inventor"), "https://example.net/api/v1/inventor/")
 })

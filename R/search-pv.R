@@ -25,7 +25,11 @@ sub_grp_names_for_fields <- function(endpoint, fields) {
 
 #' @noRd
 get_base <- function(endpoint) {
-  sprintf("https://search.patentsview.org/api/v1/%s/", endpoint)
+  host <- getOption(
+    "patentsview.base_url",
+    Sys.getenv("PATENTSVIEW_BASE_URL", "https://search.patentsview.org")
+  )
+  sprintf("%s/api/v1/%s/", sub("/+$", "", host), endpoint)
 }
 
 #' @noRd
@@ -252,6 +256,11 @@ request_apply <- function(result, method, query, base_url, arg_list, api_key, ..
 #' \href{https://patentsview-support.atlassian.net/servicedesk/customer/portals}{here}.
 #' @param ... Curl options passed along to httr2's \code{\link[httr2]{req_options}}
 #'  when we do GETs or POSTs.
+#'
+#' @details The requests go to \code{https://search.patentsview.org} unless
+#'  \code{options(patentsview.base_url = )} or the environment variable
+#'  \code{PATENTSVIEW_BASE_URL} names another service that answers the
+#'  PatentSearch API (scheme and host only; the option wins).
 #'
 #' @return A list with the following three elements:
 #'  \describe{

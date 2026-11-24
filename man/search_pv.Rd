@@ -133,6 +133,12 @@ calls that were made to the server (one for each page of results).}
 This makes an HTTP request to the PatentsView API for data matching the
 user's query.
 }
+\details{
+The requests go to \code{https://search.patentsview.org} unless
+\code{options(patentsview.base_url = )} or the environment variable
+\code{PATENTSVIEW_BASE_URL} names another service that answers the
+PatentSearch API (scheme and host only; the option wins).
+}
 \examples{
 \dontrun{
 
