@@ -15,6 +15,8 @@ validate_args <- function(api_key, fields, endpoint, method,
     "The new version of the API requires an API key"
   )
 
+  validate_endpoint(endpoint)
+
   flds_flt <- fieldsdf[fieldsdf$endpoint == endpoint, "field"]
 
   # Now the API allows the group name to be requested as in fields to get all of
@@ -26,11 +28,9 @@ validate_args <- function(api_key, fields, endpoint, method,
   flds_flt <- append(flds_flt, groups[!groups == plural_entity])
 
   asrt(
-    all(fields %in% c(flds_flt, groups)),
+    all(fields %in% flds_flt),
     "Bad field(s): ", paste(fields[!(fields %in% flds_flt)], collapse = ", ")
   )
-
-  validate_endpoint(endpoint)
 
   asrt(
     all(method %in% c("GET", "POST"), length(method) == 1),
